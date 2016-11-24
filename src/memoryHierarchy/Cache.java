@@ -5,6 +5,8 @@ public class Cache {
 	int lineSize; // line size of cache 
 	int m; // associativity
 	
+	Set [] sets;
+	
 	int totalHits;
 	int totalMisses;
 	
@@ -16,6 +18,9 @@ public class Cache {
 	}
 	public int getM() {
 		return m;
+	}
+	public Set[] getSets() {
+		return sets;
 	}
 	public int getTotal_hits() {
 		return totalHits;

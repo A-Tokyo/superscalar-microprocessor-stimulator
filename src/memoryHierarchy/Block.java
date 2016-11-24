@@ -23,4 +23,15 @@ public class Block {
 	public void setData(String[] data) {
 		this.data = data;
 	}
+	
+	public String toString() {
+		StringBuilder toReturn = new StringBuilder();
+		toReturn.append("[ " + tag);
+		for (int i = 0; i < data.length; i++) {
+			toReturn.append(data[i]);
+			toReturn.append(i<data.length?",":"");
+		}
+		toReturn.append(" ]");
+		return toReturn.toString();
+	}
 }
