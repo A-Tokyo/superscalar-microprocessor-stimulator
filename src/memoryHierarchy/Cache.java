@@ -4,8 +4,8 @@ public class Cache {
 	int size; // size of cache
 	int lineSize; // line size of cache 
 	int m; // associativity
-	String writePolicyHit; // 0 for writeThrough 1 for writeBack
-	String writePolicyMiss; // 0 for writeThrough 1 for writeBack
+	String writePolicyHit; // writeThrough or writeBack
+	String writePolicyMiss; // writeThrough or writeBack
 	int accessCycles; // access time (in cycles)
 	
 	Set [] sets;
