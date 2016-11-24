@@ -10,6 +10,16 @@ public class Memory {
 		this.access_time = access_time;
 		this.total_cycles = 0;
 	}
+	
+	// Takes an int address as an input and returns the data in the memory location associated with it.
+	public String ReadFromMemory(int address) {
+		return main_memory[address];
+	}
+	
+	// Takes an int address as an input and a string data, writes the data to the memory location of index address.
+	public void writeToMemory(int address, String data){
+		main_memory[address] = data;
+	}
 
 	public int getAccess_time() {
 		return access_time;
@@ -18,7 +28,7 @@ public class Memory {
 	public int getTotal_cycles() {
 		return total_cycles;
 	}
-	
+	// Returns the main memory in string form
 	public String memoryToString(){
 		StringBuilder toReturn = new StringBuilder();
 		for(int i = 0; i < this.main_memory.length; i++) {
@@ -31,7 +41,7 @@ public class Memory {
 		}
 		return toReturn.toString();
 	}
-	
+	// Takes a start address and an end address and returns the data in these addresses in string form
 	public String memoryToString(int start_address, int end_address){
 		StringBuilder toReturn = new StringBuilder();
 		if(start_address<0 || end_address>= this.main_memory.length || end_address-start_address<0){
