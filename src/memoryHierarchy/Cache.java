@@ -4,8 +4,8 @@ public class Cache {
 	int size; // size of cache
 	int lineSize; // line size of cache 
 	int m; // associativity
-	int writePolicyHit; // 0 for writeThrough 1 for writeBack
-	int writePolicyMiss; // 0 for writeThrough 1 for writeBack
+	String writePolicyHit; // 0 for writeThrough 1 for writeBack
+	String writePolicyMiss; // 0 for writeThrough 1 for writeBack
 	int accessCycles; // access time (in cycles)
 	
 	Set [] sets;
@@ -13,7 +13,7 @@ public class Cache {
 	int totalHits;
 	int totalMisses;
 	
-	public Cache(int size, int lineSize, int m, int writePolicyHit, int writePolicyMiss, int accessCycles) {
+	public Cache(int size, int lineSize, int m, String writePolicyHit, String writePolicyMiss, int accessCycles) {
 		this.size = size;
 		this.lineSize = lineSize;
 		this.m = m;
