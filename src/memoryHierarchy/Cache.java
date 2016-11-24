@@ -2,25 +2,25 @@ package memoryHierarchy;
 
 public class Cache {
 	int size; // size of cache
-	int line_size; // line size of cache 
+	int lineSize; // line size of cache 
 	int m; // associativity
 	
-	int total_hits;
-	int total_misses;
+	int totalHits;
+	int totalMisses;
 	
 	public int getSize() {
 		return size;
 	}
 	public int getLine_size() {
-		return line_size;
+		return lineSize;
 	}
 	public int getM() {
 		return m;
 	}
 	public int getTotal_hits() {
-		return total_hits;
+		return totalHits;
 	}
 	public int getTotal_misses() {
-		return total_misses;
+		return totalMisses;
 	}
 }
