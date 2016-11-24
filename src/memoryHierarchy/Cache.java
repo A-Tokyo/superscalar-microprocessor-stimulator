@@ -29,22 +29,41 @@ public class Cache {
 		}
 	}
 
+	// Getters
+	
 	public int getSize() {
 		return size;
 	}
-	public int getLine_size() {
+
+	public int getLineSize() {
 		return lineSize;
 	}
+
 	public int getM() {
 		return m;
 	}
+
+	public String getWritePolicyHit() {
+		return writePolicyHit;
+	}
+
+	public String getWritePolicyMiss() {
+		return writePolicyMiss;
+	}
+
+	public int getAccessCycles() {
+		return accessCycles;
+	}
+
 	public Set[] getSets() {
 		return sets;
 	}
-	public int getTotal_hits() {
+
+	public int getTotalHits() {
 		return totalHits;
 	}
-	public int getTotal_misses() {
+
+	public int getTotalMisses() {
 		return totalMisses;
 	}
 }
