@@ -21,3 +21,11 @@ Please push all commits to the dev branch, NOT the master branch. The master bra
     - Bundle the files together and add cache leveling
 - Tomasulo (0% completed)
 - Functional Units (0% completed)
+
+
+### Getting Started
+
+- Clone the repository  `git clone https://github.com/A-Tokyo/superscalar-microprocessor-stimulator`
+- Open eclipse
+- Click on File -> Import -> Select General, Existing projects into workspace -> click next
+- Select root directory and copy the path to the repository folder or browse for it
