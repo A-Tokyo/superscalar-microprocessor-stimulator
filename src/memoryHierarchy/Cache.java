@@ -18,7 +18,7 @@ public class Cache {
 	private int accessCyclesRemaining; // tracks the number of cycles remaining complete instruction fetch.
 
 
-	private boolean isBeingFetched; // An instruction is currently being accessed from an I-Cache
+	private boolean isBeingFetched; // An instruction is currently being fetched from an I-Cache
 	private int fetchCyclesRemaining; // tracks the number of cycles remaining complete instruction fetch.
 	
 	private static final int wordSizeInBits = 16;
