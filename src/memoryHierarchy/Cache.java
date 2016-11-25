@@ -8,10 +8,10 @@ public class Cache {
 	String writePolicyMiss; // writeThrough or writeBack
 	int accessCycles; // access time (in cycles)
 	
-	Set [] sets;
+	Set [] sets; // array of sets containing blocks
 	
-	int totalHits;
-	int totalMisses;
+	int totalHits; // cache hits
+	int totalMisses; // cache misses
 	
 	public Cache(int size, int lineSize, int m, String writePolicyHit, String writePolicyMiss, int accessCycles) {
 		this.size = size;
@@ -51,11 +51,15 @@ public class Cache {
 	}
 	
 	public double getHitRate() {
-		return (double) totalHits /((double)this.totalHits + (double) this.totalMisses);
+		return (double) totalHits /getTotalCacheAccesses();
 	}
 	
 	public double getMissRate() {
-		return (double) totalMisses /((double)this.totalHits + (double) this.totalMisses);
+		return (double) totalMisses /getTotalCacheAccesses();
+	}
+	
+	public double getTotalCacheAccesses() {
+		return (totalHits + totalMisses);
 	}
 	
 	private int log2(int num){
