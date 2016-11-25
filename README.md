@@ -36,6 +36,7 @@ processor that uses Tomasulo’s algorithm with speculation taking into account 
 - Click on File -> Import -> Select General, Existing projects into workspace -> click next
 - Select root directory and copy the path to the repository folder or browse for it
 - Contribute and send a pull request to dev
+- To commit through eclipse, right click on the project, select team, share
 
 
 ## Conventions
