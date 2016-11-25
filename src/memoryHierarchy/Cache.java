@@ -32,13 +32,40 @@ public class Cache {
 	}
 	
 	// cache Logic
+	// This one takes a string address and data, it writes the data to that address (byte addressable memory)
+	public void writeByte(String address, String data) {
+		Set setToWriteTo;
+		Block blockToWriteTo;
+		String tagBits = getTagBits(address);
+		String offsetBits = getOffsetBits(address);
+		int offset = Integer.parseInt(offsetBits, 2);
+		if(getIndexBitCount() == 0) {
+			// since this is fully associative there is only one set
+			setToWriteTo = this.sets[0];
+		}
+		else {
+			int index = Integer.parseInt(getIndexBits(address), 2);
+			setToWriteTo = this.sets[index];
+		}
+		for (int i = 0; i < setToWriteTo.blocks.length; i++) {
+			if (tagBits.equals(setToWriteTo.blocks[i].tag) && setToWriteTo.blocks[i].validBit == 1) {
+				blockToWriteTo = setToWriteTo.blocks[i];
+				// write the byte
+				blockToWriteTo.data[offset] = data;
+				// in case of write back mark the block as dirty to write it back
+				if (writePolicyHit.equals("writeBack"))
+					blockToWriteTo.setDirtyBit(1);
+			}
+		}
+	}
+	
 	
 	/*This one takes a block and a decimal index and writes the block in the set belonging to that index
 	 * It first I search for an invalid block, if found, I replace that block
 	 * If no invalid blocks exist, a random block is replaced
 	 * of course in case of direct mapped the block of the index is replaced since the set would have 1 block
 	 */
-	public void write(Block block, int index) {
+	public void writeBlock(Block block, int index) {
 		Set toWriteTo = this.sets[index];
 		for(int i = 0; i < toWriteTo.blocks.length; i++) {
 			if (toWriteTo.blocks[i].getValidBit() == 0) {
@@ -84,6 +111,11 @@ public class Cache {
 	// takes an address and returns the tag bits of that address in string form
 	private String getIndexBits(String addr){
 		return addr.substring(getTagBitCount(), wordSizeInBits - getOffsetBitCount());
+	}
+	
+	// takes an address and returns the offset bits of that address in string form
+	private String getOffsetBits(String addr){
+		return addr.substring(wordSizeInBits - getOffsetBitCount(), wordSizeInBits);
 	}
 	
 	// Calculated Attrs Getters
