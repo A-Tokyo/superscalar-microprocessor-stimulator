@@ -5,6 +5,9 @@ public class Memory {
 	int accessTime; // Input: Number of cycles to access
 	int totalCycles; // Output: Total number of cycles in the current stimulation.
 	
+	// tracking memory state
+	private boolean isBeingAccessed;
+	
 	public Memory(int access_time) {
 		this.memory = new String[65536]; // 2^16
 		this.accessTime = access_time;
@@ -28,6 +31,15 @@ public class Memory {
 	public int getTotal_cycles() {
 		return totalCycles;
 	}
+	
+	public boolean isBeingAccessed() {
+		return isBeingAccessed;
+	}
+
+	public void setBeingAccessed(boolean isBeingAccessed) {
+		this.isBeingAccessed = isBeingAccessed;
+	}
+	
 	// Returns the main memory in string form
 	public String memoryToString(){
 		StringBuilder toReturn = new StringBuilder();
