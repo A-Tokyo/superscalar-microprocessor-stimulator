@@ -14,7 +14,8 @@ public class Cache {
 	int totalMisses; // cache misses
 	
 	// tracking cache state
-	private boolean isBeingAccessed;
+	private boolean isBeingAccessed; // Data is currently being accessed from a D-Cache
+	private boolean inBeingFetched; // An instruction is currently being accessed from an I-Cache
 	
 	private static final int wordSizeInBits = 16;
 	
