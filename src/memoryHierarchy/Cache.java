@@ -13,6 +13,9 @@ public class Cache {
 	int totalHits; // cache hits
 	int totalMisses; // cache misses
 	
+	// tracking cache state
+	private boolean isBeingAccessed;
+	
 	private static final int wordSizeInBits = 16;
 	
 	public Cache(int size, int lineSize, int m, String writePolicyHit, String writePolicyMiss, int accessCycles) {
@@ -22,6 +25,8 @@ public class Cache {
 		this.writePolicyHit = writePolicyHit;
 		this.writePolicyMiss = writePolicyMiss;
 		this.accessCycles = accessCycles;
+		
+		this.isBeingAccessed = false;
 		
 		// size over line size to get number of blocks in cache, /m since there are m blocks per set.
 		this.sets = new Set[size/lineSize/m];
@@ -74,7 +79,11 @@ public class Cache {
 				return;
 			}
 		}
-		toWriteTo.blocks[(int) (m * Math.random())] = block;
+		int blockIndex = (int) (m * Math.random());
+		if(toWriteTo.blocks[blockIndex].getDirtyBit() == 1){
+			//TODO write to memory
+		}
+		toWriteTo.blocks[blockIndex] = block;
 	}
 	
 	// This one takes a string address , it reads the data in that address location and returns it
@@ -224,6 +233,14 @@ public class Cache {
 		return totalMisses;
 	}
 	
+	public boolean isBeingAccessed() {
+		return isBeingAccessed;
+	}
+
+	public void setBeingAccessed(boolean isBeingAccessed) {
+		this.isBeingAccessed = isBeingAccessed;
+	}
+
 	public String cacheToString(){
 		StringBuilder toReturn = new StringBuilder();
 		toReturn.append("++++++++++++++++++++++++++++++++++++++++++++++++++" + "\n");
