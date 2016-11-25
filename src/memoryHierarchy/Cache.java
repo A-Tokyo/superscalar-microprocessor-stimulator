@@ -8,10 +8,10 @@ public class Cache {
 	String writePolicyMiss; // writeThrough or writeBack
 	int accessCycles; // access time (in cycles)
 	
-	Set [] sets;
+	Set [] sets; // array of sets containing blocks
 	
-	int totalHits;
-	int totalMisses;
+	int totalHits; // cache hits
+	int totalMisses; // cache misses
 	
 	public Cache(int size, int lineSize, int m, String writePolicyHit, String writePolicyMiss, int accessCycles) {
 		this.size = size;
@@ -28,8 +28,50 @@ public class Cache {
 			this.sets[i] = new Set(m, lineSize);
 		}
 	}
+	
+	// Calculated Attrs Getters
 
-	// Getters
+	public int getNumberOfSets() {
+		// size over line size to get number of blocks in cache, /m since there are m blocks per set.
+		return size/lineSize/m;
+	}
+	
+	public int getTag() {
+		// 16 bits, 4 bytes, - the number of (index + offset)
+		return 16 - (getOffset() + getIndex());
+	}
+	
+	public int getIndex() {
+		// in case of direct mapped cache log2NumberOfSets would the number of blocks
+		return log2(getNumberOfSets());
+	}
+	
+	public int getOffset() {
+		// offset is log base 2 of L where L is the lineSize
+		return log2(lineSize);
+	}
+	
+	public double getHitRate() {
+		// The hit rate is the number of totalHits / TotalCacheAccesses
+		return (double) totalHits /getTotalCacheAccesses();
+	}
+	
+	public double getMissRate() {
+		// The miss rate is the number of totalMisses / TotalCacheAccesses
+		return (double) totalMisses /getTotalCacheAccesses();
+	}
+	
+	public double getTotalCacheAccesses() {
+		// The total number of cache accesses is the number of hits + the number of misses
+		return (totalHits + totalMisses);
+	}
+	
+	private int log2(int num){
+		// Log base x of n is log n / log x
+		return (int)(Math.log(num)/Math.log(2));
+	}
+	
+	// Attrs Getters
 	
 	public int getSize() {
 		return size;
@@ -65,5 +107,17 @@ public class Cache {
 
 	public int getTotalMisses() {
 		return totalMisses;
+	}
+	
+	public String toString(){
+		String toReturn = "";
+		toReturn += ("{ size: " + size);
+		toReturn += (", line size: " + lineSize);
+		toReturn += (", associativity m: " + m);
+		toReturn += (", hit write policy: " + writePolicyHit);
+		toReturn += (", miss write policy: " + this.writePolicyMiss);
+		toReturn += (", access cycles: " + accessCycles);
+		toReturn += (" }");
+		return toReturn;
 	}
 }
