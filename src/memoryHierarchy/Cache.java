@@ -224,6 +224,18 @@ public class Cache {
 		return totalMisses;
 	}
 	
+	public String cacheToString(){
+		StringBuilder toReturn = new StringBuilder();
+		toReturn.append("++++++++++++++++++++++++++++++++++++++++++++++++++" + "\n");
+		for (int i = 0; i < this.sets.length; i++) {
+			toReturn.append("***** Set "+i+" *****");
+			toReturn.append(this.sets[i].toString());
+			toReturn.append("\n");
+		}
+		toReturn.append("++++++++++++++++++++++++++++++++++++++++++++++++++" + "\n");
+		return toReturn.toString();
+	}
+	
 	public String toString(){
 		String toReturn = "";
 		toReturn += ("{ size: " + size);

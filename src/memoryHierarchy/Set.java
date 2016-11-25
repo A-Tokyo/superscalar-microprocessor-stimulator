@@ -14,6 +14,7 @@ public class Set {
 	public String toString() {
 		StringBuilder toReturn = new StringBuilder();
 		for (int i = 0; i < blocks.length; i++) {
+			toReturn.append("Block " + i + ": ");
 			toReturn.append(blocks[i].toString());
 			toReturn.append("\n");
 		}
