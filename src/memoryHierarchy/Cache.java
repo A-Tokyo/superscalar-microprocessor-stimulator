@@ -50,6 +50,14 @@ public class Cache {
 		return log2(lineSize);
 	}
 	
+	public double getHitRate() {
+		return (double) totalHits /((double)this.totalHits + (double) this.totalMisses);
+	}
+	
+	public double getMissRate() {
+		return (double) totalMisses /((double)this.totalHits + (double) this.totalMisses);
+	}
+	
 	private int log2(int num){
 		// Log base x of n is log n / log x
 		return (int)(Math.log(num)/Math.log(2));
