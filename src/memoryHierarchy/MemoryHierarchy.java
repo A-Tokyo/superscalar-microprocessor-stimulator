@@ -33,6 +33,27 @@ public class MemoryHierarchy {
 			}
 		}
 	}
+	
+	/* This one takes an address in string form
+	 * Returns A string represents the block where the byte resides in within cache level 1
+	 * The Data is returned only when the cycles required to access it are finished
+	 * other wise the method returns null since the data was not yet accessed
+	 */
+	public String loadData(String address) {
+		this.caches[1].decrementAccessCyclesRemaining();
+		if(this.caches[1].getAccessCyclesRemaining() == 0) {
+			this.caches[1].setBeingAccessed(false);
+			//reset cycle counter
+			this.caches[1].resetAccessCyclesRemaining();
+			return caches[1].read(address);
+		}
+		else {
+			// the cache has to be marked as being accessed
+			this.caches[1].setBeingAccessed(true);
+			// returning null till the cycles remaining reach zero
+			return null;
+		}
+	}
 
 	
 }

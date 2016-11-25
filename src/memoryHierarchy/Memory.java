@@ -8,6 +8,10 @@ public class Memory {
 	// tracking memory state
 	private boolean isBeingAccessed;
 	
+	//Had to separate them into two counters since there must be one for data and one for instruction, these counters need to be reset once they reach zero;
+	int fetchCyclesRemaining;
+	int dataAccessCyclesRemaining;
+	
 	public Memory(int access_time) {
 		this.memory = new String[65536]; // 2^16
 		this.accessTime = access_time;
