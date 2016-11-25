@@ -8,10 +8,12 @@ public class Cache {
 	String writePolicyMiss; // writeThrough or writeBack
 	int accessCycles; // access time (in cycles)
 	
-	Set [] sets; // array of sets containing blocks
+	Set [] sets; // array of sets containing blocks, 1 set if fully Associative, same as number of blocks if direct mapped
 	
 	int totalHits; // cache hits
 	int totalMisses; // cache misses
+	
+	private static final int wordSizeInBits = 16;
 	
 	public Cache(int size, int lineSize, int m, String writePolicyHit, String writePolicyMiss, int accessCycles) {
 		this.size = size;
@@ -29,24 +31,61 @@ public class Cache {
 		}
 	}
 	
+	// cache Logic
+	
+	// takes a string address and returns true if it is a cache hit and false otherwise
+	public boolean hit(String address) {
+		Set setToSearchIn;
+		String tag = getTagBits(address);
+		if(getIndexBitCount() == 0) {
+			// since this is fully associative there is only one set
+			setToSearchIn = this.sets[0];
+		}
+		else {
+			// getting index in decimal
+			int index = Integer.parseInt(getIndexBits(address), 2);
+			setToSearchIn = this.sets[index];
+		}
+		// searching through the previously selected set for the address
+		for (int i = 0; i < setToSearchIn.blocks.length; i++) {
+			// The tag bits of the block = the tag bits of the address, and the block is valid
+			if (tag.equals(setToSearchIn.blocks[i].getTag()) && setToSearchIn.blocks[i].getValidBit() == 1)
+				return true;
+		}
+		// cache miss
+		return false;
+	}
+	
+	// Parsing address logic
+	
+	// takes an address and returns the tag bits of that address in string form
+	private String getTagBits(String addr){
+		return addr.substring(0, getTagBitCount());
+	}
+	
+	// takes an address and returns the tag bits of that address in string form
+	private String getIndexBits(String addr){
+		return addr.substring(getTagBitCount(), wordSizeInBits - getOffsetBitCount());
+	}
+	
 	// Calculated Attrs Getters
 
-	public int getNumberOfSets() {
+	private int getNumberOfSets() {
 		// size over line size to get number of blocks in cache, /m since there are m blocks per set.
 		return size/lineSize/m;
 	}
 	
-	public int getTag() {
+	private int getTagBitCount() {
 		// 16 bits, 4 bytes, - the number of (index + offset)
-		return 16 - (getOffset() + getIndex());
+		return wordSizeInBits - (getOffsetBitCount() + getIndexBitCount());
 	}
 	
-	public int getIndex() {
+	private int getIndexBitCount() {
 		// in case of direct mapped cache log2NumberOfSets would the number of blocks
 		return log2(getNumberOfSets());
 	}
 	
-	public int getOffset() {
+	private int getOffsetBitCount() {
 		// offset is log base 2 of L where L is the lineSize
 		return log2(lineSize);
 	}
