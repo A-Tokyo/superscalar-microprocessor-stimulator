@@ -26,6 +26,9 @@ Please push all commits to the dev branch, NOT the master branch. The master bra
 ### Getting Started
 
 - Clone the repository  `git clone https://github.com/A-Tokyo/superscalar-microprocessor-stimulator`
+- Checkout dev `git checkout dev`
+- Create a new branch `git checkout -b branchName` or work on dev (discouraged for conflicts)
 - Open eclipse
 - Click on File -> Import -> Select General, Existing projects into workspace -> click next
 - Select root directory and copy the path to the repository folder or browse for it
+- Contribute and send a pull request to dev
