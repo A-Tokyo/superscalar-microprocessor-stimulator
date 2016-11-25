@@ -10,12 +10,16 @@ public class Cache {
 	
 	Set [] sets; // array of sets containing blocks, 1 set if fully Associative, same as number of blocks if direct mapped
 	
-	int totalHits; // cache hits
-	int totalMisses; // cache misses
+	private int totalHits; // cache hits
+	private int totalMisses; // cache misses
 	
 	// tracking cache state
 	private boolean isBeingAccessed; // Data is currently being accessed from a D-Cache
-	private boolean inBeingFetched; // An instruction is currently being accessed from an I-Cache
+	private int accessCyclesRemaining; // tracks the number of cycles remaining complete instruction fetch.
+
+
+	private boolean isBeingFetched; // An instruction is currently being accessed from an I-Cache
+	private int fetchCyclesRemaining; // tracks the number of cycles remaining complete instruction fetch.
 	
 	private static final int wordSizeInBits = 16;
 	
@@ -240,6 +244,34 @@ public class Cache {
 
 	public void setBeingAccessed(boolean isBeingAccessed) {
 		this.isBeingAccessed = isBeingAccessed;
+	}
+	
+	public int getAccessCyclesRemaining() {
+		return accessCyclesRemaining;
+	}
+
+	public void setAccessCyclesRemaining(int accessCyclesRemaining) {
+		this.accessCyclesRemaining = accessCyclesRemaining;
+	}
+
+	public boolean isBeingFetched() {
+		return isBeingFetched;
+	}
+
+	public void setBeingFetched(boolean isBeingFetched) {
+		this.isBeingFetched = isBeingFetched;
+	}
+
+	public int getFetchCyclesRemaining() {
+		return fetchCyclesRemaining;
+	}
+
+	public void setFetchCyclesRemaining(int fetchCyclesRemaining) {
+		this.fetchCyclesRemaining = fetchCyclesRemaining;
+	}
+
+	public void setAccessCycles(int accessCycles) {
+		this.accessCycles = accessCycles;
 	}
 
 	public String cacheToString(){
