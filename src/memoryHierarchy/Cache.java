@@ -32,6 +32,7 @@ public class Cache {
 	// Calculated Attrs Getters
 
 	public int getNumberOfSets() {
+		// size over line size to get number of blocks in cache, /m since there are m blocks per set.
 		return size/lineSize/m;
 	}
 	
@@ -51,14 +52,17 @@ public class Cache {
 	}
 	
 	public double getHitRate() {
+		// The hit rate is the number of totalHits / TotalCacheAccesses
 		return (double) totalHits /getTotalCacheAccesses();
 	}
 	
 	public double getMissRate() {
+		// The miss rate is the number of totalMisses / TotalCacheAccesses
 		return (double) totalMisses /getTotalCacheAccesses();
 	}
 	
 	public double getTotalCacheAccesses() {
+		// The total number of cache accesses is the number of hits + the number of misses
 		return (totalHits + totalMisses);
 	}
 	
