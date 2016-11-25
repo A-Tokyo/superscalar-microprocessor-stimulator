@@ -28,8 +28,30 @@ public class Cache {
 			this.sets[i] = new Set(m, lineSize);
 		}
 	}
+	
+	// Calculated Attrs Getters
 
-	// Getters
+	public int getNumberOfSets() {
+		return size/lineSize/m;
+	}
+	
+	public int getTag() {
+		return 16 - (getOffset() + getIndex());
+	}
+	
+	public int getIndex() {
+		return log2(getNumberOfSets());
+	}
+	
+	public int getOffset() {
+		return log2(lineSize);
+	}
+	
+	private int log2(int num){
+		return (int)(Math.log(num)/Math.log(2));
+	}
+	
+	// Attrs Getters
 	
 	public int getSize() {
 		return size;
