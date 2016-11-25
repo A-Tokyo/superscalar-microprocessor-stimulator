@@ -108,4 +108,16 @@ public class Cache {
 	public int getTotalMisses() {
 		return totalMisses;
 	}
+	
+	public String toString(){
+		String toReturn = "";
+		toReturn += ("{ size: " + size);
+		toReturn += (", line size: " + lineSize);
+		toReturn += (", associativity m: " + m);
+		toReturn += (", hit write policy: " + writePolicyHit);
+		toReturn += (", miss write policy: " + this.writePolicyMiss);
+		toReturn += (", access cycles: " + accessCycles);
+		toReturn += (" }");
+		return toReturn;
+	}
 }
