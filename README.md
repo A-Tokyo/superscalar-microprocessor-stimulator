@@ -1,12 +1,15 @@
 # superscalar microprocessor stimulator
 
+## Announcments
 ###  Current Deadline: 28/11 11:59 PM
-
-Using an IDE such as IntelliJ or Eclipse (or any others that integrate with git) is recommended
-
 Please push all commits to the dev branch, NOT the master branch. The master branch should be only left for completely stable commits, and managed via GitHub. (i.e. through pull requests) of course create a branch with your new feature first.
-  
-### Contribution
+
+## Description
+The goal of this project is to implement an architectural simulator capable of assessing the performance of a simplified superscalar out-‐‐of-‐‐order 16-‐‐bit RISC
+processor that uses Tomasulo’s algorithm with speculation taking into account the effect of the cache organization.
+
+
+## Contribution
 - Tomasulo
     - Tomasulo code exists in the package tomasulo with the class Tomasulo as the bundler
 - Functional Units
@@ -15,7 +18,8 @@ Please push all commits to the dev branch, NOT the master branch. The master bra
     - Memory Hierarchy code exists in the package memoryHierarchy with the class MemoryHierarchy as the bundler
 - Utilitis
     - If you want to add any general function such as mathematical log, or printing a 2D array add them to the Utils class and     import it where you need it.
-    
+
+
 ### TODO
 - Memory Hierarchy (80% completed)
     - Bundle the files together and add cache leveling
@@ -32,3 +36,7 @@ Please push all commits to the dev branch, NOT the master branch. The master bra
 - Click on File -> Import -> Select General, Existing projects into workspace -> click next
 - Select root directory and copy the path to the repository folder or browse for it
 - Contribute and send a pull request to dev
+
+
+## Conventions
+- Please follow the following naming conventions http://www.javatpoint.com/java-naming-conventions
