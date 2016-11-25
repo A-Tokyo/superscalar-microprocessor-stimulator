@@ -36,18 +36,22 @@ public class Cache {
 	}
 	
 	public int getTag() {
+		// 16 bits, 4 bytes, - the number of (index + offset)
 		return 16 - (getOffset() + getIndex());
 	}
 	
 	public int getIndex() {
+		// in case of direct mapped cache log2NumberOfSets would the number of blocks
 		return log2(getNumberOfSets());
 	}
 	
 	public int getOffset() {
+		// offset is log base 2 of L where L is the lineSize
 		return log2(lineSize);
 	}
 	
 	private int log2(int num){
+		// Log base x of n is log n / log x
 		return (int)(Math.log(num)/Math.log(2));
 	}
 	
