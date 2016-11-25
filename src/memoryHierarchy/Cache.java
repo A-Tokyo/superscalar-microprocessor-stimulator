@@ -76,7 +76,33 @@ public class Cache {
 		}
 		toWriteTo.blocks[(int) (m * Math.random())] = block;
 	}
-
+	
+	// This one takes a string address , it reads the data in that address location and returns it
+	public String read(String address) {
+		Set setToRead;
+		Block blockToRead;
+		String tagBits = getTagBits(address);
+		String offsetBits = getOffsetBits(address);
+		int offset = (int) Long.parseLong(offsetBits, 2);
+		if(getIndexBitCount() == 0) {
+			// since this is fully associative there is only one set
+			setToRead = this.sets[0];
+		}
+		else {
+			// getting the set to read from
+			int index = Integer.parseInt(getIndexBits(address), 2);
+			setToRead = this.sets[index];
+		}
+		for (int i = 0; i < setToRead.blocks.length; i++) {
+			if (tagBits.equals(setToRead.blocks[i].tag) && setToRead.blocks[i].getValidBit() == 1) {
+				blockToRead = setToRead.blocks[i];
+				// read the byte
+				return blockToRead.data[offset];
+			}
+		}
+		return null;
+	}
+	
 	
 	// takes a string address and returns true if it is a cache hit and false otherwise
 	public boolean hit(String address) {
@@ -196,6 +222,18 @@ public class Cache {
 
 	public int getTotalMisses() {
 		return totalMisses;
+	}
+	
+	public String cacheToString(){
+		StringBuilder toReturn = new StringBuilder();
+		toReturn.append("++++++++++++++++++++++++++++++++++++++++++++++++++" + "\n");
+		for (int i = 0; i < this.sets.length; i++) {
+			toReturn.append("***** Set "+i+" *****");
+			toReturn.append(this.sets[i].toString());
+			toReturn.append("\n");
+		}
+		toReturn.append("++++++++++++++++++++++++++++++++++++++++++++++++++" + "\n");
+		return toReturn.toString();
 	}
 	
 	public String toString(){
