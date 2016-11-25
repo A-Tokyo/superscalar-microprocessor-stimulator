@@ -3,7 +3,8 @@ package memoryHierarchy;
 public class Block {
 	String tag; // tag bits
 	String [] data; // data in bytes
-	int validBit; // determins if the content is valid or not
+	int validBit; // determines if the content is valid or not
+	int dirtyBit; // used in writeBack only
 
 	public Block(int lineSize) {
 		this.data = new String[lineSize]; // lineSize is the number of bytes therefore we need an element for each byte
@@ -33,6 +34,14 @@ public class Block {
 		this.validBit = validBit;
 	}
 	
+	public int getDirtyBit() {
+		return dirtyBit;
+	}
+
+	public void setDirtyBit(int dirtyBit) {
+		this.dirtyBit = dirtyBit;
+	}
+
 	public String toString() {
 		StringBuilder toReturn = new StringBuilder();
 		toReturn.append("[ " + validBit);
