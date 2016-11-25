@@ -253,6 +253,14 @@ public class Cache {
 	public void setAccessCyclesRemaining(int accessCyclesRemaining) {
 		this.accessCyclesRemaining = accessCyclesRemaining;
 	}
+	
+	public void decrementAccessCyclesRemaining() {
+		accessCyclesRemaining -=1;
+	}
+	
+	public void resetAccessCyclesRemaining() {
+		accessCyclesRemaining = accessCycles;
+	}
 
 	public boolean isBeingFetched() {
 		return isBeingFetched;
