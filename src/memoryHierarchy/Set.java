@@ -19,5 +19,9 @@ public class Set {
 		}
 		return toReturn.toString();
 	}
+
+	public Block[] getBlocks() {
+		return blocks;
+	}
 	
 }

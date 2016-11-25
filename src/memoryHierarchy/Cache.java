@@ -33,6 +33,24 @@ public class Cache {
 	
 	// cache Logic
 	
+	/*This one takes a block and a decimal index and writes the block in the set belonging to that index
+	 * It first I search for an invalid block, if found, I replace that block
+	 * If no invalid blocks exist, a random block is replaced
+	 * of course in case of direct mapped the block of the index is replaced since the set would have 1 block
+	 */
+	public void write(Block block, int index) {
+		Set toWriteTo = this.sets[index];
+		for(int i = 0; i < toWriteTo.blocks.length; i++) {
+			if (toWriteTo.blocks[i].getValidBit() == 0) {
+				toWriteTo.blocks[i] = block;
+				// An invalid block was found and replaced, terminate
+				return;
+			}
+		}
+		toWriteTo.blocks[(int) (m * Math.random())] = block;
+	}
+
+	
 	// takes a string address and returns true if it is a cache hit and false otherwise
 	public boolean hit(String address) {
 		Set setToSearchIn;
