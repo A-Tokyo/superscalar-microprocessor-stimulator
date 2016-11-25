@@ -61,11 +61,8 @@ public class Memory {
 		}
 		for(int i = start_address; i <= end_address && i < this.memory.length && i>=0; i++) {
 			toReturn.append("[Address: " + i + ", Data: "+ memory[i]+"]");
-			if (i % 16 == 0 && i!=0){ // for readability the memory is split to 4096 lines.
-				toReturn.append("\n");
-			}else{
-				toReturn.append(", ");
-			}
+			 // for readability the memory is split to 4096 lines.
+			toReturn.append(i % 16 == 0 && i!=0?"\n":", ");
 		}
 		return toReturn.toString();
 	}
