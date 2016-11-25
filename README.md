@@ -18,5 +18,6 @@ Please push all commits to the dev branch, NOT the master branch. The master bra
     
 ### TODO
 - Memory Hierarchy (80% completed)
+    - Bundle the files together and add cache leveling
 - Tomasulo (0% completed)
 - Functional Units (0% completed)
