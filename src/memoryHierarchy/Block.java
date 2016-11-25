@@ -3,6 +3,7 @@ package memoryHierarchy;
 public class Block {
 	String tag; // tag bits
 	String [] data; // data in bytes
+	int validBit; // determins if the content is valid or not
 
 	public Block(int lineSize) {
 		this.data = new String[lineSize]; // lineSize is the number of bytes therefore we need an element for each byte
@@ -24,9 +25,18 @@ public class Block {
 		this.data = data;
 	}
 	
+	public int getValidBit() {
+		return validBit;
+	}
+
+	public void setValidBit(int validBit) {
+		this.validBit = validBit;
+	}
+	
 	public String toString() {
 		StringBuilder toReturn = new StringBuilder();
-		toReturn.append("[ " + tag);
+		toReturn.append("[ " + validBit);
+		toReturn.append(", " + tag);
 		for (int i = 0; i < data.length; i++) {
 			toReturn.append(data[i]);
 			toReturn.append(i<data.length?",":"");
