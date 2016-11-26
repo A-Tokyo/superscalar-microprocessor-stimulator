@@ -245,6 +245,10 @@ public class Cache {
 		totalMisses++;
 	}
 	
+	public int getTotalAccesses() {
+		return this.totalHits + this.totalMisses;
+	}
+	
 	public boolean isBeingAccessed() {
 		return isBeingAccessed;
 	}

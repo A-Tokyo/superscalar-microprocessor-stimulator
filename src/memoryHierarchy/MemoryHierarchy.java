@@ -416,6 +416,14 @@ public class MemoryHierarchy {
 		return null;
 	}
 	
+	public String cacheAccessInfoToString() {
+		StringBuilder toReturn = new StringBuilder();
+		for(int i = 0; i < this.caches.length; i++) {
+			toReturn.append("[ Cache: " + i +", Accesses: " + caches[i].getTotalAccesses() + ", Hits: " + caches[i].getTotalHits() + ", Misses: " + caches[i].getTotalMisses() + " ]" + "\n");
+		}
+		return toReturn.toString();
+	}
+	
 	public String toString() {
 		StringBuilder toReturn = new StringBuilder();
 		toReturn.append("------------------------------------------------" + "\n");
