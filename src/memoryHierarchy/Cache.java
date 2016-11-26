@@ -58,7 +58,7 @@ public class Cache {
 			setToWriteTo = this.sets[index];
 		}
 		for (int i = 0; i < setToWriteTo.blocks.length; i++) {
-			if (tagBits.equals(setToWriteTo.blocks[i].tag) && setToWriteTo.blocks[i].validBit == 1) {
+			if (tagBits.equals(setToWriteTo.blocks[i].getTag()) && setToWriteTo.blocks[i].getValidBit() == 1) {
 				blockToWriteTo = setToWriteTo.blocks[i];
 				// write the byte
 				blockToWriteTo.data[offset] = data;
@@ -108,7 +108,7 @@ public class Cache {
 			setToRead = this.sets[index];
 		}
 		for (int i = 0; i < setToRead.blocks.length; i++) {
-			if (tagBits.equals(setToRead.blocks[i].tag) && setToRead.blocks[i].getValidBit() == 1) {
+			if (tagBits.equals(setToRead.blocks[i].getTag()) && setToRead.blocks[i].getValidBit() == 1) {
 				blockToRead = setToRead.blocks[i];
 				// read the byte
 				return blockToRead.data[offset];
