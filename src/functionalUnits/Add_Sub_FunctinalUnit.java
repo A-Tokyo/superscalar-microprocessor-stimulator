@@ -7,7 +7,7 @@ public class Add_Sub_FunctinalUnit extends FunctionalUnit {
 	int cycles;
 	
 	public Add_Sub_FunctinalUnit(int cycles) {
-		this.cycles = cycles;
+		cycles = cycles;
 	}
 	
 	public int execute(String type, int op1, int op2) {
