@@ -58,4 +58,11 @@ public class ROBEntry {
 		}
 	}
 	
+	public ROBEntry(ROBEntry otherEntry) {
+		this.instructionType = otherEntry.instructionType;
+		this.instructionDestination = otherEntry.instructionDestination;
+		this.instructionValue = otherEntry.instructionValue;
+		this.Ready = otherEntry.Ready;
+	}
+	
 }
