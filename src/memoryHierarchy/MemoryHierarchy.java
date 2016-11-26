@@ -56,7 +56,119 @@ public class MemoryHierarchy {
 		}
 	}
 	
+	/* This one takes an address in string form
+	 * It returns the Data associated with that address
+	 * The method works as follows, It loops through the caches in a non decreasing order till it gets a hit, or it accesses the memory
+	 * Once The above condition is satisfied, the data is cached to the lower cache in the caches list 
+	 * Then the loop goes back to that cache, and cashes the data in the cache preceiding it. This goes on till the level one cache has the data cached in it
+	 * The data is then returned from the level one cache as planned 
+	 */
+	private String readAndCacheData(String address) {
+		Block toCache;
+		boolean reversing = false;
 
+		for (int i = 1; i <= this.caches.length; i++) {
+			if (i == this.caches.length) {
+				// the data is not any any cache, read it from memory
+				toCache = readFromMemory(address);
+				String indexBits = this.caches[i-1].getIndexBits(address);
+				writeBlock(toCache, indexBits, i - 1); // write block to the level where it missed
+				i-=2;
+				reversing = true;
+			} else {
+				if (caches[i].hit(address)) {
+					// if the block exists in the current cache
+					if(!reversing) {
+						caches[i].incrementTotalHits();
+						reversing = true;
+					}
+					if (i != 1) {
+						// Read the data from the cache below
+						toCache = readFromCacheBelow(i, address, false);	// Read block from lower level
+						String indexBits = this.caches[i-1].getIndexBits(address);
+						writeBlock(toCache, indexBits, i - 1); // write block to the level where it missed
+						i-=2;
+					} else {
+						// If the current cache is the 1st Main cache
+						// all the caches have been successfully updated with the data
+						return caches[i].read(address);
+					}
+				}  else {
+					if(!reversing){
+						caches[i].incrementTotalMisses();	
+					}
+				}
+			}
+		}
+		//		System.out.println("el donya kharbana khales w ana 3ayz anam b2a, 3ayz anam ba2a 3ashan khatry msh 3ayz ashofk");
+		return null;
+	}
+	
+	/* This one takes as input a block to write and a string representation of the index bits and an integer specifying the cache level
+	 * It writes the given block in the cache, The replacement policy used is random replacement
+	 * If a block is dirty, it acts according to the write police write through or write back
+	 */
+	public void writeBlock(Block blockToWrite, String indexBits, int cacheLevel) {
+		int index;
+		if(indexBits == null || indexBits.equals("")){
+			// since this is fully associative there is only one set
+			index = 0;
+		}
+		else{
+			index = Integer.parseInt(indexBits, 2);	
+		}
+		Set setToWriteTo = this.caches[cacheLevel].sets[index];
+		for(int i = 0; i < setToWriteTo.blocks.length; i++) {
+			if (setToWriteTo.blocks[i].getValidBit() == 0) {
+				// An invalid block was found and replaced, terminate
+				setToWriteTo.blocks[i] = blockToWrite;
+				return;
+			}
+		}
+		int toReplaceBlockIndex = (int) (this.caches[cacheLevel].getM() * Math.random());
+		Block blockToReplace = setToWriteTo.blocks[toReplaceBlockIndex];
+		if (setToWriteTo.blocks[toReplaceBlockIndex].getDirtyBit() == 1) {
+			// block address: First byte of the block to be replaced
+			String blockToReplaceAddress = blockToReplace.getTag() + indexBits + (Utils.generateMask(Utils.getWordSizeInBits()-blockToReplace.getTag().length()-indexBits.length()));
+			if(cacheLevel == 0)
+				replaceBlock(setToWriteTo.blocks[toReplaceBlockIndex], blockToReplaceAddress, cacheLevel + 2);
+			else
+				replaceBlock(setToWriteTo.blocks[toReplaceBlockIndex], blockToReplaceAddress, cacheLevel + 1);
+
+		}
+		setToWriteTo.blocks[toReplaceBlockIndex] = blockToWrite;
+		return;
+	}
+	
+	/* This one takes as input a block toReplace and a string representing its address, also an integer representing the cache level to interactr with
+	 * The Replacement policy used is random replacement, If the block toReplace is dirty, It is responsible for writing the data using 
+	 * the specified writing policy for each cache
+	 */
+	private void replaceBlock(Block blockToReplace, String blockToReplaceAddress, int cacheLevel) {
+		// Base Case
+		// Write the replaced dirty block in cacheLevel or memory
+		if(cacheLevel == this.caches.length) { // If in memory
+			int address = Integer.parseInt(blockToReplaceAddress,2);
+			for(int i = 0; i < this.caches[cacheLevel-1].getLineSize(); i++) { //Write block byte by byte to memory
+				this.memory.writeToMemory(address, blockToReplace.data[i]);
+				address++;
+			}
+		} else {
+			Cache cacheToWriteTo = this.caches[cacheLevel];
+			String blockAddress = blockToReplaceAddress;
+			for(int i = 0; i < this.caches[cacheLevel -1].getLineSize(); i++) {
+				// Write the line byte by byte
+				cacheToWriteTo.writeByte(blockToReplaceAddress, blockToReplace.data[i]);
+				// Increment the address by one decimal in preperation for the next byte
+				blockToReplaceAddress = Utils.decimalToBinary(1+Integer.parseInt(blockToReplaceAddress, 2));
+			}
+			if (this.caches[cacheLevel].writePolicyHit.equals("writeThrough")){
+				// recursively write through	
+				replaceBlock(blockToReplace, blockAddress, cacheLevel + 1);
+			}
+		}
+
+	}
 	
 	/*
 	 * This one takes inputs an integer representing the cache index in the array of THIS instance, A string representing the address to read 
@@ -120,7 +232,7 @@ public class MemoryHierarchy {
 		}
 		else {
 			// Now there is a cache miss in level one which means I need to read the block before I write the byte
-//			readAndCacheData(address);
+			readAndCacheData(address);
 			writeToCacheLevel(1, address, data);
 		}
 	}
