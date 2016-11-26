@@ -55,6 +55,28 @@ public class MemoryHierarchy {
 			return null;
 		}
 	}
+	
+	/*
+	 * This one takes an address in string form, it returns the index of the cache level where the data resides
+	 * If the data resides in the memory 1+ number of cache levels is returned to indicate main memory
+	 * This function does not do caching in anyway, it is a simple check for Tomasulo calculations
+	 * If the address is invalid i.e: it is not in the memory -1 1 is returned.
+	 */
+	public int getCorrespondingCacheLevel(String address) {
+		for(int i = 1; i <= caches.length; i++) {
+			if (i==caches.length) {
+				return i;
+			}
+			if(caches[i].hit(address)) {
+				caches[i].incrementTotalHits();
+				return i;
+			}
+			else {
+				caches[i].incrementTotalMisses();
+			}
+		}
+		return -1;
+	}
 
 	/* This one takes an address in string form
 	 * It returns the Data associated with that address
@@ -76,10 +98,10 @@ public class MemoryHierarchy {
 				i-=2;
 				reversing = true;
 			} else {
-				if (caches[i].hit(address)) {
+				if (this.caches[i].hit(address)) {
 					// if the block exists in the current cache
 					if(!reversing) {
-						caches[i].incrementTotalHits();
+						this.caches[i].incrementTotalHits();
 						reversing = true;
 					}
 					if (i != 1) {
@@ -91,11 +113,11 @@ public class MemoryHierarchy {
 					} else {
 						// If the current cache is the 1st Main cache
 						// all the caches have been successfully updated with the data
-						return caches[i].read(address);
+						return this.caches[i].read(address);
 					}
 				}  else {
 					if(!reversing){
-						caches[i].incrementTotalMisses();	
+						this.caches[i].incrementTotalMisses();	
 					}
 				}
 			}
