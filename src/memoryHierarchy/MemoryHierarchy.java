@@ -254,6 +254,48 @@ public class MemoryHierarchy {
 			writeToCacheLevel(cacheLevel + 1, address, data);
 		}
 	}
+	
+	/* This one takes an address in string form
+	 * It returns the Data associated with that address
+	 * This one works the same ways as readAndCacheData, i
+	 */
+	public  String readAndCacheInstruction(String address) {
+		Block toCache;
+		int higherLevelCacheIndex;
+		for (int i = 0; i <= this.caches.length; i++) {
+			// skipping main D cache
+			if(i == 2)
+				higherLevelCacheIndex = 0;
+			else
+				higherLevelCacheIndex = i-1;
+			if (i != 1) { // Skip Data cache
+				if (i == this.caches.length) {
+					toCache = readFromMemory(address);
+					String indexBits = this.caches[higherLevelCacheIndex].getIndexBits(address);
+					writeBlock(toCache, indexBits, higherLevelCacheIndex);
+					i-=2;
+					if(i == 0)
+						i = -1;
+				} else {
+					if (caches[i].hit(address)) {
+						if (i!=0) {
+							toCache = readFromCacheBelow(i, address, true);	// Read block from lower level
+							String indexBits = this.caches[higherLevelCacheIndex].getIndexBits(address);
+							writeBlock(toCache, indexBits, higherLevelCacheIndex); // write block to the level where it missed
+							i-=2;
+							if(i == 0)
+								i = -1;
+						} else {
+							// If the current cache is the 1st Main cache
+							// all the caches have been successfully updated with the data
+							return caches[i].read(address);
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
 
 	
 }
