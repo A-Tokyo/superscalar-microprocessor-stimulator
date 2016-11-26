@@ -1,6 +1,7 @@
 package tomasulo;
 
 public class RegisterStatusTable {
+	int reorderBufferindex [];
 	public RegisterStatusTable(int size) {
 		reorderBufferindex = new int [size];
 		for(int i = 0; i < reorderBufferindex.length; i++) // intialy load by nulls 
