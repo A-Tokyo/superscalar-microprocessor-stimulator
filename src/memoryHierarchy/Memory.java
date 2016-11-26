@@ -80,6 +80,10 @@ public class Memory {
 		dataAccessCyclesRemaining--;
 	}
 	
+	public void resetDataAccessCyclesRemaining() {
+		this.dataAccessCyclesRemaining = this.accessTime;
+	}
+	
 	// Returns the main memory in string form
 	public String memoryToString(){
 		StringBuilder toReturn = new StringBuilder();

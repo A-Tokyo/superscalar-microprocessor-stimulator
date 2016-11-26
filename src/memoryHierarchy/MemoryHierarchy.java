@@ -242,6 +242,50 @@ public class MemoryHierarchy {
 		toCache.setTag(this.caches[this.caches.length-1].getTagBits(address));
 		return toCache;
 	}
+	
+	/*
+	 * This one takes a string address as an input and a cache level.
+	 * it returns the number of cycles remaining to retrieve the data from the cache
+	 * or ZERO if the caching is done, Its also responsible for caching the item
+	 * If you want to fetch data from memory to cache level 3, you'd just wait for getCacheCyclesRemaining(4, address) 
+	 * to return 0, then the data would successfuly be in level 3 cache
+	 * 
+	 */
+	public int getCacheCyclesRemaining(int cacheLevel, String address) {
+		if(cacheLevel == this.caches.length) {
+			this.memory.decrementDataAccessCyclesRemaining();
+			this.memory.incrementTotalCycles();
+			if(this.memory.getDataAccessCyclesRemaining() == 0) {
+				this.memory.setBeingAccessed(false);
+				this.memory.resetDataAccessCyclesRemaining();
+				Block toCache = readFromMemory(address);
+				String indexBits = this.caches[cacheLevel-1].getIndexBits(address);
+				writeBlock(toCache, indexBits, cacheLevel-1);
+				return 0;
+			}else {
+				this.memory.setBeingAccessed(true);
+				return this.memory.getDataAccessCyclesRemaining();
+			}
+		}
+		this.caches[cacheLevel].decrementAccessCyclesRemaining();
+		if(this.caches[cacheLevel].getAccessCyclesRemaining() == 0) {
+			// Reset cache settings not to cause future errors
+			this.caches[cacheLevel].setBeingAccessed(false);
+			this.caches[cacheLevel].resetAccessCyclesRemaining();
+			if(cacheLevel != 1) {
+				//Read the block from the cache below and write it where the miss occured
+				Block toCache = readFromCacheBelow(cacheLevel, address, false);
+				String indexBits = this.caches[cacheLevel-1].getIndexBits(address);
+				writeBlock(toCache, indexBits, cacheLevel - 1);
+			}
+			return 0;
+		}
+		else {
+			this.caches[cacheLevel].setBeingAccessed(true);
+			return this.caches[cacheLevel].getAccessCyclesRemaining();
+		}
+	}
+	
 
 	/* This one takes 2 String address and data as inputs
 	 * It first checks if the data is cached in the top level cache if so, it writes and keeps on writing to the cache levels below until a cache with WB policy is encountered
