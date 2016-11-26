@@ -38,16 +38,9 @@ public class RegisterFile {
 			}
 			else temp = temp+0 ; 
 				//bitString.charAt(i)='0';
-		}
-		}
-//		 int result = 0 ;
-//		 int factor = 1;
-//
-//		    for (int j = bitString.length()-1; j > -1; j--){
-//		        result += factor * bitString.charAt(j);
-//		        factor =factor*2;
-//		    }
-//
+		  }
+	   }
+
 		    return temp;
 	}
 	
@@ -62,16 +55,16 @@ public class RegisterFile {
 	
 	public static String convert_to_Decimal(int number){
 		int factor=1;
-		String convert = convert_twos_complement(number);
-		for(int i=0;i < convert.length();i++){
-			
-			
-			
+		int result =0;
+		int out=0;
+		String convert_out="";
+		String convert = Integer.toBinaryString(number);
+		for(int i=convert.length()-1 ;i >-1 ;i--){
+			result += factor * convert.charAt(i); //0101
+			factor =factor*2;//factor=2  // 1*2
 		}
-		
-		
-		
-		
+		convert_out=""+result ;
+		return convert_out;
 		
 	}
 	
