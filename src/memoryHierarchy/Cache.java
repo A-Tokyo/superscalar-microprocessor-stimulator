@@ -1,12 +1,12 @@
 package memoryHierarchy;
 
 public class Cache {
-	int size; // size of cache
-	int lineSize; // line size of cache 
-	int m; // associativity
-	String writePolicyHit; // writeThrough or writeBack
-	String writePolicyMiss; // writeThrough or writeBack
-	int accessCycles; // access time (in cycles)
+	private int size; // size of cache
+	private int lineSize; // line size of cache 
+	private int m; // associativity
+	private String writePolicyHit; // writeThrough or writeBack
+	private String writePolicyMiss; // writeThrough or writeBack
+	private int accessCycles; // access time (in cycles)
 	
 	Set [] sets; // array of sets containing blocks, 1 set if fully Associative, same as number of blocks if direct mapped
 	
@@ -58,7 +58,7 @@ public class Cache {
 			setToWriteTo = this.sets[index];
 		}
 		for (int i = 0; i < setToWriteTo.blocks.length; i++) {
-			if (tagBits.equals(setToWriteTo.blocks[i].tag) && setToWriteTo.blocks[i].validBit == 1) {
+			if (tagBits.equals(setToWriteTo.blocks[i].getTag()) && setToWriteTo.blocks[i].getValidBit() == 1) {
 				blockToWriteTo = setToWriteTo.blocks[i];
 				// write the byte
 				blockToWriteTo.data[offset] = data;
@@ -75,21 +75,20 @@ public class Cache {
 	 * If no invalid blocks exist, a random block is replaced
 	 * of course in case of direct mapped the block of the index is replaced since the set would have 1 block
 	 */
-	public void writeBlock(Block block, int index) {
-		Set toWriteTo = this.sets[index];
-		for(int i = 0; i < toWriteTo.blocks.length; i++) {
-			if (toWriteTo.blocks[i].getValidBit() == 0) {
-				toWriteTo.blocks[i] = block;
-				// An invalid block was found and replaced, terminate
-				return;
-			}
-		}
-		int blockIndex = (int) (m * Math.random());
-		if(toWriteTo.blocks[blockIndex].getDirtyBit() == 1){
-			//TODO write to memory
-		}
-		toWriteTo.blocks[blockIndex] = block;
-	}
+//	public void writeBlock(Block block, int index) {
+//		Set toWriteTo = this.sets[index];
+//		for(int i = 0; i < toWriteTo.blocks.length; i++) {
+//			if (toWriteTo.blocks[i].getValidBit() == 0) {
+//				toWriteTo.blocks[i] = block;
+//				// An invalid block was found and replaced, terminate
+//				return;
+//			}
+//		}
+//		int blockIndex = (int) (m * Math.random());
+//		if(toWriteTo.blocks[blockIndex].getDirtyBit() == 1){
+//		}
+//		toWriteTo.blocks[blockIndex] = block;
+//	}
 	
 	// This one takes a string address , it reads the data in that address location and returns it
 	public String read(String address) {
@@ -108,7 +107,7 @@ public class Cache {
 			setToRead = this.sets[index];
 		}
 		for (int i = 0; i < setToRead.blocks.length; i++) {
-			if (tagBits.equals(setToRead.blocks[i].tag) && setToRead.blocks[i].getValidBit() == 1) {
+			if (tagBits.equals(setToRead.blocks[i].getTag()) && setToRead.blocks[i].getValidBit() == 1) {
 				blockToRead = setToRead.blocks[i];
 				// read the byte
 				return blockToRead.data[offset];
@@ -258,9 +257,9 @@ public class Cache {
 		return accessCyclesRemaining;
 	}
 
-	public void setAccessCyclesRemaining(int accessCyclesRemaining) {
-		this.accessCyclesRemaining = accessCyclesRemaining;
-	}
+//	public void setAccessCyclesRemaining(int accessCyclesRemaining) {
+//		this.accessCyclesRemaining = accessCyclesRemaining;
+//	}
 	
 	public void decrementAccessCyclesRemaining() {
 		accessCyclesRemaining -=1;
@@ -282,13 +281,21 @@ public class Cache {
 		return fetchCyclesRemaining;
 	}
 
-	public void setFetchCyclesRemaining(int fetchCyclesRemaining) {
-		this.fetchCyclesRemaining = fetchCyclesRemaining;
+//	public void setFetchCyclesRemaining(int fetchCyclesRemaining) {
+//		this.fetchCyclesRemaining = fetchCyclesRemaining;
+//	}
+	
+	public void decrementFetchCyclesRemaining() {
+		fetchCyclesRemaining--;
+	}
+	
+	public void resetFetchCyclesRemaining() {
+		fetchCyclesRemaining = accessCycles;
 	}
 
-	public void setAccessCycles(int accessCycles) {
-		this.accessCycles = accessCycles;
-	}
+//	public void setAccessCycles(int accessCycles) {
+//		this.accessCycles = accessCycles;
+//	}
 
 	public String cacheToString(){
 		StringBuilder toReturn = new StringBuilder();
