@@ -144,38 +144,38 @@ public class Cache {
 	// Parsing address logic
 	
 	// takes an address and returns the tag bits of that address in string form
-	private String getTagBits(String addr){
+	public String getTagBits(String addr){
 		return addr.substring(0, getTagBitCount());
 	}
 	
 	// takes an address and returns the tag bits of that address in string form
-	private String getIndexBits(String addr){
+	public String getIndexBits(String addr){
 		return addr.substring(getTagBitCount(), wordSizeInBits - getOffsetBitCount());
 	}
 	
 	// takes an address and returns the offset bits of that address in string form
-	private String getOffsetBits(String addr){
+	public String getOffsetBits(String addr){
 		return addr.substring(wordSizeInBits - getOffsetBitCount(), wordSizeInBits);
 	}
 	
 	// Calculated Attrs Getters
 
-	private int getNumberOfSets() {
+	public int getNumberOfSets() {
 		// size over line size to get number of blocks in cache, /m since there are m blocks per set.
 		return size/lineSize/m;
 	}
 	
-	private int getTagBitCount() {
+	public int getTagBitCount() {
 		// 16 bits, 4 bytes, - the number of (index + offset)
 		return wordSizeInBits - (getOffsetBitCount() + getIndexBitCount());
 	}
 	
-	private int getIndexBitCount() {
+	public int getIndexBitCount() {
 		// in case of direct mapped cache log2NumberOfSets would the number of blocks
 		return log2(getNumberOfSets());
 	}
 	
-	private int getOffsetBitCount() {
+	public int getOffsetBitCount() {
 		// offset is log base 2 of L where L is the lineSize
 		return log2(lineSize);
 	}
@@ -233,9 +233,17 @@ public class Cache {
 	public int getTotalHits() {
 		return totalHits;
 	}
+	
+	public void incrementTotalHits() {
+		totalHits++;
+	}
 
 	public int getTotalMisses() {
 		return totalMisses;
+	}
+	
+	public void incrementTotalMisses() {
+		totalMisses++;
 	}
 	
 	public boolean isBeingAccessed() {

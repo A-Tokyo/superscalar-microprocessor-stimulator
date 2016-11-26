@@ -54,6 +54,62 @@ public class MemoryHierarchy {
 			return null;
 		}
 	}
+	
+
+	
+	/* This one takes an address in string form and returns the block corresponding to that address from the Main memory
+	 * The block returned has to be the same size as the last cache level's line size to be able to insert it there
+	 * So the memory is to be divided into memorySize/lineSize Data Blocks to match the last level.
+	 */
+	public Block readFromMemory(String address) {
+		int currBlockSize = this.caches[this.caches.length - 1].getLineSize(); //Size of block in last level
+		Block toCache = new Block(currBlockSize); // Block to be cached
+		int byteIndex = Integer.parseInt(address, 2) % currBlockSize;
+		// to get the byte address I subtract the byte index in decimal from the address in decimal
+		int startAddress = Integer.parseInt(address, 2) - byteIndex; // The address of the first byte in the block to be returned
+		for(int i = 0; i < toCache.data.length; i++) {
+			// Memory is byte addressable, load the bites into the block toCache
+			toCache.data[i] = this.memory.ReadFromMemory(startAddress + i);
+		}
+		// Configure the new cached block attributes
+		toCache.setValidBit(1);
+		toCache.setTag(this.caches[this.caches.length-1].getTagBits(address));
+		return toCache;
+	}
+	
+	/* This one takes 2 String address and data as inputs
+	 * It first checks if the data is cached in the top level cache if so, it writes and keeps on writing to the cache levels below until a cache with WB policy is encountered
+	 * If the data is not cached in the first level, the data is first read and cached in the lower level caches
+	 */
+	public void write(String address, String data) {
+		if (caches[1].hit(address)) {
+			caches[1].incrementTotalHits();
+			writeToCacheLevel(1, address, data);
+		}
+		else {
+			// Now there is a cache miss in level one which means I need to read the block before I write the byte
+//			readAndCacheData(address);
+			writeToCacheLevel(1, address, data);
+		}
+	}
+
+	/* This one takes the cache level and 2 strings one representing the address and the other representing the data
+	 * It writes the data in the block corresponding to the address in the current cache
+	 * If the hit write policy is write through a recursive call takes place to continue writing to the lower level cache,
+	 * until it either writes in the memory or encounters a cache with write back policy
+	 */
+	public void writeToCacheLevel(int cacheLevel, String address, String data) {
+		if(cacheLevel == this.caches.length) {
+			int addressValue =  Integer.parseInt(address,2);
+			memory.writeToMemory(addressValue, data);
+			return;
+		}
+		this.caches[cacheLevel].writeByte(address, data);
+		if (this.caches[cacheLevel].getWritePolicyHit().equals("writeThrough")) {
+			// if the write policy is write through, write through to the next cache
+			writeToCacheLevel(cacheLevel + 1, address, data);
+		}
+	}
 
 	
 }
