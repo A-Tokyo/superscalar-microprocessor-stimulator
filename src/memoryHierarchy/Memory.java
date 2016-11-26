@@ -2,15 +2,15 @@ package memoryHierarchy;
 
 public class Memory {
 	String [] memory; // Main memory array, length should be 2^16
-	int accessTime; // Input: Number of cycles to access
-	int totalCycles; // Output: Total number of cycles in the current stimulation.
+	private int accessTime; // Input: Number of cycles to access
+	private int totalCycles; // Output: Total number of cycles in the current stimulation.
 	
 	// tracking memory state
 	private boolean isBeingAccessed;
 	
 	//Had to separate them into two counters since there must be one for data and one for instruction, these counters need to be reset once they reach zero;
-	int fetchCyclesRemaining;
-	int dataAccessCyclesRemaining;
+	private int fetchCyclesRemaining;
+	private int dataAccessCyclesRemaining;
 	
 	public Memory(int access_time) {
 		this.memory = new String[65536]; // 2^16
@@ -36,9 +36,9 @@ public class Memory {
 		return totalCycles;
 	}
 	
-	public void setTotalCycles(int totalCycles) {
-		this.totalCycles = totalCycles;
-	}
+//	public void setTotalCycles(int totalCycles) {
+//		this.totalCycles = totalCycles;
+//	}
 	
 	public int incrementTotalCycles() {
 		return ++this.totalCycles;
@@ -56,9 +56,9 @@ public class Memory {
 		return fetchCyclesRemaining;
 	}
 
-	public void setFetchCyclesRemaining(int fetchCyclesRemaining) {
-		this.fetchCyclesRemaining = fetchCyclesRemaining;
-	}
+//	public void setFetchCyclesRemaining(int fetchCyclesRemaining) {
+//		this.fetchCyclesRemaining = fetchCyclesRemaining;
+//	}
 	
 	public void decrementFetchCyclesRemaining() {
 		fetchCyclesRemaining--;
@@ -72,9 +72,9 @@ public class Memory {
 		return dataAccessCyclesRemaining;
 	}
 
-	public void setDataAccessCyclesRemaining(int dataAccessCyclesRemaining) {
-		this.dataAccessCyclesRemaining = dataAccessCyclesRemaining;
-	}
+//	public void setDataAccessCyclesRemaining(int dataAccessCyclesRemaining) {
+//		this.dataAccessCyclesRemaining = dataAccessCyclesRemaining;
+//	}
 	
 	public void decrementDataAccessCyclesRemaining() {
 		dataAccessCyclesRemaining--;
