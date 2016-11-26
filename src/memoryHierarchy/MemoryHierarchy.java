@@ -184,7 +184,7 @@ public class MemoryHierarchy {
 				// Increment the address by one decimal in preperation for the next byte
 				blockToReplaceAddress = Utils.decimalToBinary(1+Integer.parseInt(blockToReplaceAddress, 2));
 			}
-			if (this.caches[cacheLevel].writePolicyHit.equals("writeThrough")){
+			if (this.caches[cacheLevel].getWritePolicyHit().equals("writeThrough")){
 				// recursively write through	
 				replaceBlock(blockToReplace, blockAddress, cacheLevel + 1);
 			}
