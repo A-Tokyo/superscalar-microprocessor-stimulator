@@ -23,29 +23,32 @@ public class RegisterFile {
 		else return false;
 	}
 	
-	public static int Flip_Bits(int number){
-		 String bitString = Integer.toBinaryString(number);
+	public static String Flip_Bits(String number){
+		String temp = "";
+		 String bitString = number;
 		 int k=0;
-		if(bitString.charAt(k)!='1'){
-		      k++;
-		  }
+		if(bitString.charAt(0)=='1'){
+			temp = temp+0 ; 
+		      
 		bitString=bitString.substring(1, bitString.length());
 		for(int i=1 ; i<bitString.length();i++){
 			if(bitString.charAt(i)=='0'){
-				bitString.charAt(i) ='1';
+				//bitString.charAt(i) ='1';
+				temp = temp+1 ; 
 			}
-			else bitString.charAt(i)='0';
-			
+			else temp = temp+0 ; 
+				//bitString.charAt(i)='0';
 		}
-		 int result = 0 ;
-		 int factor = 1;
-
-		    for (int j = bitString.length()-1; j > -1; j--){
-		        result += factor * bitString.charAt(j);
-		        factor =factor*2;
-		    }
-
-		    return result;
+		}
+//		 int result = 0 ;
+//		 int factor = 1;
+//
+//		    for (int j = bitString.length()-1; j > -1; j--){
+//		        result += factor * bitString.charAt(j);
+//		        factor =factor*2;
+//		    }
+//
+		    return temp;
 	}
 	
 	public static String convert_twos_complement(String regValue){
@@ -55,6 +58,20 @@ public class RegisterFile {
 		}
 		else result='0'+ regValue;
 		return result ;
+	}
+	
+	public static String convert_to_Decimal(int number){
+		int factor=1;
+		String convert = convert_twos_complement(number);
+		for(int i=0;i < convert.length();i++){
+			
+			
+			
+		}
+		
+		
+		
+		
 		
 	}
 	
