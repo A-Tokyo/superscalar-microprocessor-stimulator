@@ -28,12 +28,20 @@ public class Memory {
 		memory[address] = data;
 	}
 
-	public int getAccess_time() {
+	public int getAccessTime() {
 		return accessTime;
 	}
 
-	public int getTotal_cycles() {
+	public int getTotalCycles() {
 		return totalCycles;
+	}
+	
+	public void setTotalCycles(int totalCycles) {
+		this.totalCycles = totalCycles;
+	}
+	
+	public int incrementTotalCycles() {
+		return ++this.totalCycles;
 	}
 	
 	public boolean isBeingAccessed() {
@@ -42,6 +50,34 @@ public class Memory {
 
 	public void setBeingAccessed(boolean isBeingAccessed) {
 		this.isBeingAccessed = isBeingAccessed;
+	}
+	
+	public int getFetchCyclesRemaining() {
+		return fetchCyclesRemaining;
+	}
+
+	public void setFetchCyclesRemaining(int fetchCyclesRemaining) {
+		this.fetchCyclesRemaining = fetchCyclesRemaining;
+	}
+	
+	public void decrementFetchCyclesRemaining() {
+		fetchCyclesRemaining--;
+	}
+	
+	public void resetFetchCyclesRemaining() {
+		this.fetchCyclesRemaining = accessTime;
+	}
+
+	public int getDataAccessCyclesRemaining() {
+		return dataAccessCyclesRemaining;
+	}
+
+	public void setDataAccessCyclesRemaining(int dataAccessCyclesRemaining) {
+		this.dataAccessCyclesRemaining = dataAccessCyclesRemaining;
+	}
+	
+	public void decrementDataAccessCyclesRemaining() {
+		dataAccessCyclesRemaining--;
 	}
 	
 	// Returns the main memory in string form

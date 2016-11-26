@@ -285,6 +285,14 @@ public class Cache {
 	public void setFetchCyclesRemaining(int fetchCyclesRemaining) {
 		this.fetchCyclesRemaining = fetchCyclesRemaining;
 	}
+	
+	public void decrementFetchCyclesRemaining() {
+		fetchCyclesRemaining--;
+	}
+	
+	public void resetFetchCyclesRemaining() {
+		fetchCyclesRemaining = accessCycles;
+	}
 
 	public void setAccessCycles(int accessCycles) {
 		this.accessCycles = accessCycles;

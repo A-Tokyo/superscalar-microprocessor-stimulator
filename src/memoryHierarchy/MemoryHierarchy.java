@@ -176,7 +176,7 @@ public class MemoryHierarchy {
 	 * It reads the data corresponding to this address from the current cache and returns it in a block compatible with the cache below it
 	 * It returns a block compatible with the cache below this cache
 	 */
-	public Block readFromCacheBelow(int cacheIndex, String address, boolean isInstruction) {
+	private Block readFromCacheBelow(int cacheIndex, String address, boolean isInstruction) {
 		//boolean instructionOrNot ==> Reading an instruction
 		// Reads a block from cache, corresponding to an address
 		Cache cacheToReadFrom = this.caches[cacheIndex]; // The cache data is read from
@@ -255,11 +255,60 @@ public class MemoryHierarchy {
 		}
 	}
 
+	// Instruction stuff
+	
+	public String fetchInstruction(String address) {
+		for(int i = 0; i <= this.caches.length; i++) {
+			if(i == 1)
+				i = 2;
+			if (i == this.caches.length) {
+				this.memory.incrementTotalCycles();
+				this.memory.decrementFetchCyclesRemaining();
+				if(this.memory.getFetchCyclesRemaining() == 0) {
+					this.memory.resetFetchCyclesRemaining();
+					resetCachesInstrcutions();
+					return readAndCacheInstruction(address);
+				}
+				return null;
+			}
+			if(!caches[i].isBeingFetched()) {
+				caches[i].decrementFetchCyclesRemaining();
+				if(caches[i].getFetchCyclesRemaining() == 0) {
+					caches[i].setBeingFetched(true);
+					caches[i].resetFetchCyclesRemaining();
+					if(caches[i].hit(address)) {
+						caches[i].incrementTotalHits();
+						resetCachesInstrcutions();
+						return readAndCacheInstruction(address);
+					}
+					else {
+						caches[i].incrementTotalMisses();
+					}
+				}
+				else {
+					return null;
+				}
+			}
+		}
+		return null;
+	}
+	
+	
+	// Goes over the caches one by one resetting instruction fetching
+	private void resetCachesInstrcutions() {
+		for(int i = 0; i < this.caches.length; i++) {
+			this.caches[i].setBeingFetched(false);
+			this.caches[i].resetFetchCyclesRemaining();
+		}
+	}
+	
+	
 	/* This one takes an address in string form
 	 * It returns the Data associated with that address
-	 * This one works the same ways as readAndCacheData, i
+	 * This one works the same ways as readAndCacheData, it loops over all the caches till it finds a hit,
+	 * and loops back to refill the caches where it missed
 	 */
-	public  String readAndCacheInstruction(String address) {
+	private  String readAndCacheInstruction(String address) {
 		Block toCache;
 		int higherLevelCacheIndex;
 		for (int i = 0; i <= this.caches.length; i++) {
