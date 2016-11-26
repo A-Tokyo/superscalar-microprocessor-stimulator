@@ -34,7 +34,7 @@ public class MemoryHierarchy {
 			}
 		}
 	}
-	
+
 	/* This one takes an address in string form
 	 * Returns A string represents the block where the byte resides in within cache level 1
 	 * The Data is returned only when the cycles required to access it are finished
@@ -55,7 +55,7 @@ public class MemoryHierarchy {
 			return null;
 		}
 	}
-	
+
 	/* This one takes an address in string form
 	 * It returns the Data associated with that address
 	 * The method works as follows, It loops through the caches in a non decreasing order till it gets a hit, or it accesses the memory
@@ -103,7 +103,7 @@ public class MemoryHierarchy {
 		//		System.out.println("el donya kharbana khales w ana 3ayz anam b2a, 3ayz anam ba2a 3ashan khatry msh 3ayz ashofk");
 		return null;
 	}
-	
+
 	/* This one takes as input a block to write and a string representation of the index bits and an integer specifying the cache level
 	 * It writes the given block in the cache, The replacement policy used is random replacement
 	 * If a block is dirty, it acts according to the write police write through or write back
@@ -139,7 +139,7 @@ public class MemoryHierarchy {
 		setToWriteTo.blocks[toReplaceBlockIndex] = blockToWrite;
 		return;
 	}
-	
+
 	/* This one takes as input a block toReplace and a string representing its address, also an integer representing the cache level to interactr with
 	 * The Replacement policy used is random replacement, If the block toReplace is dirty, It is responsible for writing the data using 
 	 * the specified writing policy for each cache
@@ -169,7 +169,7 @@ public class MemoryHierarchy {
 		}
 
 	}
-	
+
 	/*
 	 * This one takes inputs an integer representing the cache index in the array of THIS instance, A string representing the address to read 
 	 * and a boolean representing weather the block returned is an instruction
@@ -200,7 +200,7 @@ public class MemoryHierarchy {
 		toCache.setValidBit(1);
 		return toCache;
 	}
-	
+
 	/* This one takes an address in string form and returns the block corresponding to that address from the Main memory
 	 * The block returned has to be the same size as the last cache level's line size to be able to insert it there
 	 * So the memory is to be divided into memorySize/lineSize Data Blocks to match the last level.
@@ -220,7 +220,7 @@ public class MemoryHierarchy {
 		toCache.setTag(this.caches[this.caches.length-1].getTagBits(address));
 		return toCache;
 	}
-	
+
 	/* This one takes 2 String address and data as inputs
 	 * It first checks if the data is cached in the top level cache if so, it writes and keeps on writing to the cache levels below until a cache with WB policy is encountered
 	 * If the data is not cached in the first level, the data is first read and cached in the lower level caches
@@ -254,7 +254,7 @@ public class MemoryHierarchy {
 			writeToCacheLevel(cacheLevel + 1, address, data);
 		}
 	}
-	
+
 	/* This one takes an address in string form
 	 * It returns the Data associated with that address
 	 * This one works the same ways as readAndCacheData, i
@@ -297,5 +297,5 @@ public class MemoryHierarchy {
 		return null;
 	}
 
-	
+
 }
