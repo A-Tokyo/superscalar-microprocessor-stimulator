@@ -31,34 +31,49 @@ public class RegisterFile {
 			temp = temp+0 ; 
 		      
 		bitString=bitString.substring(1, bitString.length());
-		for(int i=1 ; i<bitString.length();i++){
+		for(int i=0 ; i<bitString.length();i++){
 			if(bitString.charAt(i)=='0'){
 				//bitString.charAt(i) ='1';
 				temp = temp+1 ; 
 			}
 			else temp = temp+0 ; 
 				//bitString.charAt(i)='0';
-		  }
+		  } //end for 
+		
+		return temp;
 	   }
 
-		    return temp;
+		return number;
 	}
 	
 	public static String convert_twos_complement(String regValue){
+		//int out=0;
 		String result ="";
+		String stringvalue=Flip_Bits(regValue)  ;
 		if (isNeg(regValue)==true ){
-			result = "1"+ Flip_Bits(regValue);
+			for(int i=stringvalue.length()-1;i>0;i--){
+			if(stringvalue.charAt(i)=='0'){
+				result+="1";
+				break ;
+			  } else result+="0";
+			}
+			return result ;
 		}
-		else result='0'+ regValue;
-		return result ;
+		//else result= regValue;
+		return regValue ;
 	}
 	
-	public static String convert_to_Decimal(int number){
+	public static String convert_to_Decimal(String number){
+		
+		/* 
+		 100111
+		 (2^0)*1
+		  */
 		int factor=1;
 		int result =0;
 		int out=0;
 		String convert_out="";
-		String convert = Integer.toBinaryString(number);
+		String convert = number ;
 		for(int i=convert.length()-1 ;i >-1 ;i--){
 			result += factor * convert.charAt(i); //0101
 			factor =factor*2;//factor=2  // 1*2
