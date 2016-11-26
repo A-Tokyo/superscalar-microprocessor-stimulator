@@ -11,17 +11,22 @@ public class Utils {
 	
 	// Takes a number in decimal and returns the 16 bit binary representation in String form
 	public static String decimalToBinary(int number) {
-		String toReturn = "";
-		int remainder = 0;
-		while (number != 0) {
-			remainder = number % 2;
-			toReturn = remainder + toReturn;
-			number /= 2;
+		String toReturn = Integer.toBinaryString(number);
+		if (number >= 0) {
+			while(toReturn.length() < wordSizeInBits)
+				toReturn = "0" + toReturn;
 		}
-		while(toReturn.length() < wordSizeInBits){
-			toReturn = 0 + toReturn;
+		else {
+			toReturn = toReturn.substring(wordSizeInBits);
 		}
 		return toReturn;
 	}
 	
+//	public static void main(String[] args) {
+//		the bug was not taking a substring when i is neg so 32 bits are returned
+//		int i = -56;
+//		System.out.println(Integer.toBinaryString(i));
+//	}
+	
 }
+
