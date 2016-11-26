@@ -111,6 +111,10 @@ public class Memory {
 		return toReturn.toString();
 	}
 	
+	public String toString() {
+		return "[ size: " + "65536 bits" + ", access time: " + this.accessTime+ ", total cycles: " + this.totalCycles + " ]";
+	}
+	
 //	public static void main(String[] args) {
 //		Memory x = new Memory (10);
 //		System.out.println(x.memoryToString(0,87));
