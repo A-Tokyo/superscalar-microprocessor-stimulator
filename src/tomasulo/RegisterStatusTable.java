@@ -1,7 +1,9 @@
 package tomasulo;
 
 public class RegisterStatusTable {
-	int reorderBufferindex [];
+
+	int []reorderBufferindex  ; // here i mean each element (RD) in this array point to it`s position in ReorderBufferTable
+
 	public RegisterStatusTable(int size) {
 		reorderBufferindex = new int [size];
 		for(int i = 0; i < reorderBufferindex.length; i++) // intialy load by nulls 
