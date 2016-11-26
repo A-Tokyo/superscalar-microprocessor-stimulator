@@ -1,4 +1,5 @@
 package memoryHierarchy;
+import utils.Utils;
 
 public class MemoryHierarchy {
 	public Cache[] caches;
@@ -56,6 +57,37 @@ public class MemoryHierarchy {
 	}
 	
 
+	
+	/*
+	 * This one takes inputs an integer representing the cache index in the array of THIS instance, A string representing the address to read 
+	 * and a boolean representing weather the block returned is an instruction
+	 * It reads the data corresponding to this address from the current cache and returns it in a block compatible with the cache below it
+	 * It returns a block compatible with the cache below this cache
+	 */
+	public Block readFromCacheBelow(int cacheIndex, String address, boolean isInstruction) {
+		//boolean instructionOrNot ==> Reading an instruction
+		// Reads a block from cache, corresponding to an address
+		Cache cacheToReadFrom = this.caches[cacheIndex]; // The cache data is read from
+		int lineSize;
+		// This condition checks if the below cache is the main I cache, if so the line size is mutated to be compatible with it.
+		if (isInstruction && cacheIndex==2){
+			lineSize = this.caches[0].getLineSize(); //Size of block in the cache data will be written to	
+		}
+		else{
+			lineSize = this.caches[cacheIndex-1].getLineSize();	
+		}
+		Block toCache = new Block(lineSize); // Block to be returned
+		int byteIndex = Integer.parseInt(address, 2) % lineSize; // Index of the byte in the block to be returned
+		int startAddress = Integer.parseInt(address, 2) - byteIndex; // The address of the first byte in the block to be returned
+		for(int i = 0; i < toCache.data.length; i++) {
+			// Reading byte by byte
+			String binaryAddress = Utils.decimalToBinary(startAddress + i);
+			toCache.data[i] = cacheToReadFrom.read(binaryAddress);
+		}
+		toCache.setTag(this.caches[cacheIndex-1].getTagBits(address));
+		toCache.setValidBit(1);
+		return toCache;
+	}
 	
 	/* This one takes an address in string form and returns the block corresponding to that address from the Main memory
 	 * The block returned has to be the same size as the last cache level's line size to be able to insert it there
