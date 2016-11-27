@@ -22,7 +22,7 @@ public class Assembler {
 			machineCodeBuilder.append("000");
 			machineCodeBuilder.append(registerToBinary(instructionOperands[0]));
 			machineCodeBuilder.append(registerToBinary(instructionOperands[1]));
-			
+			machineCodeBuilder.append(Utils.decimalToBinary(Integer.parseInt(instructionOperands[2]), 7));
 			break;
 		case "sw":
 			machineCodeBuilder.append("001");
@@ -88,6 +88,6 @@ public class Assembler {
 	}
 	
 	public static void main(String[] args) {
-//		System.out.println(assemble("  lw reg7 , reg7, regC   "));
+		System.out.println(assemble("  lw reg7 , reg7, 63   "));
 	}
 }
