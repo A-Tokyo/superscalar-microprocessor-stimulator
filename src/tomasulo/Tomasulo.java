@@ -20,6 +20,12 @@ public class Tomasulo {
 	// the register file
 	
 	MemoryHierarchy memoryHierarchy;
+	ReOrderBuffer ROBuffer;
+	InstructionBuffer instructionBuffer;
+	ReservationStation[] reservationStations;
+//	RegisterFile regFile;
+	RegisterStatusTable regStatusTable;
+	
 	
 	
 	public static final short fetchDelay  = 1;
