@@ -1,14 +1,10 @@
 package main;
-import assembler.*;
-import memoryHierarchy.MemoryHierarchy;
-import tomasulo.Tomasulo;
+import assembler.StimulationRunner;
 
 public class Main {
-	MemoryHierarchy memoryHierarchy;
 	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+	public static void main(String[] args) throws Exception {
+		StimulationRunner stimulationRunner = new StimulationRunner("program.txt");
+		stimulationRunner.run();
 	}
-
 }
