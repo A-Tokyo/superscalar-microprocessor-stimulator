@@ -125,8 +125,8 @@ public class Assembler {
 		throw new IllegalArgumentException("Syntax Error, Invalid Register Number");
 	}
 	
-	public static void main(String[] args) {
+//	public static void main(String[] args) {
 //				0101110000011000
-		System.out.println(assemble(" mul reg5, reg5, reg7"));
-	}
+//		System.out.println(assemble(" mul reg5, reg5, reg7"));
+//	}
 }
