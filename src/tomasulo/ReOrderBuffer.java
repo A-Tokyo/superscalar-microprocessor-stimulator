@@ -1,12 +1,7 @@
 package tomasulo;
 
-import java.util.Collections;
-
-// NOTE: Still in the works, missing some important functionality
-// Committed for visibility / integration purposes
 public class ReOrderBuffer {
 
-	// set as 6 for simplicity; should maybe be taken from user - if so, simply change this value
 	public int sizeOfROB;
 	public int currentSize;
 	
