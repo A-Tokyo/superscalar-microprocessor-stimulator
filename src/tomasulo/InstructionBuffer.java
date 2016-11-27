@@ -75,7 +75,7 @@ public class InstructionBuffer {
 		}
 		this.head=0;
 		this.tail=0 ;
-		
+	
 	}
 	
 	
