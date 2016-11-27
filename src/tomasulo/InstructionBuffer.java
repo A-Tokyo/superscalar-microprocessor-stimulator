@@ -6,8 +6,8 @@ public class InstructionBuffer {
 	int tail;
 	Instruction [] Buffer ;
 		
-	public InstructionBuffer(int sizeOfBuffer) {
-		this.Buffer=new Instruction[sizeOfBuffer];
+	public InstructionBuffer() {
+		this.Buffer=new Instruction[];
 	}
 	
 	public  boolean Empty_Instruction_Buffer(){
