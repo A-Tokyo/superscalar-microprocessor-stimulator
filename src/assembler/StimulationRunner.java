@@ -30,6 +30,7 @@ public class StimulationRunner {
 			incrementLine();
 			initMemoryHierarchy();
 			assembleToMemory();
+			initProgramData();
 		}else{
 			System.err.println("Please initialize the Memory Hierarchy first !!");
 			return;
@@ -111,6 +112,31 @@ public class StimulationRunner {
 //			System.out.println(memIndex+ ","+ Assembler.assemble(currLine));
 			memoryHierarchy.memory.writeToMemory(memIndex, Assembler.assemble(currLine));
 			memIndex++;
+			incrementLine();
+		}
+		incrementLine();
+	}
+	
+	private void initProgramData() throws Exception{
+		if(!(currLine.contains("prog") && currLine.contains("data"))){
+			return;
+		}
+		incrementLine();
+		while(!(currLine.toLowerCase().trim().contains("end") && currLine.toLowerCase().contains("data"))){
+			String [] addressDataPair = currLine.split(":");
+			int address = Integer.parseInt(addressDataPair[0].trim());
+			String data = addressDataPair[1].trim();
+//			System.out.println(address + "," + data);
+			if (!data.matches("^[01]+$")) {
+			    throw new Exception("data is not binary");
+			}
+			if(data.length()!=16){
+				throw new Exception("invalid data bit length");
+			}
+			if (address<0 || address>=65536) {
+			    throw new Exception("invalid memory address");
+			}
+			memoryHierarchy.memory.writeToMemory(address, data);
 			incrementLine();
 		}
 		incrementLine();

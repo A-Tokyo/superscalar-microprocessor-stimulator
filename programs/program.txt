@@ -13,4 +13,8 @@ lw reg0,reg1,8
 sw  reg0, reg1,8
 add reg0,  reg1,  reg7
 endAssembly
-lala
+program data
+100 : 0101010101010101
+101 : 0101010101010101
+end data
+END OF FILE
