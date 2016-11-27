@@ -39,6 +39,9 @@ public class Assembler {
 			break;
 		case "beq":
 			machineCodeBuilder.append("011");
+			machineCodeBuilder.append(registerToBinary(instructionOperands[0]));
+			machineCodeBuilder.append(registerToBinary(instructionOperands[1]));
+			machineCodeBuilder.append(Utils.decimalToBinary(Integer.parseInt(instructionOperands[2]), 7));
 			break;
 		case "jalr":
 			machineCodeBuilder.append("100");
@@ -96,6 +99,6 @@ public class Assembler {
 	
 	public static void main(String[] args) {
 //				0101110000011000
-		System.out.println(assemble("jmp reg7, 3"));
+		System.out.println(assemble(" beq reg7, reg3 , 63"));
 	}
 }
