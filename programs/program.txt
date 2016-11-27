@@ -13,3 +13,4 @@ lw reg0,reg1,8
 sw  reg0, reg1,8
 add reg0,  reg1,  reg7
 endAssembly
+lala

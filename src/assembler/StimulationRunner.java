@@ -105,10 +105,12 @@ public class StimulationRunner {
 		int assemblyOrigin = Integer.parseInt(currLine.substring(currLine.indexOf("g")+1).trim());
 		incrementLine();
 		// assemble program
-		while(!currLine.toLowerCase().trim().contains("endassembly")){
+		int memIndex = assemblyOrigin;
+		while(!currLine.toLowerCase().trim().contains("endassembly") && memIndex<65536){
 //			System.out.println(currLine);
-			System.out.println(Assembler.assemble(currLine));
-//			Assembler.assemble(currLine);
+//			System.out.println(memIndex+ ","+ Assembler.assemble(currLine));
+			memoryHierarchy.memory.writeToMemory(memIndex, Assembler.assemble(currLine));
+			memIndex++;
 			incrementLine();
 		}
 		incrementLine();
