@@ -10,6 +10,10 @@ public class Assembler {
 	 * Returns A string containing the corresponding binary machine code in 16 bits
 	 * Exceptions thrown: illegal argument exception if the register entered is not between reg0 and reg7 inclusive
 	 * or if the instruction is not the microprocessor's instruction set
+	 * 
+	 * Instructions Go as follows
+	 * lw: 000 , sw 001, jmp 010, beq 011, jalr 100,  ret 101, addi 110, Arithmetic 111
+	 * For arithmetic instrction the op codes are:  add: 0000 , sub: 0001, mul: 0010, nand 0011
 	 */
 	public static String assemble(String instruction){
 		StringBuilder machineCodeBuilder = new StringBuilder();
@@ -55,7 +59,7 @@ public class Assembler {
 			machineCodeBuilder.append(Utils.generateMask(lineSizeInBits-machineCodeBuilder.length()));
 			break;
 		case "addi":
-			machineCodeBuilder.append("111");
+			machineCodeBuilder.append("110");
 			machineCodeBuilder.append(registerToBinary(instructionOperands[0]));
 			machineCodeBuilder.append(registerToBinary(instructionOperands[1]));
 			machineCodeBuilder.append(Utils.decimalToBinary(Integer.parseInt(instructionOperands[2]), 7));
@@ -90,8 +94,8 @@ public class Assembler {
 			break;
 		default: throw new IllegalArgumentException("Syntax Error, Invalid Instruction");
 		}
-		System.out.println(keyword);
-		System.out.println(Utils.arrayStringToString(instructionOperands));
+//		System.out.println(keyword);
+//		System.out.println(Utils.arrayStringToString(instructionOperands));
 		return machineCodeBuilder.toString();
 	}
 
