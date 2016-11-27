@@ -98,13 +98,20 @@ public class StimulationRunner {
 			throw new Exception ("Can not parse program code data");
 		}
 		incrementLine();
+		if(!currLine.toLowerCase().contains(".org")){
+			throw new Exception("Assembly program origin not specified");
+		}
+		// parse .org
+		int assemblyOrigin = Integer.parseInt(currLine.substring(currLine.indexOf("g")+1).trim());
+		incrementLine();
+		// assemble program
 		while(!currLine.toLowerCase().trim().contains("endassembly")){
 //			System.out.println(currLine);
 			System.out.println(Assembler.assemble(currLine));
 //			Assembler.assemble(currLine);
 			incrementLine();
 		}
-//		incrementLine();
+		incrementLine();
 	}
 
 	private String extractJSONvalue(String JSONstring) {
