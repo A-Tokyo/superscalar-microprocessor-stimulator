@@ -27,7 +27,9 @@ public class StimulationRunner {
 		System.out.println(parsedFile.get(currLineIndex));
 		currLine = parsedFile.get(currLineIndex).toLowerCase();
 		if(currLine.contains("memory") && currLine.contains("hierarchy")){
+			incrementLine();
 			initMemoryHierarchy();
+			assembleToMemory();
 		}else{
 			System.err.println("Please initialize the Memory Hierarchy first !!");
 			return;
@@ -36,7 +38,6 @@ public class StimulationRunner {
 
 	private void initMemoryHierarchy() throws Exception{
 		System.out.println("memory stuff");
-		incrementLine();
 		currLine.toLowerCase();
 		if(!(currLine.contains("num") && currLine.contains("cache") && currLine.contains("levels") && currLine.contains(":"))){
 			System.err.println("Please initialize the number of cache levels");
@@ -85,9 +86,34 @@ public class StimulationRunner {
 		}
 		//extract main memory cycles
 		int mainMemoryCycles = extractJSONvalueInt(currLine);
+		incrementLine();
 		memoryHierarchy = new MemoryHierarchy(mainMemoryCycles, numOfCacheLevels, cachesDescription);
 		// Memory Hierarchy Initialized
 		System.out.println("\nMemory Hierarchy initialised successfully...\n");
+	}
+	
+	private void assembleToMemory() throws Exception{
+		currLine = currLine.toLowerCase();
+		if (!currLine.contains("assembly")){
+			throw new Exception ("Can not parse program code data");
+		}
+		incrementLine();
+		if(!currLine.toLowerCase().contains(".org")){
+			throw new Exception("Assembly program origin not specified");
+		}
+		// parse .org
+		int assemblyOrigin = Integer.parseInt(currLine.substring(currLine.indexOf("g")+1).trim());
+		incrementLine();
+		// assemble program
+		int memIndex = assemblyOrigin;
+		while(!currLine.toLowerCase().trim().contains("endassembly") && memIndex<65536){
+//			System.out.println(currLine);
+//			System.out.println(memIndex+ ","+ Assembler.assemble(currLine));
+			memoryHierarchy.memory.writeToMemory(memIndex, Assembler.assemble(currLine));
+			memIndex++;
+			incrementLine();
+		}
+		incrementLine();
 	}
 
 	private String extractJSONvalue(String JSONstring) {
