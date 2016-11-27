@@ -24,7 +24,7 @@ public Load_Store_FunctionalUnit(int cycles){
 	 
  }
  public int store(int R1,int R2){
-	 return R2;
+	 return R1+R2;
  }
  
 }

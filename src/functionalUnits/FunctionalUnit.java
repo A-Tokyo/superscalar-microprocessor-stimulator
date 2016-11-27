@@ -4,13 +4,19 @@ import java.awt.List;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class FunctionalUnit {
- public FunctionalUnit( ){
-	 //ArrayList<Objects> units = new ArrayList<Objects>(); 
-	 
- }
-// public int execute(String opp, int R1, int R2){
-//	 return 0;
-// }
-// 
+public abstract class  FunctionalUnit {
+
+	public FunctionalUnit() {
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @param args
+	 */
+	public abstract int execute(String type, int op1, int op2);
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
 }
