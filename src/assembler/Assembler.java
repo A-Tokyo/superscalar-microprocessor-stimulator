@@ -47,6 +47,7 @@ public class Assembler {
 			machineCodeBuilder.append("100");
 			machineCodeBuilder.append(registerToBinary(instructionOperands[0]));
 			machineCodeBuilder.append(registerToBinary(instructionOperands[1]));
+			machineCodeBuilder.append(Utils.generateMask(lineSizeInBits-machineCodeBuilder.length()));
 			break;
 		case "ret":
 			machineCodeBuilder.append("101");
@@ -103,6 +104,6 @@ public class Assembler {
 	
 	public static void main(String[] args) {
 //				0101110000011000
-		System.out.println(assemble(" ret reg7"));
+		System.out.println(assemble(" jalr reg5, reg5"));
 	}
 }
