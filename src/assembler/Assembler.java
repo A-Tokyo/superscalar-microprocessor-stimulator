@@ -54,20 +54,39 @@ public class Assembler {
 			machineCodeBuilder.append(registerToBinary(instructionOperands[0]));
 			machineCodeBuilder.append(Utils.generateMask(lineSizeInBits-machineCodeBuilder.length()));
 			break;
+		case "addi":
+			machineCodeBuilder.append("111");
+			machineCodeBuilder.append(registerToBinary(instructionOperands[0]));
+			machineCodeBuilder.append(registerToBinary(instructionOperands[1]));
+			machineCodeBuilder.append(Utils.decimalToBinary(Integer.parseInt(instructionOperands[2]), 7));
+			break;
 		case "add":
 			machineCodeBuilder.append("111");
+			machineCodeBuilder.append(registerToBinary(instructionOperands[0]));
+			machineCodeBuilder.append(registerToBinary(instructionOperands[1]));
+			machineCodeBuilder.append(registerToBinary(instructionOperands[2]));
+			machineCodeBuilder.append("0000");
 			break;
 		case "sub":
 			machineCodeBuilder.append("111");
-			break;
-		case "addi":
-			machineCodeBuilder.append("111");
-			break;
-		case "nand":
-			machineCodeBuilder.append("111");
+			machineCodeBuilder.append(registerToBinary(instructionOperands[0]));
+			machineCodeBuilder.append(registerToBinary(instructionOperands[1]));
+			machineCodeBuilder.append(registerToBinary(instructionOperands[2]));
+			machineCodeBuilder.append("0001");
 			break;
 		case "mul":
 			machineCodeBuilder.append("111");
+			machineCodeBuilder.append(registerToBinary(instructionOperands[0]));
+			machineCodeBuilder.append(registerToBinary(instructionOperands[1]));
+			machineCodeBuilder.append(registerToBinary(instructionOperands[2]));
+			machineCodeBuilder.append("0010");			
+			break;
+		case "nand":
+			machineCodeBuilder.append("111");
+			machineCodeBuilder.append(registerToBinary(instructionOperands[0]));
+			machineCodeBuilder.append(registerToBinary(instructionOperands[1]));
+			machineCodeBuilder.append(registerToBinary(instructionOperands[2]));
+			machineCodeBuilder.append("0011");
 			break;
 		default: throw new IllegalArgumentException("Syntax Error, Invalid Instruction");
 		}
@@ -104,6 +123,6 @@ public class Assembler {
 	
 	public static void main(String[] args) {
 //				0101110000011000
-		System.out.println(assemble(" jalr reg5, reg5"));
+		System.out.println(assemble(" mul reg5, reg5, reg7"));
 	}
 }
