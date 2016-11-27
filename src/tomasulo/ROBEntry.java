@@ -2,25 +2,23 @@ package tomasulo;
 
 
 public class ROBEntry {
-
-	private static enum type { BRANCH, STORE, REGOP }
 	
-	private type instructionType;
+	private String instructionType;
 	private long instructionDestination;
 	private int instructionValue;
 	private boolean Ready;
 	
-	public ROBEntry(type instructionType, long instructionDestination, int instructionValue, boolean Ready) {
+	public ROBEntry(String instructionType, long instructionDestination, int instructionValue, boolean Ready) {
 		this.instructionType = instructionType;
 		this.instructionDestination = instructionDestination;
 		this.instructionValue = instructionValue;
 		this.Ready = Ready;
 	}
 	
-	public type getInstructionType() {
+	public String getInstructionType() {
 		return instructionType;
 	}
-	public void setInstructionType(type instructionType) {
+	public void setInstructionType(String instructionType) {
 		this.instructionType = instructionType;
 	}
 
@@ -56,13 +54,6 @@ public class ROBEntry {
 		} else {
 			return true;
 		}
-	}
-	
-	public ROBEntry(ROBEntry otherEntry) {
-		this.instructionType = otherEntry.instructionType;
-		this.instructionDestination = otherEntry.instructionDestination;
-		this.instructionValue = otherEntry.instructionValue;
-		this.Ready = otherEntry.Ready;
 	}
 	
 }
