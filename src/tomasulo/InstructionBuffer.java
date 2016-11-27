@@ -18,7 +18,7 @@ public class InstructionBuffer {
 		return true;
 	}
 		
-	}
+	
 	 public boolean  Full_Instruction_Buffer(){
 		 Instruction Instruction_Buffer_tail=this.Buffer[tail];
 //		 int length = this.Buffer.length ;
@@ -69,7 +69,7 @@ public class InstructionBuffer {
 	public void Flush(){ // clean all 
 		int length = this.Buffer.length  ;
 		for(int i=0;i<length ; i++){			
-			Buffer[i]; = null;
+			Buffer[i] = null;
 		}
 		this.head=0;
 		this.tail=0 ;
