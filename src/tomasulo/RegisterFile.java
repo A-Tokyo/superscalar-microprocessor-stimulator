@@ -5,8 +5,8 @@ public class RegisterFile {
 	public String [] registers;
 	final String Reg_zero ="0000000000000000"; 
 	
-	public RegisterFile() {
-		int sizeOfRegister=8 ;
+	public RegisterFile(int sizeOfRegister) {
+		//int sizeOfRegister=8 ;
 		this.registers=new String [sizeOfRegister];
 		int Regsize=registers.length ;
 		for(int i=1 ; i< Regsize ;i++){
