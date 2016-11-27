@@ -45,34 +45,49 @@ public class StimulationRunner {
 		// gut number of cache levels
 		final int numOfCacheLevels = Integer.parseInt(currLine.substring(currLine.indexOf(":")+1).trim());
 		incrementLine();
-		currLine = currLine.substring(currLine.indexOf("{")+1, currLine.indexOf("}")).trim();
-		//		System.out.println(currLine);
-		String [] cacheParametersArray = currLine.split(",");
-		int cacheS = extractJSONvalueInt(cacheParametersArray[0]);
-		//		System.out.println(Utils.arrayStringToString(cacheParametersArray));
-		int cacheL = extractJSONvalueInt(cacheParametersArray[1]);
-		int cacheM = extractJSONvalueInt(cacheParametersArray[2]);
-		String cacheWritePolicyHit = extractJSONvalue(cacheParametersArray[3]);
-		if(cacheWritePolicyHit.toLowerCase().contains("through")){
-			cacheWritePolicyHit = "writeThrough";
-		}else
-			if(cacheWritePolicyHit.toLowerCase().contains("back")){
-				cacheWritePolicyHit = "writeBack";
+		// get cache descriptions
+		String [] cachesDescription =  new String[numOfCacheLevels];
+		for (int i = 0; i < cachesDescription.length; i++) {
+			currLine = currLine.substring(currLine.indexOf("{")+1, currLine.indexOf("}")).trim();
+			//		System.out.println(currLine);
+			String [] cacheParametersArray = currLine.split(",");
+			int cacheS = extractJSONvalueInt(cacheParametersArray[0]);
+			//		System.out.println(Utils.arrayStringToString(cacheParametersArray));
+			int cacheL = extractJSONvalueInt(cacheParametersArray[1]);
+			int cacheM = extractJSONvalueInt(cacheParametersArray[2]);
+			String cacheWritePolicyHit = extractJSONvalue(cacheParametersArray[3]);
+			if(cacheWritePolicyHit.toLowerCase().contains("through")){
+				cacheWritePolicyHit = "writeThrough";
+			}else
+				if(cacheWritePolicyHit.toLowerCase().contains("back")){
+					cacheWritePolicyHit = "writeBack";
+				}else{
+					throw new Exception ("Unsuported write policy");
+				}
+			String cacheWritePolicyMiss = extractJSONvalue(cacheParametersArray[4]);
+			if(cacheWritePolicyMiss.toLowerCase().contains("through")){
+				cacheWritePolicyMiss = "writeThrough";
 			}else{
-				throw new Exception ("Unsuported write policy");
+				if(cacheWritePolicyMiss.toLowerCase().contains("back")){
+					cacheWritePolicyMiss = "writeBack";
+				}else{
+					throw new Exception ("Unsuported write policy");
+				}
 			}
-		String cacheWritePolicyMiss = extractJSONvalue(cacheParametersArray[4]);
-		if(cacheWritePolicyMiss.toLowerCase().contains("through")){
-			cacheWritePolicyMiss = "writeThrough";
-		}else{
-			if(cacheWritePolicyMiss.toLowerCase().contains("back")){
-				cacheWritePolicyMiss = "writeBack";
-			}else{
-				throw new Exception ("Unsuported write policy");
-			}
+			int cacheCycles = extractJSONvalueInt(cacheParametersArray[5]);
+			cachesDescription[i] = cacheS+","+cacheL+","+cacheM+","+cacheWritePolicyHit+","+cacheWritePolicyMiss+","+cacheCycles;
+//			System.out.println(cachesDescription[i]);
+			incrementLine();
 		}
-		int cacheCycles = extractJSONvalueInt(cacheParametersArray[5]);
-		System.out.println(cacheS +", " +cacheL+"," + cacheM+ "," + cacheWritePolicyHit + cacheWritePolicyMiss + cacheCycles);
+		currLine = currLine.toLowerCase().trim();
+		if (!(currLine.contains("memory")&&currLine.contains("cycles"))){
+			throw new Exception ("Memory Cycles syntax error");
+		}
+		//extract main memory cycles
+		int mainMemoryCycles = extractJSONvalueInt(currLine);
+		memoryHierarchy = new MemoryHierarchy(mainMemoryCycles, numOfCacheLevels, cachesDescription);
+		// Memory Hierarchy Initialized
+		System.out.println("\nMemory Hierarchy initialised successfully...\n");
 	}
 
 	private String extractJSONvalue(String JSONstring) {
