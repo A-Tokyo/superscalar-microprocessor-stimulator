@@ -1,7 +1,6 @@
 package assembler;
 import java.io.FileReader;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.util.ArrayList;
 public class FileParser {
 
@@ -14,16 +13,16 @@ public class FileParser {
 				parsedFile.add(currLine);
 			}
 			reader.close();
-		}catch(IOException e){
+		}catch(Exception e){
 			e.printStackTrace();
 		}
 		return parsedFile;
 	}
 	
-//	public static void main(String[] args) {
+//	public static void main(String[] args){
 //		// TODO Auto-generated method stub
-//		ArrayList<String> x;
-//		x = parseFile("LICENSE.txt");
+//		ArrayList<String> x =  new ArrayList<>();
+//		x = parseFile("programs/program.txt");
 //		for (int i = 0; i < x.size(); i++) {
 //			System.out.println(x.get(i));
 //		}
