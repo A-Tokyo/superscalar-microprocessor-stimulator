@@ -28,6 +28,15 @@ public class Utils {
 			toReturn += '0';
 		return toReturn;
 	}
+
+	public static String arrayStringToString(String [] array) {
+		String toReturn = "[";
+		for (int i = 0; i < array.length; i++) {
+			toReturn+=array[i];
+			toReturn+=(i==array.length-1?"]":", ");
+		}
+		return toReturn;
+	}
 	
 	public static int getWordSizeInBits(){
 		return wordSizeInBits;
