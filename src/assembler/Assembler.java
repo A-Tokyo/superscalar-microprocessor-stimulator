@@ -1,6 +1,5 @@
 package assembler;
 import java.util.Arrays;
-
 import utils.Utils;
 
 public class Assembler {
