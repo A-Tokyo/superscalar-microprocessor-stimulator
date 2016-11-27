@@ -15,10 +15,10 @@ public class ROBEntry {
 		this.Ready = Ready;
 	}
 	
-	public type getInstructionType() {
+	public String getInstructionType() {
 		return instructionType;
 	}
-	public void setInstructionType(type instructionType) {
+	public void setInstructionType(String instructionType) {
 		this.instructionType = instructionType;
 	}
 
