@@ -21,10 +21,13 @@ processor that uses Tomasulo’s algorithm with speculation taking into account 
 
 
 ### TODO
-- Memory Hierarchy (90% completed)
-    - Export needed functions to Tomasulo
 - Tomasulo (20% completed)
 - Functional Units (0% completed)
+- Assembler (40% completed)
+
+
+## DONE
+- Memory Hierarchy (100% completed)
 
 
 ### Getting Started
