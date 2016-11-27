@@ -114,6 +114,7 @@ public class StimulationRunner {
 			memIndex++;
 			incrementLine();
 		}
+		System.out.println("\nProgram code was assembled and added to memory successfully...\n");
 		incrementLine();
 	}
 	
@@ -139,6 +140,7 @@ public class StimulationRunner {
 			memoryHierarchy.memory.writeToMemory(address, data);
 			incrementLine();
 		}
+		System.out.println("\nProgram Data added to memory successfully...\n");
 		incrementLine();
 	}
 
