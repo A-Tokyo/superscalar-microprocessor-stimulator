@@ -6,16 +6,17 @@ public class InstructionBuffer {
 	int tail;
 	Instruction [] Buffer ;
 		
-	public InstructionBuffer() {
-		this.Buffer=new Instruction[];
+	public InstructionBuffer(int size) {
+		this.Buffer=new Instruction[size];
 	}
 	
 	public  boolean Empty_Instruction_Buffer(){
-		 Instruction Instruction_Buffer_tail=this.Buffer[tail];
-		 
-		 if(Instruction_Buffer_tail==null ){ 
-			 return true;
-		 } else return false;
+		for(int i = 0; i < Buffer.length; i++) {
+			if(Buffer[i] != null)
+				return false;
+		}
+		return true;
+	}
 		
 	}
 	 public boolean  Full_Instruction_Buffer(){
@@ -28,21 +29,19 @@ public class InstructionBuffer {
 		} else return true;
 	 }
 	
-	public boolean Add_To_Instruction_Buffer (Instruction addit){
+	public boolean Add_To_Instruction_Buffer (Instruction addIt){
 		
-		int length = this.Buffer.length ;
-		for(tail=0 ; tail<length ; tail++){
-		  Instruction Instruction_Buffer_tail=this.Buffer[tail];
-		
-		  if(Instruction_Buffer_tail==null ){
-			Instruction_Buffer_tail=addit; // add the element in buffer
-			return true;
-		      } 
+		if (Buffer[tail] == null) {
+			Buffer[tail] = addIt;
+			tail++;
 			
-		} // end for 
-		if(length==tail)
-	        tail=0;	
-		 return false ;
+			if(tail == Buffer.length)
+				tail = 0; // TO BE like circle  
+			return true;
+		}
+		else {
+			return false;
+		}
 		
 	}// end method
 	
@@ -69,9 +68,8 @@ public class InstructionBuffer {
 	
 	public void Flush(){ // clean all 
 		int length = this.Buffer.length  ;
-		for(int i=0;i<length ; i++){
-			 Instruction Instruction_Buffer_item=this.Buffer[i];
-			 Instruction_Buffer_item = null;
+		for(int i=0;i<length ; i++){			
+			Buffer[i]; = null;
 		}
 		this.head=0;
 		this.tail=0 ;
