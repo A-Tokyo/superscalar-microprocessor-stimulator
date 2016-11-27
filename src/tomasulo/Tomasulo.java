@@ -23,9 +23,10 @@ public class Tomasulo {
 	ReOrderBuffer ROBuffer;
 	InstructionBuffer instructionBuffer;
 	ReservationStation[] reservationStations;
-//	RegisterFile regFile;
+	RegisterFile regFile;
 	RegisterStatusTable regStatusTable;
-	
+	int PC;
+	int pipelineWidth;
 	
 	
 	public static final short fetchDelay  = 1;
