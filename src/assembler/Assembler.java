@@ -45,9 +45,13 @@ public class Assembler {
 			break;
 		case "jalr":
 			machineCodeBuilder.append("100");
+			machineCodeBuilder.append(registerToBinary(instructionOperands[0]));
+			machineCodeBuilder.append(registerToBinary(instructionOperands[1]));
 			break;
 		case "ret":
 			machineCodeBuilder.append("101");
+			machineCodeBuilder.append(registerToBinary(instructionOperands[0]));
+			machineCodeBuilder.append(Utils.generateMask(lineSizeInBits-machineCodeBuilder.length()));
 			break;
 		case "add":
 			machineCodeBuilder.append("111");
@@ -99,6 +103,6 @@ public class Assembler {
 	
 	public static void main(String[] args) {
 //				0101110000011000
-		System.out.println(assemble(" beq reg7, reg3 , 63"));
+		System.out.println(assemble(" ret reg7"));
 	}
 }
