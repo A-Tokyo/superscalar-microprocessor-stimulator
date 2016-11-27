@@ -1,7 +1,9 @@
 package tomasulo;
 
 //import tomasulo.ReOrderBuffer;
+
 import memoryHierarchy.*;
+// import f
 
 public class Tomasulo {
 	
@@ -10,7 +12,7 @@ public class Tomasulo {
 	// A memory hierarchy
 	// a reorder buffer [which will contain the ROBEntries] (size specified by the user)
 	// an instruction buffer (size specified by user)
-	// a list of reservation stations (size specified by the user)
+	// a list of reservation stations (size specified by the user, via details of )
 	// a register file, a register status table
 	// a PC (the start point of which will be specified by the user)
 	// Pipeline Width (specified by the user - number of maximum allowed simaltenuous instructions issued to reservation stations
@@ -20,6 +22,13 @@ public class Tomasulo {
 	// the register file
 	
 	MemoryHierarchy memoryHierarchy;
+	ReOrderBuffer ROBuffer;
+	InstructionBuffer instructionBuffer;
+	ReservationStation[] reservationStations;
+	RegisterFile regFile;
+	RegisterStatusTable regStatusTable;
+	int PC, endOfPC;
+	int pipelineWidth;
 	
 	
 	public static final short fetchDelay  = 1;
@@ -30,8 +39,9 @@ public class Tomasulo {
 	
 	// constructor for an instance of the tomasulo object; should be called from main
 	// using parameters entered by the user
-	public Tomasulo() {
+	public Tomasulo(int sizeOfROBuffer, int sizeOfInstructionBuffer, String[] infoOfFunctionalUnits, int PC, int endOfPC, int width) {
 		
+// 		this.ROBuffer = new ReOrderBuffer(
 	}
 	
 	
