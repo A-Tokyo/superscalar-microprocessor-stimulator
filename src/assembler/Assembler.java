@@ -4,6 +4,7 @@ import utils.Utils;
 
 public class Assembler {
 	
+	private static final int lineSizeInBits = 16;
 	/*
 	 * This one takes an assembly instruction in string form, case insensitive and space insensitive
 	 * Returns A string containing the corresponding binary machine code in 16 bits
@@ -32,6 +33,9 @@ public class Assembler {
 			break;
 		case "jmp":
 			machineCodeBuilder.append("010");
+			machineCodeBuilder.append(registerToBinary(instructionOperands[0]));
+			machineCodeBuilder.append(Utils.decimalToBinary(Integer.parseInt(instructionOperands[1]), 7));
+			machineCodeBuilder.append(Utils.generateMask(lineSizeInBits-machineCodeBuilder.length()));
 			break;
 		case "beq":
 			machineCodeBuilder.append("011");
@@ -91,6 +95,7 @@ public class Assembler {
 	}
 	
 	public static void main(String[] args) {
-		System.out.println(assemble("  sw reg1 , reg0, 63   "));
+//				0101110000011000
+		System.out.println(assemble("jmp reg7, 3"));
 	}
 }

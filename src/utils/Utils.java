@@ -42,6 +42,13 @@ public class Utils {
 			toReturn += '0';
 		return toReturn;
 	}
+	
+	public static String extendWithZeroBits (String bitString, int finalLength) {
+		for (int i = bitString.length(); i < finalLength; i++) {
+			bitString+='0';
+		}
+		return bitString;
+	}
 
 	public static String arrayStringToString(String [] array) {
 		String toReturn = "[";
