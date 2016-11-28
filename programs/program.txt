@@ -8,9 +8,9 @@
 //Initialize memory hierarchy here as follows, must start with a header Memory Hierarchy
 Memory  Hierarchy
   number of cache levels: 3
-  {   S : 2,  L: 12 , M: 43, writePolicyHit: write through, writePolicyMiss: writeBack, cycles: 32 }
-  {   S : 3,  L: 32 , M: 33, writePolicyHit: write through, writePolicyMiss: writeBack, cycles: 322 }
-  {   S : 3,  L: 32 , M: 33, writePolicyHit: write through, writePolicyMiss: writeBack, cycles: 322 }
+  {   S : 128,  L: 8 , M: 4, writePolicyHit: write through, writePolicyMiss: writeBack, cycles: 32 }
+  {   S : 128,  L: 32 , M: 1, writePolicyHit: write through, writePolicyMiss: writeBack, cycles: 50 }
+  {   S : 128,  L: 32 , M: 33, writePolicyHit: write through, writePolicyMiss: writeBack, cycles: 100 }
  memory cycles: 12
 //
 //Initialize hardware organization here as follows
@@ -26,20 +26,19 @@ rob size: 6
 // Your assembly code goes here it must start with "Assembly" and end with "endAssembly"
 // start your code with .org "number which is the memory index"
 Assembly
-  .org 100
-  lw reg2,reg1,8
-  sw  reg2, reg1,8
-  @label
-  add reg2,  reg1,  reg7
-  SUB reg2,  reg3,  reg4
-  JmP reg5, 7
-  // comment
+  .org 120
+  addi reg1, reg0, 8
+  addi reg2, reg0, 3
+  mul reg3, reg2, reg1
+  sub reg4, reg3, reg2
+  add reg4, reg4, reg2
+  nand reg4, reg1, reg3
 endAssembly
 //
 //Write your program data here if any must start with the header "program data"
 // The data format must be in address:value
 program data
-  100 : 0101010101010101
-  101 : 0101010101010101
+  30: 0101010101010101
+  35: 1101011101101111
 end data
 // END OF FILE
