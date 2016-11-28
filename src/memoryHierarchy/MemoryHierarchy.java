@@ -326,7 +326,11 @@ public class MemoryHierarchy {
 
 
 	// Instruction Code
-	
+
+	/* This one takes an address in string form
+	 * It returns the Data associated with that address when it can be returned, or null otherwise
+	 * Once it is fetched it is returned and the function loops back to refill the caches where it missed
+	 */
 	public String fetchInstruction(String address) {
 		for(int i = 0; i <= this.caches.length; i++) {
 			if(i == 1)
