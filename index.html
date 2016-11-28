@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <title>Superscalar-microprocessor-stimulator by A-Tokyo</title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>Superscalar-microprocessor-stimulator</h1>
+        <h2>superscalar out of order RISC microprocessor stimulator.</h2>
+
+        <section id="downloads">
+          <a href="https://github.com/A-Tokyo/superscalar-microprocessor-stimulator/zipball/master" class="btn">Download as .zip</a>
+          <a href="https://github.com/A-Tokyo/superscalar-microprocessor-stimulator/tarball/master" class="btn">Download as .tar.gz</a>
+          <a href="https://github.com/A-Tokyo/superscalar-microprocessor-stimulator" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h1>
+<a id="superscalar-microprocessor-stimulator" class="anchor" href="#superscalar-microprocessor-stimulator" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>superscalar microprocessor stimulator</h1>
+
+<h2>
+<a id="announcments" class="anchor" href="#announcments" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Announcments</h2>
+
+<h3>
+<a id="current-deadline-2811-1159-pm" class="anchor" href="#current-deadline-2811-1159-pm" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Current Deadline: 28/11 11:59 PM</h3>
+
+<p>Please push all commits to the dev branch, NOT the master branch. The master branch should be only left for completely stable commits, and managed via GitHub. (i.e. through pull requests) of course create a branch with your new feature first.</p>
+
+<h2>
+<a id="description" class="anchor" href="#description" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Description</h2>
+
+<p>The goal of this project is to implement an architectural simulator capable of assessing the performance of a simplified superscalar out-‐‐of-‐‐order 16-‐‐bit RISC
+processor that uses Tomasulo’s algorithm with speculation taking into account the effect of the cache organization.</p>
+
+<h2>
+<a id="contribution" class="anchor" href="#contribution" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contribution</h2>
+
+<ul>
+<li>Tomasulo
+
+<ul>
+<li>Tomasulo code exists in the package tomasulo with the class Tomasulo as the bundler</li>
+</ul>
+</li>
+<li>Functional Units
+
+<ul>
+<li>Functional units should be in the package functionalUnits</li>
+</ul>
+</li>
+<li>Memory Hierarchy
+
+<ul>
+<li>Memory Hierarchy code exists in the package memoryHierarchy with the class MemoryHierarchy as the bundler</li>
+</ul>
+</li>
+<li>Utilitis
+
+<ul>
+<li>If you want to add any general function such as mathematical log, or printing a 2D array add them to the Utils class and     import it where you need it.</li>
+</ul>
+</li>
+</ul>
+
+<h3>
+<a id="todo" class="anchor" href="#todo" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>TODO</h3>
+
+<ul>
+<li>Memory Hierarchy (80% completed)
+
+<ul>
+<li>Bundle the files together and add cache leveling</li>
+</ul>
+</li>
+<li>Tomasulo (20% completed)</li>
+<li>Functional Units (0% completed)</li>
+</ul>
+
+<h3>
+<a id="getting-started" class="anchor" href="#getting-started" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Getting Started</h3>
+
+<ul>
+<li>Clone the repository  <code>git clone https://github.com/A-Tokyo/superscalar-microprocessor-stimulator</code>
+</li>
+<li>Checkout dev <code>git checkout dev</code>
+</li>
+<li>Create a new branch <code>git checkout -b branchName</code> or work on dev (discouraged for conflicts)</li>
+<li>Open eclipse</li>
+<li>Click on File -&gt; Import -&gt; Select General, Existing projects into workspace -&gt; click next</li>
+<li>Select root directory and copy the path to the repository folder or browse for it</li>
+<li>Contribute and send a pull request to dev</li>
+<li>To commit through eclipse, right click on the project, select team, share</li>
+</ul>
+
+<h2>
+<a id="conventions" class="anchor" href="#conventions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Conventions</h2>
+
+<ul>
+<li>Please follow the following naming conventions <a href="http://www.javatpoint.com/java-naming-conventions">http://www.javatpoint.com/java-naming-conventions</a>
+</li>
+</ul>
+      </section>
+    </div>
+
+    
+  </body>
+</html>
