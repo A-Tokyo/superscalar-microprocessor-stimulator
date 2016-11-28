@@ -2,15 +2,15 @@ package memoryHierarchy;
 
 public class Memory {
 	String [] memory; // Main memory array, length should be 2^16
-	private int accessTime; // Input: Number of cycles to access
-	private int totalCycles; // Output: Total number of cycles in the current stimulation.
+	int accessTime; // Input: Number of cycles to access
+	int totalCycles; // Output: Total number of cycles in the current stimulation.
 	
 	// tracking memory state
 	private boolean isBeingAccessed;
 	
 	//Had to separate them into two counters since there must be one for data and one for instruction, these counters need to be reset once they reach zero;
-	private int fetchCyclesRemaining;
-	private int dataAccessCyclesRemaining;
+	int fetchCyclesRemaining;
+	int dataAccessCyclesRemaining;
 	
 	public Memory(int access_time) {
 		this.memory = new String[65536]; // 2^16
@@ -28,20 +28,12 @@ public class Memory {
 		memory[address] = data;
 	}
 
-	public int getAccessTime() {
+	public int getAccess_time() {
 		return accessTime;
 	}
 
-	public int getTotalCycles() {
+	public int getTotal_cycles() {
 		return totalCycles;
-	}
-	
-//	public void setTotalCycles(int totalCycles) {
-//		this.totalCycles = totalCycles;
-//	}
-	
-	public int incrementTotalCycles() {
-		return ++this.totalCycles;
 	}
 	
 	public boolean isBeingAccessed() {
@@ -50,38 +42,6 @@ public class Memory {
 
 	public void setBeingAccessed(boolean isBeingAccessed) {
 		this.isBeingAccessed = isBeingAccessed;
-	}
-	
-	public int getFetchCyclesRemaining() {
-		return fetchCyclesRemaining;
-	}
-
-//	public void setFetchCyclesRemaining(int fetchCyclesRemaining) {
-//		this.fetchCyclesRemaining = fetchCyclesRemaining;
-//	}
-	
-	public void decrementFetchCyclesRemaining() {
-		fetchCyclesRemaining--;
-	}
-	
-	public void resetFetchCyclesRemaining() {
-		this.fetchCyclesRemaining = accessTime;
-	}
-
-	public int getDataAccessCyclesRemaining() {
-		return dataAccessCyclesRemaining;
-	}
-
-//	public void setDataAccessCyclesRemaining(int dataAccessCyclesRemaining) {
-//		this.dataAccessCyclesRemaining = dataAccessCyclesRemaining;
-//	}
-	
-	public void decrementDataAccessCyclesRemaining() {
-		dataAccessCyclesRemaining--;
-	}
-	
-	public void resetDataAccessCyclesRemaining() {
-		this.dataAccessCyclesRemaining = this.accessTime;
 	}
 	
 	// Returns the main memory in string form
@@ -109,10 +69,6 @@ public class Memory {
 			toReturn.append(i % 16 == 0 && i!=0?"\n":", ");
 		}
 		return toReturn.toString();
-	}
-	
-	public String toString() {
-		return "[ size: " + "65536 bits" + ", access time: " + this.accessTime+ ", total cycles: " + this.totalCycles + " ]";
 	}
 	
 //	public static void main(String[] args) {

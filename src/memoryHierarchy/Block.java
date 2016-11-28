@@ -1,10 +1,10 @@
 package memoryHierarchy;
 
 public class Block {
+	String tag; // tag bits
 	String [] data; // data in bytes
-	private String tag; // tag bits
-	private int validBit; // determines if the content is valid or not
-	private int dirtyBit; // used in writeBack only
+	int validBit; // determines if the content is valid or not
+	int dirtyBit; // used in writeBack only
 
 	public Block(int lineSize) {
 		this.data = new String[lineSize]; // lineSize is the number of bytes therefore we need an element for each byte

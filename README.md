@@ -21,19 +21,15 @@ processor that uses Tomasulo’s algorithm with speculation taking into account 
 
 
 ### TODO
+- Memory Hierarchy (80% completed)
+    - Bundle the files together and add cache leveling
 - Tomasulo (20% completed)
 - Functional Units (0% completed)
-- Assembler (40% completed)
-
-
-## DONE
-- Memory Hierarchy (100% completed)
 
 
 ### Getting Started
 
 - Clone the repository  `git clone https://github.com/A-Tokyo/superscalar-microprocessor-stimulator`
-- Change your working directory to the repo `cd superscalar-microprocessor-stimulator`
 - Checkout dev `git checkout dev`
 - Create a new branch `git checkout -b branchName` or work on dev (discouraged for conflicts)
 - Open eclipse
