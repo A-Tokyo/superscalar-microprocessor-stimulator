@@ -1,0 +1,36 @@
+// This is the template of a stimulator input
+// Your comments should be prefixed with // and be on a standalone line
+// The assembler is case insensitive and space insensitive regarding the arguments
+// The key word must be followed with a space, ie JMP reg0,  reg1
+// For stimulator initialization inputs, the JSONS are case sensitive for the key as normal
+// The normal key: value format however is case insensitive and space insensitive
+//
+// TODO Initialize memory hierarchy here as follows, must start with a header Memory Hierarchy
+Memory  Hierarchy
+  number of cache levels: 1
+  {   S : 2,  L: 12 , M: 43, writePolicyHit: write through, writePolicyMiss: writeBack, cycles: 32 }
+ memory cycles: 12
+//
+//Initialize hardware organization here as follows
+Hardware Organization
+  pipeline width : 4
+  instruction buffer size: 12
+rob size: 6
+//
+// TODO Functional Units Information goes here
+// THIS SHOULD BE A VALID JSON, order doesn't matter as long as you follow the key format
+  {add: {addRS: 1,addCycles: 2}, mul: {mulRS: 3, mulCycles: 4}, lw:{lwRS: 5, lwCycles: 6}, jalr:{jalrRS: 7, jalrCycles: 8}}
+//
+// Your assembly code goes here it must start with "Assembly" and end with "endAssembly"
+// start your code with .org "number which is the memory index"
+Assembly
+  .org 100
+  // TODO Your code goes here
+endAssembly
+//
+// TODO Write your program data here if any must start with the header "program data"
+// The data format must be in address:value
+program data
+//  100 : 0101010101010101
+end data
+// END OF FILE
