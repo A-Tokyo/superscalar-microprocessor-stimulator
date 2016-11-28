@@ -5,20 +5,13 @@ public class ROBEntry {
 
 	
 	private String instructionType;
-<<<<<<< HEAD
 	private int instructionDestination;
-=======
-	private int  instructionDestination;
->>>>>>> dev
 	private int instructionValue;
 	private boolean Ready;
 	int PC_value;
 	
-<<<<<<< HEAD
 	public ROBEntry(String instructionType, int instructionDestination, int instructionValue, boolean Ready) {
-=======
-	public ROBEntry(String instructionType, int  instructionDestination, int instructionValue, boolean Ready) {
->>>>>>> dev
+
 		this.instructionType = instructionType;
 		this.instructionDestination = instructionDestination;
 		this.instructionValue = instructionValue;

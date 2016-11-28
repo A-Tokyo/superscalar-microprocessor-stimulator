@@ -178,89 +178,6 @@ public class Tomasulo {
 	}
 
 	
-	public void write() {
-		int writes = 0; // Number of instruction that can be written
-		for(int i = 0; i < this.RS_indices.size(); i++ ) {
-			ReservationStation RS = this.reservation_stations[RS_indices.get(i)];
-			if(RS.op.toLowerCase().equals("store")) {
-				if(RS.Qk == -1) {
-					if(RS.start_store) {
-						String address = Integer.toBinaryString(RS.A);
-						while(address.length() < 16)
-							address = "0" + address;
-
-						if(RS.write_low_byte) {
-							storeLowByte(RS.Vk, RS.A);
-							RS.write_low_byte = false;
-							RS.write_high_byte = true;
-						}else if(RS.write_high_byte) {
-							storeHighByte(RS.Vk, RS.A + 1);
-							int b = RS.dest;
-							this.reorder_buffer.entries[b].value = RS.Vk;
-							this.reorder_buffer.entries[b].ready = true;
-							
-							RS.start_store = false;
-							RS.flushRS();
-							RS.write_high_byte = false;	
-											
-							RS_indices.remove(i);
-							writes++;
-							if(writes == this.way)
-								return;
-							else
-								i--;
-						}
-						else if(RS.cache_level == this.mem_hierarchy.caches.length) { // memory
-							if(!this.mem_hierarchy.memory.being_accessed || RS.accessed_cache) {
-								RS.accessed_cache = true;
-								if(this.mem_hierarchy.cacheCyclesLeft(RS.cache_level, address) == 0) {
-									RS.cache_level--;
-									RS.accessed_cache = false;
-								}
-							}
-						}
-						else if(!this.mem_hierarchy.caches[RS.cache_level].being_accessed || RS.accessed_cache) {
-							RS.accessed_cache = true;
-							if(RS.cache_level == 1 && this.mem_hierarchy.cacheCyclesLeft(RS.cache_level, address) == 0) {
-								RS.write_low_byte = true;
-							}
-							else if(this.mem_hierarchy.cacheCyclesLeft(RS.cache_level, address) == 0) {
-								RS.cache_level--;
-								RS.accessed_cache = false;
-							}
-						}
-					}
-				}
-			}
-			// All instructions but Store
-			else if(RS.exec_cycles_left == 0) {
-				int b = RS.dest;
-				
-				this.reorder_buffer.entries[b].ready = true;
-				this.reorder_buffer.entries[b].value = RS.result;
-				
-				for (int j = 0; j < this.reservation_stations.length; j++) {
-					ReservationStation RS2 = this.reservation_stations[j];
-					if(RS2.Qj == b) {
-						RS2.Vj = RS.result;
-						RS2.Qj = -1;
-					}
-					if(RS2.Qk == b) {
-						RS2.Vk = RS.result;
-						RS2.Qk = -1;
-					}
-				}
-				RS.flushRS();
-				RS_indices.remove(i);
-				writes++;
-				if(writes == this.way)
-					return;
-				else
-					i--;
-			}
-		}
-	}
-	
 	public void commit() {
 		for(int i = 0; i < this.instruction_issued; i++) {
 			ROBEntry ROB_entry = this.ROBuffer.getEntry();
@@ -316,16 +233,7 @@ public class Tomasulo {
 		}	
 	}
 	
-	
-	public boolean Check_ifStore(int A) {
-		//Checks that all stores have a different memory address, then the Load mem address
-		for(int i = 0; i < this.ROBuffer.entries.length; i++) {
-			ROBEntry b = this.ROBuffer.entries[i];
-			if(b!= null && b.getInstructionType().toLowerCase().equals("store") && b.getInstructionDestination() == A)
-				return false;
-		}
-		return true;
-	}
+
 	
 public static String convert_to_Decimal(String number){
 		
@@ -346,6 +254,18 @@ public static String convert_to_Decimal(String number){
 		return convert_out;
 		
 	}
+
+public static String convert_To_Binary(int number) {
+	String temp = Integer.toBinaryString(number);
+	if (number >= 0) {
+		while(temp.length() < 16)
+			temp = "0" + temp;
+	}
+	else {
+		temp = temp.substring(16);
+	}
+	return temp;
+}
 	
 	public MemoryHierarchy getMemoryHierarchy() {
 	return memoryHierarchy;
@@ -519,13 +439,13 @@ public static short getCommitdelay() {
 
 	public double AMAT(int cache_Level){
 		if(cache_Level == 1)
-			return (double) this.memoryHierarchy.caches[1].cycles;
+			return (double) this.memoryHierarchy.caches[1].getAccessCycles();
 		else {
 			double result = 0;
 			if(cache_Level == this.memoryHierarchy.caches.length)
 				 result = this.memoryHierarchy.memory.getAccessTime();
 			else
-			     result = this.memoryHierarchy.caches[cache_Level].cycles;
+			     result = this.memoryHierarchy.caches[cache_Level].getAccessCycles();
 			for(int i = 1; i < cache_Level; i++) {
 				double missRate;
 				if(i == 1) {
@@ -552,8 +472,8 @@ public void simulateResults(){
 	System.out.println("IPC is : " + (double)this.instruction_finished/ (double)this.no_cycle_spanned);
 	System.out.println("AMAT is : " + AMAT(this.memoryHierarchy.caches.length));
 
-
-	System.out.println("Branch Misprediction Percentage: " + ((double)howMany_MispredictionsHappen/(double)branchehit) * 100 +"percent");
+	double branch_Mispredict= (double)howMany_MispredictionsHappen/(double)branchehit;
+	System.out.println("Branch Misprediction Percentage: " + branch_Mispredict* 100 +"percent");
 	
 	for(int i = 0; i < this.memoryHierarchy.caches.length; i++) {
 		String cacheName;
