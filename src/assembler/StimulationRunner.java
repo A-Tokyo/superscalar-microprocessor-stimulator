@@ -13,11 +13,11 @@ public class StimulationRunner {
 	private ArrayList<String> parsedFile;
 	MemoryHierarchy memoryHierarchy;
 
-	public StimulationRunner(String fileName) {
+	public StimulationRunner(String fileFullPath) {
 		currLineIndex = -1;
 		currLine = "";
 		parsedFile  = new ArrayList<String>();
-		parsedFile = FileParser.parseFile("programs/"+fileName);
+		parsedFile = FileParser.parseFile(fileFullPath);
 		id++;
 	}
 
