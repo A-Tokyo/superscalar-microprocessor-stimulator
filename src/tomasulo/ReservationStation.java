@@ -23,8 +23,8 @@ public class ReservationStation {
 		this.busy = false;
 		this.Address = 0;
 		this.destination_ROB =0;
-		this.Vj=-1;
-		this.Vk=-1;
+		this.Qk=-1;
+		this.Qj=-1;
 		this.op="";
 	}
 	
@@ -32,8 +32,8 @@ public class ReservationStation {
 		this.busy = false;
 		this.Address = 0;
 		this.destination_ROB =0;
-		this.Vj=-1;
-		this.Vk=-1;
+		this.Qk=-1;
+		this.Qj=-1;
 		this.op="";
 		this.execution_left= this.cycle_time;
 	}
