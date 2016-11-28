@@ -139,6 +139,7 @@ public class ReOrderBuffer {
 		for(int i = 0; i < length; i++) {
 			this.buffer[i] = null;
 		}
+		this.currentSize = 0;
 		this.headPosition = 0;
 		this.tailPosition = 0;
 	}
