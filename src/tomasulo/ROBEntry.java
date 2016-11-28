@@ -10,12 +10,23 @@ public class ROBEntry {
 	private boolean Ready;
 	int PC__value;
 	
-	public ROBEntry(String instructionType, int  instructionDestination, int instructionValue, boolean Ready) {
+	public ROBEntry(String instructionType, int instructionDestination, int instructionValue, boolean Ready) {
 		this.instructionType = instructionType;
 		this.instructionDestination = instructionDestination;
 		this.instructionValue = instructionValue;
 		this.Ready = Ready;
 	}
+	
+	public ROBEntry(String instructionType, int instructionDestination, boolean Ready) {
+		this.instructionType = instructionType;
+		this.instructionDestination = instructionDestination;
+		this.Ready = Ready;
+	}
+
+	public ROBEntry(String instructionType, int instructionDestination) {
+		this(instructionType, instructionDestination, false);
+	}
+
 	
 	public String getInstructionType() {
 		return instructionType;
@@ -44,6 +55,14 @@ public class ROBEntry {
 		Ready = ready;
 	}
 	
+	public int getPC__value() {
+		return PC__value;
+	}
+
+	public void setPC__value(int pC__value) {
+		PC__value = pC__value;
+	}
+
 	public boolean isEqual(ROBEntry otherEntry) {
 		if (this.instructionType != otherEntry.instructionType) {
 			return false;
