@@ -145,13 +145,13 @@ public class ReOrderBuffer {
 	}
 	
 	public void displayBufferDetails() {
-		System.out.printf("Reorder Buffer. Extending From the head at %d to the tail at %d", this.headPosition, this.tailPosition);
+		System.out.printf("\n Reorder Buffer. Extending From the head at %d to the tail at %d \n", this.headPosition, this.tailPosition);
 		
 		for (ROBEntry someEntry : this.buffer) {
 			if (someEntry == null) {
 				continue;
 			} else {
-				System.out.printf("The instruction is of type %s, has destination %d, has value %d, and the status of ready is %b", 
+				System.out.printf("The instruction is of type %s, has destination %d, has value %d, and the status of ready is %b \n", 
 							someEntry.getInstructionType(), someEntry.getInstructionDestination(),
 							someEntry.getInstructionValue(), someEntry.isReady());
 			}
