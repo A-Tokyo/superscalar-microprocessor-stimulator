@@ -27,11 +27,12 @@ rob size: 6
 // start your code with .org "number which is the memory index"
 Assembly
   .org 100
-  lw reg0,reg1,8
-  sw  reg0, reg1,8
+  lw reg2,reg1,8
+  sw  reg2, reg1,8
   @label
-  add reg0,  reg1,  reg7
-  jmp reg0, 7
+  add reg2,  reg1,  reg7
+  sub reg2,  reg3,  reg4
+  jmp reg5, 7
   // comment
 endAssembly
 //

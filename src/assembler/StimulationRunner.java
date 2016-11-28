@@ -77,6 +77,31 @@ public class StimulationRunner {
 		} 
 		String [] functionalUnitInfoArray = fetchedInfo.toArray(new String[fetchedInfo.size()]);
 		
+		int pcStart = 0;
+		int pcEnd = 0;
+		
+		int tempIndex = currLineIndex;
+		while(!parsedFile.get(tempIndex).contains("assembly")){
+			tempIndex++;
+		}
+		while(true){
+			tempIndex++;
+			if(parsedFile.get(tempIndex).toLowerCase().contains("endassembly") && !parsedFile.get(tempIndex).trim().startsWith("//")){
+				break;
+			}	
+			if(parsedFile.get(tempIndex).trim().toLowerCase().startsWith(".org")){
+				pcStart = Integer.parseInt(parsedFile.get(tempIndex).toLowerCase().substring(parsedFile.get(tempIndex).toLowerCase().indexOf('g')+1, parsedFile.get(tempIndex).length()).trim());
+				pcEnd = pcStart;
+			}			
+			if(parsedFile.get(tempIndex).trim().startsWith("//") || parsedFile.get(tempIndex).trim().toLowerCase().startsWith(".org") || parsedFile.get(tempIndex).contains("@")){
+				
+			}else{
+				pcEnd++;
+			}
+		}
+		
+		// new tomasulo
+		
 		
 		System.out.println("\nHardware organization parsed successfully...\n");
 		// TODO initialize tomasulo
