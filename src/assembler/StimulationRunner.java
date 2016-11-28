@@ -20,7 +20,6 @@ public class StimulationRunner {
 		parsedFile  = new ArrayList<String>();
 		parsedFile = FileParser.parseFile("programs/"+fileName);
 		id++;
-
 	}
 
 	public void run() throws Exception {
@@ -193,6 +192,10 @@ public class StimulationRunner {
 		System.err.println("Parsing error near line: " + currLineIndex+1);
 		System.err.println(currLine);
 		throw new Exception(text);
+	}
+	
+	public static int getId() {
+		return id;
 	}
 	//	public static void main(String[] args) {
 	//		MemoryHierarchy memoryHierarchy = new MemoryHierarchy(memoryAccessTime, cacheLevels, cacheDescription)
