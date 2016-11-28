@@ -63,6 +63,8 @@ public class StimulationRunner {
 		//		System.out.println(pipeLineWidth + ", " + intsructionBufferSize + "," + robSize);
 		incrementLine();
 		//		getJSONValue
+		int x = JSONlength(currLine);
+		System.out.println(x);
 		int addRS = Integer.parseInt(getJSONValue(currLine, "addRS"));
 		int addCycles = Integer.parseInt(getJSONValue(currLine, "addCycles"));
 		incrementLine();
@@ -77,7 +79,7 @@ public class StimulationRunner {
 		System.out.println("\nHardware organization parsed successfully...\n");
 		// TODO initialize tomasulo
 		System.out.println("\n****TODO INITIALIZE TOMASULO AND RUN****\n");
-//		System.out.println("\nHardware organization initialised successfully...\n");
+		//		System.out.println("\nHardware organization initialised successfully...\n");
 		incrementLine();
 	}
 
@@ -231,12 +233,13 @@ public class StimulationRunner {
 		}
 		return null;
 	}
-	
+
 	private int JSONlength(String JSON) throws Exception{
 		JSON = JSON.trim();
 		if (JSON.charAt(0)!='{' || JSON.charAt(JSON.length()-1)!='}') {
 			throwException(JSON+" is not a valid JSON");
 		}
+		JSON = JSON.substring(1,JSON.length());
 		if(!JSON.contains("{"))
 			return JSON.split(",").length;
 		else{
@@ -247,16 +250,16 @@ public class StimulationRunner {
 					nestedJSON = true;
 				}
 				else
-				if(JSON.charAt(i)=='}'){
-					nestedJSON = false;
-				}
+					if(JSON.charAt(i)=='}'){
+						nestedJSON = false;
+					}
 				if(!nestedJSON && JSON.charAt(i)==','){
 					length++;
 				}
-				return length;
 			}
+
+			return 1+length;
 		}
-		return -1;
 	}
 
 	private void incrementLineLowerCase() {

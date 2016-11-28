@@ -19,7 +19,7 @@ Hardware Organization
   instruction buffer size: 12
 rob size: 6
 // THIS SHOULD BE A VALID JSON, order 1:Add 2:MUL 3:LW 4: JALR
-  {addRS: 12, unused: aykalam , addCycles: 12}
+  {addRS: 12, addCycles: 12, nested: {nestedd: nesteddd}}
   {mulRS: 12, mulCycles: 12}
   {lwRS: 12, lwCycles: 12}
   {jalrRS: 12 , jalrCycles: 12}
