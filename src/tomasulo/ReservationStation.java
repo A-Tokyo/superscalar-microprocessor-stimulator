@@ -1,6 +1,8 @@
 package tomasulo;
 
-import functionalUnits.FunctionalUnit;
+import FunctionalUnit;
+
+
 public class ReservationStation {
 	
 	String name;

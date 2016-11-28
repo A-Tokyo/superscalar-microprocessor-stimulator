@@ -2,6 +2,7 @@ package tomasulo;
 
 
 public class ROBEntry {
+
 	
 	private String instructionType;
 	private long instructionDestination;
@@ -54,6 +55,13 @@ public class ROBEntry {
 		} else {
 			return true;
 		}
+	}
+	
+	public ROBEntry(ROBEntry otherEntry) {
+		this.instructionType = otherEntry.instructionType;
+		this.instructionDestination = otherEntry.instructionDestination;
+		this.instructionValue = otherEntry.instructionValue;
+		this.Ready = otherEntry.Ready;
 	}
 	
 }
