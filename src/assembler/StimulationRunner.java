@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import memoryHierarchy.MemoryHierarchy;
 import tomasulo.Tomasulo;
+import utils.Utils;
 
 
 public class StimulationRunner {
@@ -63,19 +64,28 @@ public class StimulationRunner {
 		//		System.out.println(pipeLineWidth + ", " + intsructionBufferSize + "," + robSize);
 		incrementLine();
 		//		getJSONValue
-		int x = JSONlength(currLine);
-		System.out.println(x);
-		int addRS = Integer.parseInt(getJSONValue(currLine, "addRS"));
-		int addCycles = Integer.parseInt(getJSONValue(currLine, "addCycles"));
+		int RSCyclesLength = JSONlength(currLine);
+//		System.out.println(RSCyclesLength);
+		
+		if(getJSONValue(currLine, "add")!=null){
+			System.out.println("add hena");
+			int addRS = Integer.parseInt(getJSONValue(getJSONValue(currLine, "add"), "addRS"));
+			int addCycles = Integer.parseInt(getJSONValue(getJSONValue(currLine, "add"), "addCycles"));
+		}
+		
+	
+//		incrementLine();
+//		System.out.println(currLine);
+//		int mulRS = Integer.parseInt(getJSONValue(currLine, "addRS"));
+//		int mulCycles = Integer.parseInt(getJSONValue(currLine, "mulCycles"));
 		incrementLine();
-		int mulRS = Integer.parseInt(getJSONValue(currLine, "mulRS"));
-		int mulCycles = Integer.parseInt(getJSONValue(currLine, "mulCycles"));
+//		int lwRS = Integer.parseInt(getJSONValue(currLine, "lwRS"));
+//		int lwCycles = Integer.parseInt(getJSONValue(currLine, "lwCycles"));
 		incrementLine();
-		int lwRS = Integer.parseInt(getJSONValue(currLine, "lwRS"));
-		int lwCycles = Integer.parseInt(getJSONValue(currLine, "lwCycles"));
-		incrementLine();
-		int jalrRS = Integer.parseInt(getJSONValue(currLine, "jalrRS"));
-		int jalrCycles = Integer.parseInt(getJSONValue(currLine, "jalrCycles"));
+//		int jalrRS = Integer.parseInt(getJSONValue(currLine, "jalrRS"));
+//		int jalrCycles = Integer.parseInt(getJSONValue(currLine, "jalrCycles"));
+		
+		
 		System.out.println("\nHardware organization parsed successfully...\n");
 		// TODO initialize tomasulo
 		System.out.println("\n****TODO INITIALIZE TOMASULO AND RUN****\n");
@@ -221,7 +231,32 @@ public class StimulationRunner {
 		String mutatedJSON = JSON.substring(1, JSON.length()-1);
 		key = key.trim();
 		try{
-			String [] splitted = mutatedJSON.split(",");
+			
+			ArrayList<String> splittedList = new ArrayList<String>();
+			String currString = "";
+			boolean nested = false;
+			for (int i = 0; i < mutatedJSON.length(); i++) {
+				if(mutatedJSON.charAt(i)=='{'){
+					nested = true;
+				}
+				if(mutatedJSON.charAt(i)=='}'){
+						nested = false;
+				}
+				if(mutatedJSON.charAt(i) !=','){
+					currString+=mutatedJSON.charAt(i);
+				}else{
+					if(nested){
+						currString+=mutatedJSON.charAt(i);
+					}else{
+						splittedList.add(currString);
+						currString="";	
+					}
+				}
+				if(i == mutatedJSON.length()-1){
+					splittedList.add(currString);
+				}
+			}
+			String [] splitted = splittedList.toArray(new String[splittedList.size()]);
 			for (int i = 0; i < splitted.length; i++) {
 				splitted[i] = splitted[i].trim();
 				if(splitted[i].substring(0, splitted[i].indexOf(":")).equals(key)){
@@ -229,7 +264,7 @@ public class StimulationRunner {
 				}
 			}	
 		}catch(Exception e){
-			throwException(JSON+" is not a valid JSON");
+//			throwException(JSON+" is not a valid JSON");
 		}
 		return null;
 	}
