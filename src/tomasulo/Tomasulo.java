@@ -889,8 +889,9 @@ public static short getCommitdelay() {
 			execute();
 			issue();
 			fetch();
+			
 		}
-		
+		System.out.println("\n  print " +memoryHierarchy+"\n");
 		System.out.println("Total Execution Time is: " + this.no_cycle_spanned + " cycles");
 		System.out.println("//---------------------//");
 		System.out.println("IPC is : " + (double)this.instruction_finished/ (double)this.no_cycle_spanned);
