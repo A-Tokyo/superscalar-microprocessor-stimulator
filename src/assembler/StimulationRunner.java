@@ -24,7 +24,7 @@ public class StimulationRunner {
 	}
 
 	public void run() throws Exception {
-		System.out.println(parsedFile.get(currLineIndex));
+		System.out.println("Initializing Stimulator...\n");
 		currLine = parsedFile.get(currLineIndex).toLowerCase();
 		if(currLine.contains("memory") && currLine.contains("hierarchy")){
 			incrementLine();
