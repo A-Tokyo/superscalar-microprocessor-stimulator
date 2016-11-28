@@ -38,7 +38,7 @@ public class StimulationRunner {
 	}
 
 	private void initMemoryHierarchy() throws Exception{
-		System.out.println("memory stuff");
+//		System.out.println("memory stuff");
 		currLine.toLowerCase();
 		if(!(currLine.contains("num") && currLine.contains("cache") && currLine.contains("levels") && currLine.contains(":"))){
 			System.err.println("Please initialize the number of cache levels");
