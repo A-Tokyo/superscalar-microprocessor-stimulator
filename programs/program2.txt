@@ -26,6 +26,11 @@ rob size: 6
 Assembly
   .org 100
   // TODO Your code goes here
+  ADDI reg2, reg2, 3
+  SW reg2, reg0, 6
+  LW reg5, reg0, 6
+  MUL reg4, reg2, reg5
+  NAND reg reg6, reg4, reg5
 endAssembly
 //
 // TODO Write your program data here if any must start with the header "program data"
