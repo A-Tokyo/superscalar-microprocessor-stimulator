@@ -124,12 +124,15 @@ public class StimulationRunner {
 		incrementLine();
 		// assemble program
 		int memIndex = assemblyOrigin;
-		Assembler assembler = new Assembler();
+		Assembler assembler = new Assembler(assemblyOrigin);
 		while(!currLine.toLowerCase().trim().contains("endassembly") && memIndex<65536){
 //			System.out.println(currLine);
 //			System.out.println(memIndex+ ","+ Assembler.assemble(currLine));
-			memoryHierarchy.memory.writeToMemory(memIndex, assembler.assemble(currLine));
-			memIndex++;
+			String instructionBinary = assembler.assemble(currLine);
+			if(instructionBinary!=null){
+				memoryHierarchy.memory.writeToMemory(memIndex, instructionBinary);	
+				memIndex++;
+			}
 			incrementLine();
 		}
 		System.out.println("\nProgram code was assembled and added to memory successfully...\n");

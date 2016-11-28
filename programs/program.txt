@@ -13,7 +13,10 @@ pipeline width : 4
  .org 100
  lw reg0,reg1,8
  sw  reg0, reg1,8
+ @label
  add reg0,  reg1,  reg7
+ jmp reg0, 7
+ // comment
 endAssembly
 program data
 100 : 0101010101010101

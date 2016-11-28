@@ -8,9 +8,11 @@ public class Assembler {
 	
 	private static final int lineSizeInBits = 16;
 	private Hashtable<String, Integer> labelAddress;
+	private int currMemoryAddress;
 	
-	public Assembler() {
-		// TODO Auto-generated constructor stub
+	public Assembler(int assemblyOrigin) {
+		this.currMemoryAddress = assemblyOrigin;
+		labelAddress = new Hashtable<String, Integer>();
 	}
 	/*
 	 * This one takes an assembly instruction in string form, case insensitive and space insensitive
@@ -25,10 +27,18 @@ public class Assembler {
 	public String assemble(String instruction){
 		StringBuilder machineCodeBuilder = new StringBuilder();
 		instruction = instruction.trim().toLowerCase();
+		// check for labels and return null if this is not an instruction but a label
+		if(instruction.charAt(0)=='@'){
+			int splitIndex = instruction.indexOf(" ");
+			labelAddress.put(instruction.substring(1, splitIndex==-1?instruction.length():splitIndex), currMemoryAddress);
+			return null;
+		}
 		String keyword = instruction.substring(0, instruction.indexOf(" "));
 		String [] instructionOperands = instruction.substring(instruction.indexOf(" ")+1, instruction.length()).split(",");
 		// just like javascript maping, trimming white spaces from all elements off array
 		Arrays.stream(instructionOperands).map(String::trim).toArray(unused -> instructionOperands);
+		convertLabels(instructionOperands);
+		// for labels		
 		switch (keyword) {
 		case "lw":
 			machineCodeBuilder.append("000");
@@ -103,9 +113,21 @@ public class Assembler {
 		}
 //		System.out.println(keyword);
 //		System.out.println(Utils.arrayStringToString(instructionOperands));
+//		System.out.println(currMemoryAddress);
+		incrementCurrMemoryAddress();
 		return machineCodeBuilder.toString();
 	}
 
+	private void convertLabels(String[] instructionOperands) {
+		for (int i = 0; i < instructionOperands.length; i++) {
+			if (instructionOperands[i].indexOf('@')==0) {
+				String label = instructionOperands[i].substring(1,instructionOperands[i].length());
+				int labelAddressDecimal = labelAddress.get(label);
+				instructionOperands[i] = labelAddressDecimal+"";
+			}
+		}
+	}
+	
 	public static String registerToBinary(String register) {
 		register = register.toLowerCase();
 		if (!register.startsWith("reg")){
@@ -130,6 +152,10 @@ public class Assembler {
 			return "111";
 		}
 		throw new IllegalArgumentException("Syntax Error, Invalid Register Number");
+	}
+	
+	private void incrementCurrMemoryAddress(){
+		currMemoryAddress++;
 	}
 	
 //	public static void main(String[] args) {
