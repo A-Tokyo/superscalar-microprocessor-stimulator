@@ -8,6 +8,7 @@ public class ROBEntry {
 	private int instructionDestination;
 	private int instructionValue;
 	private boolean Ready;
+	int PC_value;
 	
 	public ROBEntry(String instructionType, int instructionDestination, int instructionValue, boolean Ready) {
 		this.instructionType = instructionType;
@@ -24,7 +25,7 @@ public class ROBEntry {
 	}
 
 	
-	public long getInstructionDestination() {
+	public int getInstructionDestination() {
 		return instructionDestination;
 	}
 	public void setInstructionDestination(int instructionDestination) {
@@ -63,5 +64,6 @@ public class ROBEntry {
 		this.instructionValue = otherEntry.instructionValue;
 		this.Ready = otherEntry.Ready;
 	}
+	
 	
 }
