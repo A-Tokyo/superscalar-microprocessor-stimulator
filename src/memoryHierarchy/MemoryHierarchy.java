@@ -231,7 +231,7 @@ public class MemoryHierarchy {
 		int startAddress = Integer.parseInt(address, 2) - byteIndex; // The address of the first byte in the block to be returned
 		for(int i = 0; i < toCache.data.length; i++) {
 			// Memory is byte addressable, load the bites into the block toCache
-			toCache.data[i] = this.memory.ReadFromMemory(startAddress + i);
+			toCache.data[i] = this.memory.read(startAddress + i);
 		}
 		// Configure the new cached block attributes
 		toCache.setValidBit(1);
@@ -248,7 +248,7 @@ public class MemoryHierarchy {
 	private void writeToCacheLevel(int cacheLevel, String address, String data) {
 		if(cacheLevel == this.caches.length) {
 			int addressValue =  Integer.parseInt(address,2);
-			memory.writeToMemory(addressValue, data);
+			memory.write(addressValue, data);
 			return;
 		}
 		this.caches[cacheLevel].writeByte(address, data);
@@ -304,7 +304,7 @@ public class MemoryHierarchy {
 		if(cacheLevel == this.caches.length) { // If in memory
 			int address = Integer.parseInt(blockToReplaceAddress,2);
 			for(int i = 0; i < this.caches[cacheLevel-1].getLineSize(); i++) { //Write block byte by byte to memory
-				this.memory.writeToMemory(address, blockToReplace.data[i]);
+				this.memory.write(address, blockToReplace.data[i]);
 				address++;
 			}
 		} else {
@@ -326,7 +326,11 @@ public class MemoryHierarchy {
 
 
 	// Instruction Code
-	
+
+	/* This one takes an address in string form
+	 * It returns the Data associated with that address when it can be returned, or null otherwise
+	 * Once it is fetched it is returned and the function loops back to refill the caches where it missed
+	 */
 	public String fetchInstruction(String address) {
 		for(int i = 0; i <= this.caches.length; i++) {
 			if(i == 1)
