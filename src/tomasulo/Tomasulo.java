@@ -37,7 +37,6 @@ public class Tomasulo {
 	int no_cycle_spanned;
 	public MemoryHierarchy memoryHierarchy;
 	ReOrderBuffer ROBuffer;
-	InstructionBuffer instructionBuffer;
 	ReservationStation[] reservationStations;
 	RegisterFile regFile;
 	RegisterStatusTable regStatusTable;
@@ -53,11 +52,11 @@ public class Tomasulo {
 	public static final short commitDelay = 1;
 	
 	public InstructionBuffer getInstructionBuffer() {
-		return instructionBuffer;
+		return instruction_buffer;
 	}
 	
-	public void setInstructionBuffer(InstructionBuffer instructionBuffer) {
-		this.instructionBuffer = instructionBuffer;
+	public void setInstructionBuffer(InstructionBuffer instruction_buffer) {
+		this.instruction_buffer = instruction_buffer;
 	}
 
 
@@ -75,7 +74,7 @@ public class Tomasulo {
 		this.regFile = new RegisterFile(8);
 		this.regStatusTable = new RegisterStatusTable(8);
 		this.ROBuffer = new ReOrderBuffer(sizeOfROBuffer);
-		this.instructionBuffer = new InstructionBuffer(sizeOfInstructionBuffer);
+		this.instruction_buffer = new InstructionBuffer(sizeOfInstructionBuffer);
 		IndicesOfRS_ToIssued = new ArrayList<Integer>();
 		this.PC = PC;
 		lowByteIsSet = false;
@@ -248,12 +247,12 @@ public class Tomasulo {
 				fetchReturn(this.jumpInstruction);
 				return;
 			}
-		} else if (!(this.instructionBuffer.Full_Instruction_Buffer()) && PC < endOfPC) {
+		} else if (!(this.instruction_buffer.Full_Instruction_Buffer()) && PC < endOfPC) {
 			String instructionInMemory = getInstructionFromMemory(this.PC);
 			if (instructionInMemory != null) {
 				Instruction instruction = new Instruction(instructionInMemory);
 				
-				this.instructionBuffer.Add_To_Instruction_Buffer(instruction);
+				this.instruction_buffer.Add_To_Instruction_Buffer(instruction);
 				if (fetchBranch(instruction)) {
 					return;
 				} else if (fetchJALR(instruction)) {
@@ -337,7 +336,7 @@ public class Tomasulo {
 	
 	public void issue() {
 		for (int i = 0; i < this.pipelineWidth; i++) {
-			if (this.instructionBuffer.Empty_Instruction_Buffer()) {
+			if (this.instruction_buffer.Empty_Instruction_Buffer()) {
 				return;
 			} else {
 				Instruction instruction = instruction_buffer.getBuffer()[instruction_buffer.getHead()];
@@ -347,11 +346,11 @@ public class Tomasulo {
 					} else {
 						ROBEntry someEntry = new ROBEntry(instruction.function_Type, -1, true);
 						this.ROBuffer.enQueue(someEntry);
-						this.instructionBuffer.remove_element_from_Instruction_Buffer();
+						this.instruction_buffer.remove_element_from_Instruction_Buffer();
 					}
 				} else {
 					if (this.getAvailableStation(instruction) != -1 && this.ROBuffer.getBuffer()[ROBuffer.getTailPosition()] == null) {
-						this.instructionBuffer.remove_element_from_Instruction_Buffer();
+						this.instruction_buffer.remove_element_from_Instruction_Buffer();
 						ReservationStation station = this.reservationStations[this.getAvailableStation(instruction)];
 						IndicesOfRS_ToIssued.add(this.getAvailableStation(instruction));
 						int indexInROB = this.ROBuffer.getTailPosition();
@@ -881,15 +880,19 @@ public static short getCommitdelay() {
 	}
 
 	public void simulateResults(){
-		no_cycle_spanned=0;
-		while (!this.ROBuffer.isEmpty() && !this.instruction_buffer.Empty_Instruction_Buffer() && PC!=endOfPC){
+		this.no_cycle_spanned=0;
+		while (!(this.ROBuffer
+				.isEmpty() && this.instruction_buffer
+				.Empty_Instruction_Buffer()
+				&& PC==endOfPC &&
+				this.no_cycle_spanned > 1 ) ){
 			no_cycle_spanned++;
 			commit();
 			write();
 			execute();
 			issue();
 			fetch();
-			
+			//ROBuffer.displayBufferDetails();
 		}
 		System.out.println("\n  print " +memoryHierarchy+"\n");
 		System.out.println("Total Execution Time is: " + this.no_cycle_spanned + " cycles");
