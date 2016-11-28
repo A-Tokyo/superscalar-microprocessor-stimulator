@@ -49,6 +49,21 @@ public class StimulationRunner {
 		if (!(currLine.contains("pipeline") && currLine.contains("width"))) {
 			throwException("pipeLine width not initialized");
 		}
+		
+		int pipeLineWidth = extractJSONvalueInt(currLine);
+		incrementLineLowerCase();
+		if (!(currLine.contains("size") && currLine.contains("instruction") && currLine.contains("buffer"))) {
+			throwException("Instruction buffer size not initialized");
+		}
+		int intsructionBufferSize = extractJSONvalueInt(currLine);
+		incrementLineLowerCase();
+		if (!(currLine.contains("size") && currLine.contains("rob"))) {
+			throwException("Instruction buffer size not initialized");
+		}
+		int robSize = extractJSONvalueInt(currLine);
+//		System.out.println(pipeLineWidth + ", " + intsructionBufferSize + "," + robSize);
+		
+		
 		System.out.println("\nHardware organization initialised successfully...\n");
 		incrementLine();
 	}

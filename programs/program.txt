@@ -9,6 +9,8 @@ Memory  Hierarchy
 //asd
 Hardware Organization
 pipeline width : 4
+instruction buffer size: 12
+rob size: 6
  Assembly
  .org 100
  lw reg0,reg1,8
