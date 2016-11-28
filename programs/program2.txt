@@ -29,6 +29,7 @@ Assembly
   ADDI reg2, reg2, 3
   SW reg2, reg0, 6
   LW reg5, reg0, 6
+  ADD reg4, reg2, reg5
   MUL reg4, reg2, reg5
   NAND reg reg6, reg4, reg5
 endAssembly
