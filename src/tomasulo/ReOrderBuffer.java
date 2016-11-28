@@ -1,25 +1,20 @@
 package tomasulo;
 
-// NOTE: Still in the works, missing some important functionality
-// Committed for visibility / integration purposes
 public class ReOrderBuffer {
 
-	// set as 6 for simplicity; should maybe be taken from user - if so, simply change this value
 	public int sizeOfROB;
+	public int currentSize;
 	
 	private ROBEntry[] buffer;
-	private ROBEntry head;
 	private int headPosition;
-	private ROBEntry tail;
 	private int tailPosition;
 	
 	public ReOrderBuffer(int sizeOfROB) {
 		this.sizeOfROB = sizeOfROB;
 		this.buffer = new ROBEntry[this.sizeOfROB];
+		currentSize = 0;
 		this.headPosition = 0;
 		this.tailPosition = this.headPosition;
-		this.head = this.buffer[this.headPosition];
-		this.tail = this.buffer[this.tailPosition];
 	}
 
 	public void incrementHead() {
@@ -29,8 +24,6 @@ public class ReOrderBuffer {
 		} else {
 			this.headPosition += 1;
 		}
-		
-		this.head = this.buffer[this.headPosition];
 		
 	}
 	
@@ -42,14 +35,61 @@ public class ReOrderBuffer {
 			this.tailPosition += 1;
 		}
 		
-		this.tail = this.buffer[this.tailPosition];
 	}
 	
-	public void enQueue(ROBEntry entry) {
-		this.tail = entry;
-		incrementTail();
+	public ROBEntry peakFront() {
+		return new ROBEntry(this.buffer[this.headPosition]);
 	}
 	
+	public ROBEntry peakBack() {
+		return new ROBEntry(this.buffer[this.tailPosition]);
+	}
+	
+	public boolean enQueue(ROBEntry entry) {
+		if (this.isFull()) {
+			return false;
+		}
+		buffer[this.tailPosition] = entry;
+		this.incrementTail();
+		this.currentSize += 1;
+		return true;
+	}
+		
+	public void reset() {
+		for (int i = 0; i < this.sizeOfROB; i++) {
+			this.buffer[i] = null;
+		}
+		this.currentSize = 0;
+		this.headPosition = 0;
+		this.tailPosition = 0;
+	}
+	
+	public ROBEntry deQueue() {
+		if (this.isEmpty()) {
+			return null;
+		}
+		ROBEntry returnEntry = new ROBEntry(this.buffer[this.headPosition]);
+		this.buffer[this.headPosition] = null;
+		this.currentSize -= 1;
+		incrementHead();
+		return returnEntry;
+	}
+	
+	public ROBEntry[] getCopy() {
+		ROBEntry[] returnBuffer = new ROBEntry[this.sizeOfROB];
+		for (int i = 0; i < this.sizeOfROB; i++) {
+			returnBuffer[i] = new ROBEntry(this.buffer[i]);
+		}
+		return returnBuffer;
+	}
+	
+	public boolean isEmpty() {
+		return (this.currentSize == 0);
+	}
+	
+	public boolean isFull() {
+		return (this.currentSize == this.sizeOfROB);
+	}
 	
 }
 
