@@ -15,7 +15,7 @@ public class StimulationRunner {
 	MemoryHierarchy memoryHierarchy;
 
 	public StimulationRunner(String fileName) {
-		currLineIndex = 0;
+		currLineIndex = -1;
 		currLine = "";
 		parsedFile  = new ArrayList<String>();
 		parsedFile = FileParser.parseFile("programs/"+fileName);
@@ -24,7 +24,7 @@ public class StimulationRunner {
 
 	public void run() throws Exception {
 		System.out.println("Initializing Stimulator...\n");
-		currLine = parsedFile.get(currLineIndex).toLowerCase();
+		incrementLineLowerCase();
 		if(currLine.contains("memory") && currLine.contains("hierarchy")){
 			incrementLine();
 			initMemoryHierarchy();
@@ -234,7 +234,7 @@ public class StimulationRunner {
 
 	private void incrementLineLowerCase() {
 		incrementLine();
-		currLine.toLowerCase();
+		currLine = currLine.toLowerCase();
 	}
 
 	private void throwException(String text) throws Exception {
