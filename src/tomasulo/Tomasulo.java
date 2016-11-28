@@ -26,7 +26,7 @@ public class Tomasulo {
 	
 	MemoryHierarchy memoryHierarchy;
 	ReOrderBuffer ROBuffer;
-	InstructionBuffer instructionBuffer;
+	//InstructionBuffer instructionBuffer;
 	ReservationStation[] reservationStations;
 	RegisterFile regFile;
 	RegisterStatusTable regStatusTable;
@@ -34,9 +34,10 @@ public class Tomasulo {
 	int PC, endOfPC;
 	int pipelineWidth;
 
-	int instruction_issued ;
+	int instruction_issued ; //way
 	int instruction_finished ;
-	int branche;
+	int branchehit;
+	int no_cycle_spanned;
 //    int mispredictions_branch;
    
 	int howMany_instructionsFinishExecuting; // Number of instructions executed
@@ -281,7 +282,7 @@ public class Tomasulo {
 					instruction_finished++;
 				}
 				else if(ROB_entry.getInstructionType().toLowerCase().equals("branch")) {
-					this.branche++;
+					this.branchehit++;
 					instruction_finished++;
 					if(ROB_entry.getInstructionValue()  == 1) { // if Branch was predicted correctly
 						this.ROBuffer.deQueue();
@@ -315,10 +316,6 @@ public class Tomasulo {
 		}	
 	}
 	
-	public void PrintResults(){
-		
-		
-	}
 	
 	public boolean Check_ifStore(int A) {
 		//Checks that all stores have a different memory address, then the Load mem address
@@ -350,7 +347,232 @@ public static String convert_to_Decimal(String number){
 		
 	}
 	
+	public MemoryHierarchy getMemoryHierarchy() {
+	return memoryHierarchy;
+}
+
+
+public void setMemoryHierarchy(MemoryHierarchy memoryHierarchy) {
+	this.memoryHierarchy = memoryHierarchy;
+}
+
+
+public ReOrderBuffer getROBuffer() {
+	return ROBuffer;
+}
+
+
+public void setROBuffer(ReOrderBuffer rOBuffer) {
+	ROBuffer = rOBuffer;
+}
+
+
+public ReservationStation[] getReservationStations() {
+	return reservationStations;
+}
+
+
+public void setReservationStations(ReservationStation[] reservationStations) {
+	this.reservationStations = reservationStations;
+}
+
+
+public RegisterFile getRegFile() {
+	return regFile;
+}
+
+
+public void setRegFile(RegisterFile regFile) {
+	this.regFile = regFile;
+}
+
+
+public RegisterStatusTable getRegStatusTable() {
+	return regStatusTable;
+}
+
+
+public void setRegStatusTable(RegisterStatusTable regStatusTable) {
+	this.regStatusTable = regStatusTable;
+}
+
+
+public InstructionBuffer getInstruction_buffer() {
+	return instruction_buffer;
+}
+
+
+public void setInstruction_buffer(InstructionBuffer instruction_buffer) {
+	this.instruction_buffer = instruction_buffer;
+}
+
+
+public int getPC() {
+	return PC;
+}
+
+
+public void setPC(int pC) {
+	PC = pC;
+}
+
+
+public int getEndOfPC() {
+	return endOfPC;
+}
+
+
+public void setEndOfPC(int endOfPC) {
+	this.endOfPC = endOfPC;
+}
+
+
+public int getPipelineWidth() {
+	return pipelineWidth;
+}
+
+
+public void setPipelineWidth(int pipelineWidth) {
+	this.pipelineWidth = pipelineWidth;
+}
+
+
+public int getInstruction_issued() {
+	return instruction_issued;
+}
+
+
+public void setInstruction_issued(int instruction_issued) {
+	this.instruction_issued = instruction_issued;
+}
+
+
+public int getInstruction_finished() {
+	return instruction_finished;
+}
+
+
+public void setInstruction_finished(int instruction_finished) {
+	this.instruction_finished = instruction_finished;
+}
+
+
+public int getBranchehit() {
+	return branchehit;
+}
+
+
+public void setBranchehit(int branchehit) {
+	this.branchehit = branchehit;
+}
+
+
+public int getNo_cycle_spanned() {
+	return no_cycle_spanned;
+}
+
+
+public void setNo_cycle_spanned(int no_cycle_spanned) {
+	this.no_cycle_spanned = no_cycle_spanned;
+}
+
+
+public int getHowMany_instructionsFinishExecuting() {
+	return howMany_instructionsFinishExecuting;
+}
+
+
+public void setHowMany_instructionsFinishExecuting(int howMany_instructionsFinishExecuting) {
+	this.howMany_instructionsFinishExecuting = howMany_instructionsFinishExecuting;
+}
+
+
+public int getHowMany_MispredictionsHappen() {
+	return howMany_MispredictionsHappen;
+}
+
+
+public void setHowMany_MispredictionsHappen(int howMany_MispredictionsHappen) {
+	this.howMany_MispredictionsHappen = howMany_MispredictionsHappen;
+}
+
+
+public static short getFetchdelay() {
+	return fetchDelay;
+}
+
+
+public static short getIssuedelay() {
+	return issueDelay;
+}
+
+
+public static short getWritedelay() {
+	return writeDelay;
+}
+
+
+public static short getCommitdelay() {
+	return commitDelay;
+}
+
+
+	public double AMAT(int cache_Level){
+		if(cache_Level == 1)
+			return (double) this.memoryHierarchy.caches[1].cycles;
+		else {
+			double result = 0;
+			if(cache_Level == this.memoryHierarchy.caches.length)
+				 result = this.memoryHierarchy.memory.getAccessTime();
+			else
+			     result = this.memoryHierarchy.caches[cache_Level].cycles;
+			for(int i = 1; i < cache_Level; i++) {
+				double missRate;
+				if(i == 1) {
+				missRate = (this.memoryHierarchy.caches[0].getMissRate() + this.memoryHierarchy.caches[1].getMissRate()) / (double) 2;
+				}
+				else {
+				missRate = this.memoryHierarchy.caches[i].getMissRate();
+				}
+				result *= missRate;
+			}
+			return result + AMAT(cache_Level - 1);
+		}
+		
+		
+	}
+
+public void simulateResults(){
+	no_cycle_spanned=0;
+	while (!this.ROBuffer.isEmpty() && !this.instruction_buffer.Empty_Instruction_Buffer() && PC!=endOfPC){
+		no_cycle_spanned++;
+	}
 	
+	System.out.println("Total Execution Time is: " + this.no_cycle_spanned + " cycles");
+	System.out.println("IPC is : " + (double)this.instruction_finished/ (double)this.no_cycle_spanned);
+	System.out.println("AMAT is : " + AMAT(this.memoryHierarchy.caches.length));
+
+
+	System.out.println("Branch Misprediction Percentage: " + ((double)howMany_MispredictionsHappen/(double)branchehit) * 100 +"percent");
+	
+	for(int i = 0; i < this.memoryHierarchy.caches.length; i++) {
+		String cacheName;
+		Cache cache = this.memoryHierarchy.caches[i];
+
+		if(i == 0)
+			cacheName = "1 (Instruction is )";
+		else if (i == 1)
+			cacheName = "1 (Data is )";
+		else
+			cacheName = ""+i+" -->";
+		
+		double total_access=((double)cache.getHitRate() + (double) cache.getMissRate());
+		double hitRatio = (double) cache.getHitRate() /total_access;
+		System.out.println("Cache " + cacheName + " hit ratio: " + hitRatio);
+	}
+	
+	
+}
 	
 	
 }
