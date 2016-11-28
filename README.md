@@ -39,6 +39,9 @@ processor that uses Tomasulo’s algorithm with speculation taking into account 
 - Contribute and send a pull request to dev
 - To commit through eclipse, right click on the project, select team, share
 
+## Run the stimulation
+Run to main/Main.java, and input the file name of the program (i.e: programs/program.txt).
+
 
 ## Conventions
 - Please follow the following naming conventions http://www.javatpoint.com/java-naming-conventions
