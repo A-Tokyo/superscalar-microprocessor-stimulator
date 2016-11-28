@@ -19,7 +19,31 @@ public class InstructionBuffer {
 	}
 		
 	
-	 public boolean  Full_Instruction_Buffer(){
+	 public int getHead() {
+		return head;
+	}
+
+	public void setHead(int head) {
+		this.head = head;
+	}
+
+	public int getTail() {
+		return tail;
+	}
+
+	public void setTail(int tail) {
+		this.tail = tail;
+	}
+
+	public Instruction[] getBuffer() {
+		return Buffer;
+	}
+
+	public void setBuffer(Instruction[] buffer) {
+		Buffer = buffer;
+	}
+
+	public boolean  Full_Instruction_Buffer(){
 		 Instruction Instruction_Buffer_tail=this.Buffer[tail];
 //		 int length = this.Buffer.length ;
 		

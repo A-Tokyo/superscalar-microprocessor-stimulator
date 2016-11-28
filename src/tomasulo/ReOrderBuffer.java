@@ -37,6 +37,46 @@ public class ReOrderBuffer {
 		
 	}
 	
+	public int getSizeOfROB() {
+		return sizeOfROB;
+	}
+
+	public void setSizeOfROB(int sizeOfROB) {
+		this.sizeOfROB = sizeOfROB;
+	}
+
+	public int getCurrentSize() {
+		return currentSize;
+	}
+
+	public void setCurrentSize(int currentSize) {
+		this.currentSize = currentSize;
+	}
+
+	public ROBEntry[] getBuffer() {
+		return buffer;
+	}
+
+	public void setBuffer(ROBEntry[] buffer) {
+		this.buffer = buffer;
+	}
+
+	public int getHeadPosition() {
+		return headPosition;
+	}
+
+	public void setHeadPosition(int headPosition) {
+		this.headPosition = headPosition;
+	}
+
+	public int getTailPosition() {
+		return tailPosition;
+	}
+
+	public void setTailPosition(int tailPosition) {
+		this.tailPosition = tailPosition;
+	}
+
 	public ROBEntry peakFront() {
 		return new ROBEntry(this.buffer[this.headPosition]);
 	}

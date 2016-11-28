@@ -2,6 +2,8 @@ package tomasulo;
 
 //import tomasulo.ReOrderBuffer;
 
+import java.util.ArrayList;
+
 import memoryHierarchy.*;
 // import f
 
@@ -31,6 +33,7 @@ public class Tomasulo {
 	int pipelineWidth;
 	int howMany_instructionsFinishExecuting; // Number of instructions executed
 	int howMany_MispredictionsHappen;
+	ArrayList<Integer> IndicesOfRS_ToIssued; // Indices of RS(s) in the order which they were issued 
 	
 	public static final short fetchDelay  = 1;
 	public static final short issueDelay  = 1;
@@ -169,80 +172,80 @@ public class Tomasulo {
 	
 	public void write() {
 		int writes = 0; // Number of instruction that can be written
-		for(int i = 0; i < this.RS_indices.size(); i++ ) {
-			ReservationStation RS = this.reservation_stations[RS_indices.get(i)];
-			if(RS.op.toLowerCase().equals("store")) {
-				if(RS.Qk == -1) {
-					if(RS.start_store) {
-						String address = Integer.toBinaryString(RS.A);
+		for(int i = 0; i < this.IndicesOfRS_ToIssued.size(); i++ ) {
+			ReservationStation temp_reservationStations = this.reservationStations[IndicesOfRS_ToIssued.get(i)];
+			if(temp_reservationStations.op.toLowerCase().equals("store")) {
+				if(temp_reservationStations.Qk == -1) {
+					if(temp_reservationStations.startStoring) {
+						String address = Integer.toBinaryString(temp_reservationStations.A);
 						while(address.length() < 16)
 							address = "0" + address;
 
-						if(RS.write_low_byte) {
-							storeLowByte(RS.Vk, RS.A);
-							RS.write_low_byte = false;
-							RS.write_high_byte = true;
-						}else if(RS.write_high_byte) {
-							storeHighByte(RS.Vk, RS.A + 1);
-							int b = RS.dest;
-							this.reorder_buffer.entries[b].value = RS.Vk;
-							this.reorder_buffer.entries[b].ready = true;
+						if(temp_reservationStations.islowBytewriten) {
+							LowByteStoring(temp_reservationStations.Vk, temp_reservationStations.A);
+							temp_reservationStations.islowBytewriten = false;
+							temp_reservationStations.isHighByteWrite = true;
+						}else if(temp_reservationStations.isHighByteWrite) {
+							HighByteStoring(temp_reservationStations.Vk, temp_reservationStations.A + 1);
+							int b = temp_reservationStations.dest;
+							this.ROBuffer.getBuffer()[b].setInstructionValue(temp_reservationStations.Vk);
+							this.ROBuffer.getBuffer()[b].setReady( true);
 							
-							RS.start_store = false;
-							RS.flushRS();
-							RS.write_high_byte = false;	
+							temp_reservationStations.startStoring = false;
+							temp_reservationStations.flushRS();
+							temp_reservationStations.isHighByteWrite = false;	
 											
-							RS_indices.remove(i);
+							IndicesOfRS_ToIssued.remove(i);
 							writes++;
-							if(writes == this.way)
+							if(writes == this.instruction_issued)
 								return;
 							else
 								i--;
 						}
-						else if(RS.cache_level == this.mem_hierarchy.caches.length) { // memory
-							if(!this.mem_hierarchy.memory.being_accessed || RS.accessed_cache) {
-								RS.accessed_cache = true;
-								if(this.mem_hierarchy.cacheCyclesLeft(RS.cache_level, address) == 0) {
-									RS.cache_level--;
-									RS.accessed_cache = false;
+						else if(temp_reservationStations.cacheLevel == this.memoryHierarchy.caches.length) { // memory
+							if(!this.memoryHierarchy.memory.isBeingAccessed() || temp_reservationStations.isCacheAccessed) {
+								temp_reservationStations.isCacheAccessed = true;
+								if(this.memoryHierarchy.getCacheCyclesRemaining(temp_reservationStations.cacheLevel, address) == 0) {
+									temp_reservationStations.cacheLevel--;
+									temp_reservationStations.isCacheAccessed = false;
 								}
 							}
 						}
-						else if(!this.mem_hierarchy.caches[RS.cache_level].being_accessed || RS.accessed_cache) {
-							RS.accessed_cache = true;
-							if(RS.cache_level == 1 && this.mem_hierarchy.cacheCyclesLeft(RS.cache_level, address) == 0) {
-								RS.write_low_byte = true;
+						else if(!this.memoryHierarchy.caches[temp_reservationStations.cacheLevel].isBeingAccessed() || temp_reservationStations.isCacheAccessed) {
+							temp_reservationStations.isCacheAccessed = true;
+							if(temp_reservationStations.cacheLevel == 1 && this.memoryHierarchy.getCacheCyclesRemaining(temp_reservationStations.cacheLevel, address) == 0) {
+								temp_reservationStations.islowBytewriten = true;
 							}
-							else if(this.mem_hierarchy.cacheCyclesLeft(RS.cache_level, address) == 0) {
-								RS.cache_level--;
-								RS.accessed_cache = false;
+							else if(this.memoryHierarchy.getCacheCyclesRemaining(temp_reservationStations.cacheLevel, address) == 0) {
+								temp_reservationStations.cacheLevel--;
+								temp_reservationStations.isCacheAccessed = false;
 							}
 						}
 					}
 				}
 			}
 			// All instructions but Store
-			else if(RS.exec_cycles_left == 0) {
-				int b = RS.dest;
+			else if(temp_reservationStations.executionCycles_left == 0) {
+				int b = temp_reservationStations.dest;
 				
-				this.reorder_buffer.entries[b].ready = true;
-				this.reorder_buffer.entries[b].value = RS.result;
+				this.ROBuffer.getBuffer()[b].setReady(true);
+				this.ROBuffer.getBuffer()[b].setInstructionValue( temp_reservationStations.result);
 				
-				for (int j = 0; j < this.reservation_stations.length; j++) {
-					ReservationStation RS2 = this.reservation_stations[j];
+				for (int j = 0; j < this.reservationStations.length; j++) {
+					ReservationStation RS2 = this.reservationStations[j];
 					if(RS2.Qj == b) {
-						RS2.Vj = RS.result;
+						RS2.Vj = temp_reservationStations.result;
 						RS2.Qj = -1;
 					}
 					if(RS2.Qk == b) {
-						RS2.Vk = RS.result;
+						RS2.Vk = temp_reservationStations.result;
 						RS2.Qk = -1;
 					}
 				}
-				RS.flushRS();
-				RS_indices.remove(i);
+				temp_reservationStations.flushRS();
+				IndicesOfRS_ToIssued.remove(i);
 				writes++;
-				if(writes == this.way)
+				if(writes == this.instruction_issued)
 					return;
 				else
 					i--;
@@ -256,12 +259,30 @@ public class Tomasulo {
 	
 	public boolean Check_ifStore(int A) {
 		//Checks that all stores have a different memory address, then the Load mem address
-		for(int i = 0; i < this.ROBuffer.entries.length; i++) {
-			ROBEntry b = this.ROBuffer.entries[i];
+		for(int i = 0; i < this.ROBuffer.getBuffer().length; i++) {
+			ROBEntry b = this.ROBuffer.getBuffer()[i];
 			if(b!= null && b.getInstructionType().toLowerCase().equals("store") && b.getInstructionDestination() == A)
 				return false;
 		}
 		return true;
+	}
+	
+	private void LowByteStoring(int vk, int A) {
+		String address = Integer.toBinaryString(A);
+		while (address.length() < 16)
+			address = "0" + address;
+		
+		String value = convert_To_Binary(vk);
+		this.memoryHierarchy.write(address, value.substring(8));
+	}
+	
+	private void HighByteStoring(int vk, int A) {
+		String address = Integer.toBinaryString(A);
+		while (address.length() < 16)
+			address = "0" + address;
+		
+		String value = convert_To_Binary(vk);
+		this.memoryHierarchy.write(address, value.substring(0,8));
 	}
 	
 public static String convert_to_Decimal(String number){
