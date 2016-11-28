@@ -2,8 +2,11 @@ package assembler;
 
 import java.util.ArrayList;
 
+import javax.rmi.CORBA.Util;
+
 import memoryHierarchy.MemoryHierarchy;
 import tomasulo.Tomasulo;
+import utils.Utils;
 
 
 public class StimulationRunner {
@@ -101,6 +104,16 @@ public class StimulationRunner {
 
 		// new tomasulo
 		tomasulo = new Tomasulo(robSize, intsructionBufferSize, functionalUnitInfoArray, pcStart, pcEnd, pipeLineWidth);
+		System.out.println("Tomasulo data passed:");
+		System.out.println("ROBSIZE: "+robSize +", INS buffer: "+ intsructionBufferSize+ ", pc start:" +pcStart+", pc end"+ pcEnd + ", pipe width: " + pipeLineWidth);
+		System.out.println("functional units to tomasulo: \n ");
+		for (int i = 0; i < functionalUnitInfoArray.length; i++) {
+			System.out.println(functionalUnitInfoArray[i]);
+		}
+		System.out.println("\n end tomasulo data");
+		
+
+
 		tomasulo.memoryHierarchy = this.memoryHierarchy;
 		System.out.println("\nHardware organization initialised successfully...\n");
 		incrementLine();
