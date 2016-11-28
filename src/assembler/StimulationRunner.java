@@ -49,7 +49,7 @@ public class StimulationRunner {
 		if (!(currLine.contains("pipeline") && currLine.contains("width"))) {
 			throwException("pipeLine width not initialized");
 		}
-		
+
 		int pipeLineWidth = extractJSONvalueInt(currLine);
 		incrementLineLowerCase();
 		if (!(currLine.contains("size") && currLine.contains("instruction") && currLine.contains("buffer"))) {
@@ -58,18 +58,31 @@ public class StimulationRunner {
 		int intsructionBufferSize = extractJSONvalueInt(currLine);
 		incrementLineLowerCase();
 		if (!(currLine.contains("size") && currLine.contains("rob"))) {
-			throwException("Instruction buffer size not initialized");
+			throwException("ROB buffer size not initialized");
 		}
 		int robSize = extractJSONvalueInt(currLine);
-//		System.out.println(pipeLineWidth + ", " + intsructionBufferSize + "," + robSize);
-		
-		
-		System.out.println("\nHardware organization initialised successfully...\n");
+		//		System.out.println(pipeLineWidth + ", " + intsructionBufferSize + "," + robSize);
+		incrementLine();
+		//		getJSONValue
+		int addRS = Integer.parseInt(getJSONValue(currLine, "addRS"));
+		int addCycles = Integer.parseInt(getJSONValue(currLine, "addCycles"));
+		incrementLine();
+		int mulRS = Integer.parseInt(getJSONValue(currLine, "mulRS"));
+		int mulCycles = Integer.parseInt(getJSONValue(currLine, "mulCycles"));
+		incrementLine();
+		int lwRS = Integer.parseInt(getJSONValue(currLine, "lwRS"));
+		int lwCycles = Integer.parseInt(getJSONValue(currLine, "lwCycles"));
+		incrementLine();
+		int jalrRS = Integer.parseInt(getJSONValue(currLine, "jalrRS"));
+		int jalrCycles = Integer.parseInt(getJSONValue(currLine, "jalrCycles"));
+		System.out.println("\nHardware organization parsed successfully...\n");
+		System.out.println("\n****TODO INITIALIZE TOMASULO AND RUN****\n");
+//		System.out.println("\nHardware organization initialised successfully...\n");
 		incrementLine();
 	}
 
 	private void initMemoryHierarchy() throws Exception{
-//		System.out.println("memory stuff");
+		//		System.out.println("memory stuff");
 		currLine.toLowerCase();
 		if(!(currLine.contains("num") && currLine.contains("cache") && currLine.contains("levels") && currLine.contains(":"))){
 			System.err.println("Please initialize the number of cache levels");
@@ -109,7 +122,7 @@ public class StimulationRunner {
 			}
 			int cacheCycles = extractJSONvalueInt(cacheParametersArray[5]);
 			cachesDescription[i] = cacheS+","+cacheL+","+cacheM+","+cacheWritePolicyHit+","+cacheWritePolicyMiss+","+cacheCycles;
-//			System.out.println(cachesDescription[i]);
+			//			System.out.println(cachesDescription[i]);
 			incrementLine();
 		}
 		currLine = currLine.toLowerCase().trim();
@@ -123,7 +136,7 @@ public class StimulationRunner {
 		// Memory Hierarchy Initialized
 		System.out.println("\nMemory Hierarchy initialised successfully...\n");
 	}
-	
+
 	private void assembleToMemory() throws Exception{
 		currLine = currLine.toLowerCase();
 		if (!currLine.contains("assembly")){
@@ -140,8 +153,8 @@ public class StimulationRunner {
 		int memIndex = assemblyOrigin;
 		Assembler assembler = new Assembler(assemblyOrigin);
 		while(!currLine.toLowerCase().trim().contains("endassembly") && memIndex<65536){
-//			System.out.println(currLine);
-//			System.out.println(memIndex+ ","+ Assembler.assemble(currLine));
+			//			System.out.println(currLine);
+			//			System.out.println(memIndex+ ","+ Assembler.assemble(currLine));
 			String instructionBinary = assembler.assemble(currLine);
 			if(instructionBinary!=null){
 				memoryHierarchy.memory.writeToMemory(memIndex, instructionBinary);	
@@ -152,7 +165,7 @@ public class StimulationRunner {
 		System.out.println("\nProgram code was assembled and added to memory successfully...\n");
 		incrementLine();
 	}
-	
+
 	private void initProgramData() throws Exception{
 		if(!(currLine.contains("prog") && currLine.contains("data"))){
 			return;
@@ -162,15 +175,15 @@ public class StimulationRunner {
 			String [] addressDataPair = currLine.split(":");
 			int address = Integer.parseInt(addressDataPair[0].trim());
 			String data = addressDataPair[1].trim();
-//			System.out.println(address + "," + data);
+			//			System.out.println(address + "," + data);
 			if (!data.matches("^[01]+$")) {
-			    throwException("data is not binary");
+				throwException("data is not binary");
 			}
 			if(data.length()!=16){
 				throwException("invalid data bit length");
 			}
 			if (address<0 || address>=65536) {
-			    throwException("invalid memory address");
+				throwException("invalid memory address");
 			}
 			memoryHierarchy.memory.writeToMemory(address, data);
 			incrementLine();
@@ -197,24 +210,40 @@ public class StimulationRunner {
 			incrementLine();
 		}
 	}
-	
+
+	private String getJSONValue(String JSON, String key) throws Exception{
+		JSON = JSON.trim();
+		if (JSON.charAt(0)!='{' || JSON.charAt(JSON.length()-1)!='}') {
+			throwException(JSON+" is not a valid JSON");
+		}
+		String mutatedJSON = JSON.substring(1, JSON.length()-1);
+		key = key.trim();
+		try{
+			String [] splitted = mutatedJSON.split(",");
+			for (int i = 0; i < splitted.length; i++) {
+				splitted[i] = splitted[i].trim();
+				if(splitted[i].substring(0, splitted[i].indexOf(":")).equals(key)){
+					return splitted[i].substring(splitted[i].indexOf(":")+1, splitted[i].length()).trim();
+				}
+			}	
+		}catch(Exception e){
+			throwException(JSON+" is not a valid JSON");
+		}
+		return null;
+	}
+
 	private void incrementLineLowerCase() {
 		incrementLine();
 		currLine.toLowerCase();
 	}
-	
+
 	private void throwException(String text) throws Exception {
 		System.err.println("Parsing error near line: " + currLineIndex+1);
 		System.err.println(currLine);
 		throw new Exception(text);
 	}
-	
+
 	public static int getId() {
 		return id;
 	}
-	//	public static void main(String[] args) {
-	//		MemoryHierarchy memoryHierarchy = new MemoryHierarchy(memoryAccessTime, cacheLevels, cacheDescription)
-	//		initialize("program.txt");
-	//	}
-
 }
