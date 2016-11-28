@@ -1,16 +1,20 @@
 Memory  Hierarchy
-// shit
-num of cache levels: 3
-{   S : 2,  L: 12 , M: 43, writePolicyHit: write through, writePolicyMiss: writeBack, cycles: 32 }
-{   S : 3,  L: 32 , M: 33, writePolicyHit: write through, writePolicyMiss: writeBack, cycles: 322 }
-{   S : 3,  L: 32 , M: 33, writePolicyHit: write through, writePolicyMiss: writeBack, cycles: 322 }
-//ahmed
-memory cycles: 12
-//asd
-Assembly
-.org 100
-lw reg0,reg1,8
-sw  reg0, reg1,8
-add reg0,  reg1,  reg7
-endAssembly
-lala
+ -// shit
+ -num of cache levels: 3
+ -{   S : 2,  L: 12 , M: 43, writePolicyHit: write through, writePolicyMiss: writeBack, cycles: 32 }
+ -{   S : 3,  L: 32 , M: 33, writePolicyHit: write through, writePolicyMiss: writeBack, cycles: 322 }
+ -{   S : 3,  L: 32 , M: 33, writePolicyHit: write through, writePolicyMiss: writeBack, cycles: 322 }
+ -//ahmed
+ -memory cycles: 12
+ -//asd
+ -Assembly
+ -.org 100
+ -lw reg0,reg1,8
+ -sw  reg0, reg1,8
+ -add reg0,  reg1,  reg7
+ -endAssembly
+ -program data
+ -100 : 0101010101010101
+ -101 : 0101010101010101
+ -end data
+ -END OF FILE
