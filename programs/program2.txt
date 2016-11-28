@@ -15,7 +15,7 @@ Memory  Hierarchy
 Hardware Organization
   pipeline width : 4
   instruction buffer size: 12
-rob size: 6
+rob size: 12
 //
 // TODO Functional Units Information goes here
 // THIS SHOULD BE A VALID JSON, order doesn't matter as long as you follow the key format

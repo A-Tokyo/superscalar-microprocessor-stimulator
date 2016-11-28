@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import assembler.StimulationRunner;
  
  public class Main {
-	private static String fileName="programs/program.txt";
+	private static String fileName="programs/program2.txt";
  	
 	private static void getInput() throws IOException {
  		System.out.println("Please enter the file name:");

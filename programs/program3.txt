@@ -7,30 +7,46 @@
 //
 // TODO Initialize memory hierarchy here as follows, must start with a header Memory Hierarchy
 Memory  Hierarchy
-  number of cache levels: 1
-  {   S : 2,  L: 12 , M: 43, writePolicyHit: write through, writePolicyMiss: writeBack, cycles: 32 }
+  number of cache levels: 2
+  {   S : 64,  L: 8 , M: 4, writePolicyHit: write through, writePolicyMiss: writeBack, cycles: 32 }
+  {   S : 128,  L: 32 , M: 1, writePolicyHit: write through, writePolicyMiss: writeBack, cycles: 50 }
  memory cycles: 12
 //
 //Initialize hardware organization here as follows
 Hardware Organization
-  pipeline width : 4
-  instruction buffer size: 12
-rob size: 6
+  pipeline width : 12
+  instruction buffer size: 8
+rob size: 12
 //
 // TODO Functional Units Information goes here
 // THIS SHOULD BE A VALID JSON, order doesn't matter as long as you follow the key format
-  {add: {addRS: 1,addCycles: 2}, mul: {mulRS: 3, mulCycles: 4}, lw:{lwRS: 5, lwCycles: 6}, jalr:{jalrRS: 7, jalrCycles: 8}}
+  {add: {addRS: 4,addCycles: 3}, mul: {mulRS: 3, mulCycles: 4}, lw:{lwRS: 5, lwCycles: 6}, jalr:{jalrRS: 7, jalrCycles: 8}}
 //
 // Your assembly code goes here it must start with "Assembly" and end with "endAssembly"
 // start your code with .org "number which is the memory index"
 Assembly
-  .org 100
+  .org 10
+  addi reg1, reg0, 27
+  addi reg2, reg0, 28
+  addi reg4, reg0, 29
+  jmp reg2, reg1, 0
+  addi reg3, reg0, 5
+  beq reg2, reg3, reg0
+  jalr reg5, reg4
+  addi reg4, reg0, 30
+  addi reg4, reg0, 30
+  addi reg4, reg0, 30
+  ret reg5
+  
   // TODO Your code goes here
 endAssembly
 //
 // TODO Write your program data here if any must start with the header "program data"
 // The data format must be in address:value
 program data
-//  100 : 0101010101010101
+  27 : 01
+  28 : 10
+  29 : 1001
+  30 : 1100
 end data
 // END OF FILE
