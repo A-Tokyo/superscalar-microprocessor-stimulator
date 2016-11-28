@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import memoryHierarchy.MemoryHierarchy;
 import tomasulo.Tomasulo;
-import utils.Utils;
 
 
 public class StimulationRunner {
@@ -76,6 +75,7 @@ public class StimulationRunner {
 		int jalrRS = Integer.parseInt(getJSONValue(currLine, "jalrRS"));
 		int jalrCycles = Integer.parseInt(getJSONValue(currLine, "jalrCycles"));
 		System.out.println("\nHardware organization parsed successfully...\n");
+		// TODO initialize tomasulo
 		System.out.println("\n****TODO INITIALIZE TOMASULO AND RUN****\n");
 //		System.out.println("\nHardware organization initialised successfully...\n");
 		incrementLine();
