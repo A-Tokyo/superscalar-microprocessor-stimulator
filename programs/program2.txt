@@ -31,7 +31,7 @@ Assembly
   LW reg5, reg0, 6
   ADD reg4, reg2, reg5
   MUL reg4, reg2, reg5
-  NAND reg reg6, reg4, reg5
+  NAND reg6, reg4, reg5
 endAssembly
 //
 // TODO Write your program data here if any must start with the header "program data"
