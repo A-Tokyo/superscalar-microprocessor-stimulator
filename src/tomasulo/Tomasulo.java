@@ -129,39 +129,34 @@ public class Tomasulo {
 	// need to implement the phases of Tomasulo's algorithm: fetch -> issue -> execute -> write result -> commit
 	// and any other methods necessary to make them work
 	
-	public String getInstructionFromMemory(int instructionAddress) {
-		String highByte;
-		String instructionAddressInBinary = Integer.toBinaryString(instructionAddress);
-		if (instructionAddressInBinary.length() < 16) {
-			char[] zeroes = new char[16 -instructionAddressInBinary.length()];
-			Arrays.fill(zeroes, '0');
-			instructionAddressInBinary = new String(zeroes) + instructionAddressInBinary;
+	public String getInstructionFromMemory(int PC) {
+		String address = Integer.toBinaryString(PC);
+		String high_byte = "";
+		while(address.length() < 16)
+			address = "0" + address;
+		if(!lowByteIsSet) {
+				lowByte = memoryHierarchy.fetchInstruction(address);
+				if(lowByte != null)
+					lowByteIsSet = true;
+				
+			return null;
 		}
-		if (lowByteIsSet) {
-			instructionAddressInBinary = Integer.toBinaryString(instructionAddress + 1);
-			if (instructionAddressInBinary.length() < 16) {
-				char[] zeroes = new char[16 -instructionAddressInBinary.length()];
-				Arrays.fill(zeroes, '0');
-				instructionAddressInBinary = new String(zeroes) + instructionAddressInBinary;
-			}
-			highByte = this.memoryHierarchy.fetchInstruction(instructionAddressInBinary);
-			if (highByte == null) {
-				return highByte;
-			}
-		} else {
-			this.lowByte = this.memoryHierarchy.fetchInstruction(instructionAddressInBinary);
-			if (this.lowByte == null) {
-				return this.lowByte;
-			} else {
-				this.lowByteIsSet = true;
+		else {
+			address = Integer.toBinaryString(PC + 1);
+			while(address.length() < 16)
+				address = "0" + address;
+
+			high_byte = memoryHierarchy.fetchInstruction(address);	
+			if(high_byte == null)
 				return null;
-			}
-		}
-		String fullInstruction = highByte + this.lowByte;
-		resetLowByte();
-		return fullInstruction;
 		
-	}
+		}
+		
+		String result = high_byte + lowByte;
+		lowByte = null;
+		lowByteIsSet = false;
+		return result;
+	}	
 	
 	public boolean fetchBranch(Instruction instruction) {
 		if (instruction.function_Type.toUpperCase().equals("BRANCH") && instruction.arithmeticOpCode < 0) {
