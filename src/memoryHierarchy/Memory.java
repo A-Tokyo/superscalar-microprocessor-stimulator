@@ -12,19 +12,19 @@ public class Memory {
 	private int fetchCyclesRemaining;
 	private int dataAccessCyclesRemaining;
 	
-	public Memory(int access_time) {
+	public Memory(int accessTime) {
 		this.memory = new String[65536]; // 2^16
-		this.accessTime = access_time;
+		this.accessTime = accessTime;
 		this.totalCycles = 0;
 	}
 	
 	// Takes an int address as an input and returns the data in the memory location associated with it.
-	public String ReadFromMemory(int address) {
+	public String read(int address) {
 		return memory[address];
 	}
 	
 	// Takes an int address as an input and a string data, writes the data to the memory location of index address.
-	public void writeToMemory(int address, String data){
+	public void write(int address, String data){
 		memory[address] = data;
 	}
 
