@@ -101,6 +101,7 @@ public class StimulationRunner {
 
 		// new tomasulo
 		tomasulo = new Tomasulo(robSize, intsructionBufferSize, functionalUnitInfoArray, pcStart, pcEnd, pipeLineWidth);
+		tomasulo.memoryHierarchy = this.memoryHierarchy;
 		System.out.println("\nHardware organization initialised successfully...\n");
 		incrementLine();
 	}

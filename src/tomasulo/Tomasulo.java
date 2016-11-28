@@ -35,7 +35,7 @@ public class Tomasulo {
 	Instruction jumpInstruction;
 	InstructionBuffer instruction_buffer;
 	int no_cycle_spanned;
-	MemoryHierarchy memoryHierarchy;
+	public MemoryHierarchy memoryHierarchy;
 	ReOrderBuffer ROBuffer;
 	InstructionBuffer instructionBuffer;
 	ReservationStation[] reservationStations;
