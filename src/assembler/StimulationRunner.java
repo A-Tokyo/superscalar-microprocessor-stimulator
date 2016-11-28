@@ -13,6 +13,8 @@ public class StimulationRunner {
 	private String currLine;
 	private ArrayList<String> parsedFile;
 	MemoryHierarchy memoryHierarchy;
+	Tomasulo tomasulo;
+
 
 	public StimulationRunner(String fileFullPath) {
 		currLineIndex = -1;
@@ -61,11 +63,8 @@ public class StimulationRunner {
 			throwException("ROB buffer size not initialized");
 		}
 		int robSize = extractJSONvalueInt(currLine);
-		//		System.out.println(pipeLineWidth + ", " + intsructionBufferSize + "," + robSize);
 		incrementLine();
-		//		getJSONValue
-		int RSCyclesLength = JSONlength(currLine);
-		
+
 		ArrayList<String> currLineJSONkeys = getJSONkeys(currLine);
 		ArrayList<String> fetchedInfo = new ArrayList<String>();
 		for (int i = 0; i < currLineJSONkeys.size(); i++) {
@@ -76,10 +75,10 @@ public class StimulationRunner {
 			}
 		} 
 		String [] functionalUnitInfoArray = fetchedInfo.toArray(new String[fetchedInfo.size()]);
-		
+
 		int pcStart = 0;
 		int pcEnd = 0;
-		
+
 		int tempIndex = currLineIndex;
 		while(!parsedFile.get(tempIndex).contains("assembly")){
 			tempIndex++;
@@ -94,19 +93,15 @@ public class StimulationRunner {
 				pcEnd = pcStart;
 			}			
 			if(parsedFile.get(tempIndex).trim().startsWith("//") || parsedFile.get(tempIndex).trim().toLowerCase().startsWith(".org") || parsedFile.get(tempIndex).contains("@")){
-				
+				// DO Nothing
 			}else{
 				pcEnd++;
 			}
 		}
-		
+
 		// new tomasulo
-		
-		
-		System.out.println("\nHardware organization parsed successfully...\n");
-		// TODO initialize tomasulo
-		System.out.println("\n****TODO INITIALIZE TOMASULO AND RUN****\n");
-		//		System.out.println("\nHardware organization initialised successfully...\n");
+		tomasulo = new Tomasulo(robSize, intsructionBufferSize, functionalUnitInfoArray, pcStart, pcEnd, pipeLineWidth);
+		System.out.println("\nHardware organization initialised successfully...\n");
 		incrementLine();
 	}
 
@@ -248,7 +243,7 @@ public class StimulationRunner {
 		String mutatedJSON = JSON.substring(1, JSON.length()-1);
 		key = key.trim();
 		try{
-			
+
 			ArrayList<String> splittedList = new ArrayList<String>();
 			String currString = "";
 			boolean nested = false;
@@ -257,7 +252,7 @@ public class StimulationRunner {
 					nested = true;
 				}
 				if(mutatedJSON.charAt(i)=='}'){
-						nested = false;
+					nested = false;
 				}
 				if(mutatedJSON.charAt(i) !=','){
 					currString+=mutatedJSON.charAt(i);
@@ -281,53 +276,53 @@ public class StimulationRunner {
 				}
 			}	
 		}catch(Exception e){
-//			throwException(JSON+" is not a valid JSON");
+			//			throwException(JSON+" is not a valid JSON");
 		}
 		return null;
 	}
-	
+
 	private ArrayList<String> getJSONkeys(String JSON)  throws Exception{
 		ArrayList<String> keys = new ArrayList<String>();
-			JSON = JSON.trim();
-			if (JSON.charAt(0)!='{' || JSON.charAt(JSON.length()-1)!='}') {
-				throwException(JSON+" is not a valid JSON");
-			}
-			String mutatedJSON = JSON.substring(1, JSON.length()-1);
-			try{
-				
-				ArrayList<String> splittedList = new ArrayList<String>();
-				String currString = "";
-				boolean nested = false;
-				for (int i = 0; i < mutatedJSON.length(); i++) {
-					if(mutatedJSON.charAt(i)=='{'){
-						nested = true;
-					}
-					if(mutatedJSON.charAt(i)=='}'){
-							nested = false;
-					}
-					if(mutatedJSON.charAt(i) !=','){
+		JSON = JSON.trim();
+		if (JSON.charAt(0)!='{' || JSON.charAt(JSON.length()-1)!='}') {
+			throwException(JSON+" is not a valid JSON");
+		}
+		String mutatedJSON = JSON.substring(1, JSON.length()-1);
+		try{
+
+			ArrayList<String> splittedList = new ArrayList<String>();
+			String currString = "";
+			boolean nested = false;
+			for (int i = 0; i < mutatedJSON.length(); i++) {
+				if(mutatedJSON.charAt(i)=='{'){
+					nested = true;
+				}
+				if(mutatedJSON.charAt(i)=='}'){
+					nested = false;
+				}
+				if(mutatedJSON.charAt(i) !=','){
+					currString+=mutatedJSON.charAt(i);
+				}else{
+					if(nested){
 						currString+=mutatedJSON.charAt(i);
 					}else{
-						if(nested){
-							currString+=mutatedJSON.charAt(i);
-						}else{
-							splittedList.add(currString);
-							currString="";	
-						}
-					}
-					if(i == mutatedJSON.length()-1){
 						splittedList.add(currString);
+						currString="";	
 					}
 				}
-				String [] splitted = splittedList.toArray(new String[splittedList.size()]);
-				for (int i = 0; i < splitted.length; i++) {
-					splitted[i] = splitted[i].trim();
-					keys.add(splitted[i].substring(0, splitted[i].indexOf(":")).trim());
-				}	
-			}catch(Exception e){
-//				throwException(JSON+" is not a valid JSON");
+				if(i == mutatedJSON.length()-1){
+					splittedList.add(currString);
+				}
 			}
-			return keys;
+			String [] splitted = splittedList.toArray(new String[splittedList.size()]);
+			for (int i = 0; i < splitted.length; i++) {
+				splitted[i] = splitted[i].trim();
+				keys.add(splitted[i].substring(0, splitted[i].indexOf(":")).trim());
+			}	
+		}catch(Exception e){
+			//				throwException(JSON+" is not a valid JSON");
+		}
+		return keys;
 	}
 
 	private int JSONlength(String JSON) throws Exception{
