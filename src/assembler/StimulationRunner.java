@@ -157,7 +157,7 @@ public class StimulationRunner {
 			//			System.out.println(memIndex+ ","+ Assembler.assemble(currLine));
 			String instructionBinary = assembler.assemble(currLine);
 			if(instructionBinary!=null){
-				memoryHierarchy.memory.writeToMemory(memIndex, instructionBinary);	
+				memoryHierarchy.memory.write(memIndex, instructionBinary);	
 				memIndex++;
 			}
 			incrementLine();
@@ -185,7 +185,7 @@ public class StimulationRunner {
 			if (address<0 || address>=65536) {
 				throwException("invalid memory address");
 			}
-			memoryHierarchy.memory.writeToMemory(address, data);
+			memoryHierarchy.memory.write(address, data);
 			incrementLine();
 		}
 		System.out.println("\nProgram Data added to memory successfully...\n");
