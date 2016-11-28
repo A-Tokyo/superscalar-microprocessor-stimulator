@@ -1,6 +1,6 @@
 package tomasulo;
 
-import FunctionalUnit;
+import  functionalUnit;
 
 
 public class ReservationStation {
@@ -12,28 +12,18 @@ public class ReservationStation {
 	int Vk;
 	int Qj;
 	int Qk;
-<<<<<<< HEAD
-	int Address;
+
+	//int Address;
 	int cycle_time;
-	int execution_left ;
-	int destination_ROB;
-	boolean busy;
-	String op;
+	//int execution_left ;
+	//int destination_ROB;
+//	boolean busy;
+//	String op;
 	String name_Instruction;
 	int offset;
 	int Reg_Value;
 
-	public ReservationStation(String name , int cycles) {
-		this.name_Instruction=name;
-		this.cycle_time=cycles ;
-		this.execution_left= this.cycle_time;
-		this.busy = false;
-		this.Address = 0;
-		this.destination_ROB =0;
-		this.Qk=-1;
-		this.Qj=-1;
-		this.op="";
-=======
+
 	int dest;
 	int A;
 	int result;
@@ -49,7 +39,7 @@ public class ReservationStation {
 	boolean islowSet;
 	
 	
-	FunctionalUnit FunctionalUnit;
+	 functionalUnit FunctionalUnit;
 	
 
 //	int store_cycles_left;
@@ -67,26 +57,18 @@ public class ReservationStation {
 		Qk = -1;
 		isAddress_calculated = false;
 		executionCycles_left = cycles;
->>>>>>> InstructionBuffer_Mostafa
+
 	}
 	
 	public void flushRS() {
 		this.busy = false;
-<<<<<<< HEAD
-		this.Address = 0;
-		this.destination_ROB =0;
-		this.Qk=-1;
-		this.Qj=-1;
-		this.op="";
-		this.execution_left= this.cycle_time;
-=======
 		this.op = "";
 		this.Qj = -1;
 		this.Qk = -1;
 		isAddress_calculated = false;
 		executionCycles_left = toalCyclesTaken;
 		result = 0;
->>>>>>> InstructionBuffer_Mostafa
+
 	}
 
 
