@@ -880,37 +880,52 @@ public static short getCommitdelay() {
 		
 	}
 
-public void simulateResults(){
-//	no_cycle_spanned=0;
-	while (!this.ROBuffer.isEmpty() && !this.instruction_buffer.Empty_Instruction_Buffer() && PC!=endOfPC){
-		no_cycle_spanned++;
-	}
-	
-	System.out.println("Total Execution Time is: " + this.no_cycle_spanned + " cycles");
-	System.out.println("IPC is : " + (double)this.instruction_finished/ (double)this.no_cycle_spanned);
-	System.out.println("AMAT is : " + AMAT(this.memoryHierarchy.caches.length));
-
-	double branch_Mispredict= (double)howMany_MispredictionsHappen/(double)branchehit;
-	System.out.println("Branch Misprediction Percentage: " + branch_Mispredict* 100 +"percent");
-	
-	for(int i = 0; i < this.memoryHierarchy.caches.length; i++) {
-		String cache_Name;
-		Cache cache = this.memoryHierarchy.caches[i];
-
-		if(i == 0)
-			cache_Name = "1 (Instruction is )";
-		else if (i == 1)
-			cache_Name = "1 (Data is )";
-		else
-			cache_Name = ""+i+" -->";
+	public void simulateResults(){
+		no_cycle_spanned=0;
+		while (!this.ROBuffer.isEmpty() && !this.instruction_buffer.Empty_Instruction_Buffer() && PC!=endOfPC){
+			no_cycle_spanned++;
+			commit();
+			write();
+			execute();
+			issue();
+			fetch();
+		}
 		
-		double total_access=((double)cache.getHitRate() + (double) cache.getMissRate());
-		double hitRatio = (double) cache.getHitRate() /total_access;
-		System.out.println("Cache " + cache_Name + " hit ratio: " + hitRatio);
+		System.out.println("Total Execution Time is: " + this.no_cycle_spanned + " cycles");
+		System.out.println("//---------------------//");
+		System.out.println("IPC is : " + (double)this.instruction_finished/ (double)this.no_cycle_spanned);
+		System.out.println("//---------------------//");
+		System.out.println("AMAT is : " + AMAT(this.memoryHierarchy.caches.length));
+		System.out.println("//---------------------//");
+		double branch_Mispredict= (double)howMany_MispredictionsHappen/(double)branchehit;
+		System.out.println("Branch Misprediction Percentage: " + branch_Mispredict* 100 +"percent");
+		System.out.println("//---------------------//");
+		for(int i = 0; i < this.memoryHierarchy.caches.length; i++) {
+			String cache_Name;
+			Cache cache = this.memoryHierarchy.caches[i];
+			if(i == 0)
+				cache_Name = "1 (Instruction is )";
+			else if (i == 1)
+				cache_Name = "1 (Data is )";
+			else
+				cache_Name = ""+i+" -->";
+			
+			double total_access=((double)cache.getHitRate() + (double) cache.getMissRate());
+			double hitRatio = (double) cache.getHitRate() /total_access;
+			System.out.println("Cache " + cache_Name + " hit ratio: " + hitRatio);
+			System.out.println("//---------------------//");
+			
+			System.out.println("Reservation Stations");
+			for (int m = 0; m < this.reservationStations.length; m++) {
+				ReservationStation RSS = this.reservationStations[m];
+				System.out.println("Name= "+RSS.name+ ", Busy=" + RSS.busy + ", Op=" + RSS.op + ", Vj= " + RSS.Vj + ", VK= " 
+				+RSS.Vk +", Qj= " + RSS.Qj +", Qk= " + RSS.Qk + ", Dest=" + RSS.dest + ", A= " + RSS.A);
+			}
+			System.out.println("//---------------------//");
+		}
+		
+		
 	}
-	
-	
-}
 	
 
 	
