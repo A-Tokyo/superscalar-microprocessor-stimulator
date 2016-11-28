@@ -10,7 +10,16 @@ public class Instruction {
 	
 	int PC_pointer;  //the place which the interaction exist 
 
-
+	/*
+	 * This one takes an assembly instruction in string form, case insensitive and space insensitive
+	 * Returns A string containing the corresponding binary machine code in 16 bits
+	 * Exceptions thrown: illegal argument exception if the register entered is not between reg0 and reg7 inclusive
+	 * or if the instruction is not the microprocessor's instruction set
+	 * 
+	 * Instructions Go as follows
+	 * lw: 000 , sw 001, jmp 010, beq 011, jalr 100,  ret 101, addi 110, Arithmetic 111
+	 * For arithmetic instrction the op codes are:  add: 0000 , sub: 0001, mul: 0010, nand 0011
+	 */
 	public Instruction(String instruction_WrittenInBinary) {
 		String local_arithmeticOpCode = "" ;
 		switch (instruction_WrittenInBinary) {
@@ -33,7 +42,7 @@ public class Instruction {
     		arithmeticOpCode = Integer.parseInt(convert_to_Decimal(""+local_arithmeticOpCode));
     		this.rd = -1;
             break;
-        case "010":
+        case "011":
         	//beq
         	function_Type = "branch";
     		this.rs = (int) Long.parseLong(instruction_WrittenInBinary.substring(3, 6), 2);
@@ -42,7 +51,7 @@ public class Instruction {
     		 local_arithmeticOpCode = instruction_WrittenInBinary.substring(9);
     		arithmeticOpCode = Integer.parseInt(convert_to_Decimal(""+local_arithmeticOpCode));
             break;
-        case "011":
+        case "010":
         	//jump
         	function_Type = "jump";
     		this.rs = (int) Long.parseLong(instruction_WrittenInBinary.substring(3, 6), 2);
@@ -94,10 +103,10 @@ public class Instruction {
         case "0001":
         	function_Type = "subtract";
             break;
-        case "0010":
+        case "0011":
         	function_Type = "nand";
             break;
-        case "0011":
+        case "0010":
         	function_Type = "multiply";
             break;
        

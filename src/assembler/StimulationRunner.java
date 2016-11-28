@@ -38,7 +38,7 @@ public class StimulationRunner {
 		}
 		System.out.println("\nRunning Stimulation...\n");
 //		TODO stimulate program
-//		tomasulo.stimulate();
+		tomasulo.simulateResults();
 	}
 
 	private void initHardware() throws Exception {
