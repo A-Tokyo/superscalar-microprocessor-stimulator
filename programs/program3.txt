@@ -29,24 +29,22 @@ Assembly
   addi reg1, reg0, 27
   addi reg2, reg0, 28
   addi reg4, reg0, 29
-  jmp reg2, reg1, 0
+  jmp reg2, 0
   addi reg3, reg0, 5
-  beq reg2, reg3, reg0
-  jalr reg5, reg4
+ 	beq reg2, reg3, 3
+ 	jalr reg5, reg4
   addi reg4, reg0, 30
   addi reg4, reg0, 30
-  addi reg4, reg0, 30
+ addi reg4, reg0, 30
   ret reg5
-  
-  // TODO Your code goes here
 endAssembly
 //
 // TODO Write your program data here if any must start with the header "program data"
 // The data format must be in address:value
 program data
-  27 : 01
-  28 : 10
-  29 : 1001
-  30 : 1100
+  27 : 1001100110011001
+  28 : 1001100110011001
+  29 : 1001100110011001
+  30 : 1001100110011001
 end data
 // END OF FILE
