@@ -89,6 +89,7 @@ public class StimulationRunner {
 		while(true){
 			tempIndex++;
 			if(parsedFile.get(tempIndex).toLowerCase().contains("endassembly") && !parsedFile.get(tempIndex).trim().startsWith("//")){
+				pcEnd--;
 				break;
 			}	
 			if(parsedFile.get(tempIndex).trim().toLowerCase().startsWith(".org")){

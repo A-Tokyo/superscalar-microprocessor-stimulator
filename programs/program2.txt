@@ -25,7 +25,6 @@ rob size: 12
 // start your code with .org "number which is the memory index"
 Assembly
   .org 100
-  // TODO Your code goes here
   ADDI reg2, reg2, 3
   SW reg2, reg0, 6
   LW reg5, reg0, 6
