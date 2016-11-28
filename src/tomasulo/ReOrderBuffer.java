@@ -43,9 +43,7 @@ public class ReOrderBuffer {
 	
 	
 	public void displayBufferDetails() {
-		System.out.println("Reorder Buffer");
-		System.out.println("Head at position " + this.headPosition);
-		System.out.println("Tail at position " + this.tailPosition);
+		System.out.printf("Reorder Buffer. Extending From the head at %d to the tail at %d", this.headPosition, this.tailPosition);
 		
 		for (ROBEntry someEntry : this.buffer) {
 			if (someEntry == null) {
