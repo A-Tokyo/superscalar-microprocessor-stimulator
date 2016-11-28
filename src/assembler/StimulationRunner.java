@@ -29,12 +29,29 @@ public class StimulationRunner {
 		if(currLine.contains("memory") && currLine.contains("hierarchy")){
 			incrementLine();
 			initMemoryHierarchy();
+			initHardware();
 			assembleToMemory();
 			initProgramData();
 		}else{
 			System.err.println("Please initialize the Memory Hierarchy first !!");
 			return;
 		}
+		System.out.println("\nRunning Stimulation...\n");
+		//TODO stimulate program
+	}
+
+	private void initHardware() throws Exception {
+		currLine = currLine.toLowerCase();
+		if(!(currLine.contains("hardware") && currLine.contains("organization"))){
+			System.err.println("Please initialize the hardware organization.");
+			throwException("Hardware organization not initialized");
+		}
+		incrementLineLowerCase();
+		if (!(currLine.contains("pipeline") && currLine.contains("width"))) {
+			throwException("pipeLine width not initialized");
+		}
+		System.out.println("\nHardware organization initialised successfully...\n");
+		incrementLine();
 	}
 
 	private void initMemoryHierarchy() throws Exception{
@@ -42,7 +59,7 @@ public class StimulationRunner {
 		currLine.toLowerCase();
 		if(!(currLine.contains("num") && currLine.contains("cache") && currLine.contains("levels") && currLine.contains(":"))){
 			System.err.println("Please initialize the number of cache levels");
-			throw new Exception("Number of cache levels not initialized");
+			throwException("Number of cache levels not initialized");
 		}
 		// gut number of cache levels
 		final int numOfCacheLevels = Integer.parseInt(currLine.substring(currLine.indexOf(":")+1).trim());
@@ -64,7 +81,7 @@ public class StimulationRunner {
 				if(cacheWritePolicyHit.toLowerCase().contains("back")){
 					cacheWritePolicyHit = "writeBack";
 				}else{
-					throw new Exception ("Unsuported write policy");
+					throwException ("Unsuported write policy");
 				}
 			String cacheWritePolicyMiss = extractJSONvalue(cacheParametersArray[4]);
 			if(cacheWritePolicyMiss.toLowerCase().contains("through")){
@@ -73,7 +90,7 @@ public class StimulationRunner {
 				if(cacheWritePolicyMiss.toLowerCase().contains("back")){
 					cacheWritePolicyMiss = "writeBack";
 				}else{
-					throw new Exception ("Unsuported write policy");
+					throwException ("Unsuported write policy");
 				}
 			}
 			int cacheCycles = extractJSONvalueInt(cacheParametersArray[5]);
@@ -83,7 +100,7 @@ public class StimulationRunner {
 		}
 		currLine = currLine.toLowerCase().trim();
 		if (!(currLine.contains("memory")&&currLine.contains("cycles"))){
-			throw new Exception ("Memory Cycles syntax error");
+			throwException ("Memory Cycles syntax error");
 		}
 		//extract main memory cycles
 		int mainMemoryCycles = extractJSONvalueInt(currLine);
@@ -96,21 +113,22 @@ public class StimulationRunner {
 	private void assembleToMemory() throws Exception{
 		currLine = currLine.toLowerCase();
 		if (!currLine.contains("assembly")){
-			throw new Exception ("Can not parse program code data");
+			throwException ("Can not parse program code");
 		}
 		incrementLine();
 		if(!currLine.toLowerCase().contains(".org")){
-			throw new Exception("Assembly program origin not specified");
+			throwException("Assembly program origin not specified");
 		}
 		// parse .org
 		int assemblyOrigin = Integer.parseInt(currLine.substring(currLine.indexOf("g")+1).trim());
 		incrementLine();
 		// assemble program
 		int memIndex = assemblyOrigin;
+		Assembler assembler = new Assembler();
 		while(!currLine.toLowerCase().trim().contains("endassembly") && memIndex<65536){
 //			System.out.println(currLine);
 //			System.out.println(memIndex+ ","+ Assembler.assemble(currLine));
-			memoryHierarchy.memory.writeToMemory(memIndex, Assembler.assemble(currLine));
+			memoryHierarchy.memory.writeToMemory(memIndex, assembler.assemble(currLine));
 			memIndex++;
 			incrementLine();
 		}
@@ -129,13 +147,13 @@ public class StimulationRunner {
 			String data = addressDataPair[1].trim();
 //			System.out.println(address + "," + data);
 			if (!data.matches("^[01]+$")) {
-			    throw new Exception("data is not binary");
+			    throwException("data is not binary");
 			}
 			if(data.length()!=16){
-				throw new Exception("invalid data bit length");
+				throwException("invalid data bit length");
 			}
 			if (address<0 || address>=65536) {
-			    throw new Exception("invalid memory address");
+			    throwException("invalid memory address");
 			}
 			memoryHierarchy.memory.writeToMemory(address, data);
 			incrementLine();
@@ -161,6 +179,17 @@ public class StimulationRunner {
 		if(currLine.trim().startsWith("//")){
 			incrementLine();
 		}
+	}
+	
+	private void incrementLineLowerCase() {
+		incrementLine();
+		currLine.toLowerCase();
+	}
+	
+	private void throwException(String text) throws Exception {
+		System.err.println("Parsing error near line: " + currLineIndex+1);
+		System.err.println(currLine);
+		throw new Exception(text);
 	}
 	//	public static void main(String[] args) {
 	//		MemoryHierarchy memoryHierarchy = new MemoryHierarchy(memoryAccessTime, cacheLevels, cacheDescription)

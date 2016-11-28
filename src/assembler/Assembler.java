@@ -1,10 +1,17 @@
 package assembler;
 import java.util.Arrays;
+import java.util.Hashtable;
+
 import utils.Utils;
 
 public class Assembler {
 	
 	private static final int lineSizeInBits = 16;
+	private Hashtable<String, Integer> labelAddress;
+	
+	public Assembler() {
+		// TODO Auto-generated constructor stub
+	}
 	/*
 	 * This one takes an assembly instruction in string form, case insensitive and space insensitive
 	 * Returns A string containing the corresponding binary machine code in 16 bits
@@ -15,7 +22,7 @@ public class Assembler {
 	 * lw: 000 , sw 001, jmp 010, beq 011, jalr 100,  ret 101, addi 110, Arithmetic 111
 	 * For arithmetic instrction the op codes are:  add: 0000 , sub: 0001, mul: 0010, nand 0011
 	 */
-	public static String assemble(String instruction){
+	public String assemble(String instruction){
 		StringBuilder machineCodeBuilder = new StringBuilder();
 		instruction = instruction.trim().toLowerCase();
 		String keyword = instruction.substring(0, instruction.indexOf(" "));
