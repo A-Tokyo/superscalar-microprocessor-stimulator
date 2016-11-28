@@ -4,13 +4,10 @@ package tomasulo;
 // Committed for visibility / integration purposes
 public class ReOrderBuffer {
 
-	// set as 6 for simplicity; should maybe be taken from user - if so, simply change this value
 	public int sizeOfROB;
 	
 	private ROBEntry[] buffer;
-	private ROBEntry head;
 	private int headPosition;
-	private ROBEntry tail;
 	private int tailPosition;
 	
 	public ReOrderBuffer(int sizeOfROB) {
@@ -18,8 +15,6 @@ public class ReOrderBuffer {
 		this.buffer = new ROBEntry[this.sizeOfROB];
 		this.headPosition = 0;
 		this.tailPosition = this.headPosition;
-		this.head = this.buffer[this.headPosition];
-		this.tail = this.buffer[this.tailPosition];
 	}
 
 	public void incrementHead() {
@@ -29,8 +24,6 @@ public class ReOrderBuffer {
 		} else {
 			this.headPosition += 1;
 		}
-		
-		this.head = this.buffer[this.headPosition];
 		
 	}
 	
@@ -42,14 +35,28 @@ public class ReOrderBuffer {
 			this.tailPosition += 1;
 		}
 		
-		this.tail = this.buffer[this.tailPosition];
 	}
 	
 	public void enQueue(ROBEntry entry) {
-		this.tail = entry;
 		incrementTail();
 	}
 	
+	
+	public void displayBufferDetails() {
+		System.out.println("Reorder Buffer");
+		System.out.println("Head at position " + this.headPosition);
+		System.out.println("Tail at position " + this.tailPosition);
+		
+		for (ROBEntry someEntry : this.buffer) {
+			if (someEntry == null) {
+				continue;
+			} else {
+				System.out.printf("The instruction is of type %s, has destination %d, has value %d, and the status of ready is %b", 
+							someEntry.getInstructionType(), someEntry.getInstructionDestination(),
+							someEntry.getInstructionValue(), someEntry.isReady());
+			}
+		}
+	}
 	
 }
 
