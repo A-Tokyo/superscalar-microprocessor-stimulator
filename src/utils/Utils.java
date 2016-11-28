@@ -63,13 +63,13 @@ public class Utils {
 		return wordSizeInBits;
 	}
 	
-	public static void main(String[] args) {
+//	public static void main(String[] args) {
 //		the bug was not taking a substring when i is neg so 32 bits are returned
 //		int i = -56;
 //		System.out.println(Integer.toBinaryString(i));
 //		int k = -32768;
 //		System.out.println(decimalToBinary(k,16));
-	}
+//	}
 	
 }
 
