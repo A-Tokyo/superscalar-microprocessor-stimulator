@@ -69,27 +69,6 @@ public class Cache {
 		}
 	}
 	
-	
-	/*This one takes a block and a decimal index and writes the block in the set belonging to that index
-	 * It first I search for an invalid block, if found, I replace that block
-	 * If no invalid blocks exist, a random block is replaced
-	 * of course in case of direct mapped the block of the index is replaced since the set would have 1 block
-	 */
-//	public void writeBlock(Block block, int index) {
-//		Set toWriteTo = this.sets[index];
-//		for(int i = 0; i < toWriteTo.blocks.length; i++) {
-//			if (toWriteTo.blocks[i].getValidBit() == 0) {
-//				toWriteTo.blocks[i] = block;
-//				// An invalid block was found and replaced, terminate
-//				return;
-//			}
-//		}
-//		int blockIndex = (int) (m * Math.random());
-//		if(toWriteTo.blocks[blockIndex].getDirtyBit() == 1){
-//		}
-//		toWriteTo.blocks[blockIndex] = block;
-//	}
-	
 	// This one takes a string address , it reads the data in that address location and returns it
 	public String read(String address) {
 		Set setToRead;
@@ -162,6 +141,10 @@ public class Cache {
 	public int getNumberOfSets() {
 		// size over line size to get number of blocks in cache, /m since there are m blocks per set.
 		return size/lineSize/m;
+	}
+	
+	public int getNumberOfBlocks() {
+		return this.size / this.lineSize;
 	}
 	
 	public int getTagBitCount() {
@@ -324,4 +307,24 @@ public class Cache {
 		toReturn += (" }");
 		return toReturn;
 	}
+	
+	
+//	public static void main (String [] args){
+//		Cache cache = new Cache(256, 4, 4, "writeBack", "writeAllocate", 3);
+//		System.out.println("Num Blocks: " + cache.getNumberOfBlocks());
+//		System.out.println("Num Sets: " + cache.getNumberOfSets());
+//
+//		cache.sets[1].blocks[0].data[0] = "00000000";
+//		cache.sets[1].blocks[0].setTag("0000000000");
+//		cache.sets[1].blocks[0].setValidBit(-1);
+//
+//		System.out.println(cache.hit("0000000000000100"));
+//		cache.writeByte("0000000000000100", "00000000");
+//		System.out.println(cache.read("0000000000000100"));
+//		System.out.println(cache.cacheToString());
+//		System.out.println(cache.hit("1000000000000110"));
+//
+//		System.out.println(cache.read("1000000000000110"));
+//	}
+	
 }
