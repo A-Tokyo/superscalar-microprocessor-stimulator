@@ -12,6 +12,7 @@ Memory  Hierarchy
   {   S : 3,  L: 32 , M: 33, writePolicyHit: write through, writePolicyMiss: writeBack, cycles: 322 }
   {   S : 3,  L: 32 , M: 33, writePolicyHit: write through, writePolicyMiss: writeBack, cycles: 322 }
  memory cycles: 12
+//
 //Initialize hardware organization here as follows
 Hardware Organization
   pipeline width : 4
@@ -22,6 +23,7 @@ rob size: 6
   {mulRS: 12, mulCycles: 12}
   {lwRS: 12, lwCycles: 12}
   {jalrRS: 12 , jalrCycles: 12}
+//
 // Your assembly code goes here it must start with "Assembly" and end with "endAssembly"
 // start your code with .org "number which is the memory index"
 Assembly
@@ -33,6 +35,7 @@ Assembly
   jmp reg0, 7
   // comment
 endAssembly
+//
 //Write your program data here if any must start with the header "program data"
 // The data format must be in address:value
 program data
