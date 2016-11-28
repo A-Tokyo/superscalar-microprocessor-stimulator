@@ -231,6 +231,33 @@ public class StimulationRunner {
 		}
 		return null;
 	}
+	
+	private int JSONlength(String JSON) throws Exception{
+		JSON = JSON.trim();
+		if (JSON.charAt(0)!='{' || JSON.charAt(JSON.length()-1)!='}') {
+			throwException(JSON+" is not a valid JSON");
+		}
+		if(!JSON.contains("{"))
+			return JSON.split(",").length;
+		else{
+			int length = 0;
+			for (int i = 0; i < JSON.length(); i++) {
+				boolean nestedJSON = false;
+				if(JSON.charAt(i)=='{'){
+					nestedJSON = true;
+				}
+				else
+				if(JSON.charAt(i)=='}'){
+					nestedJSON = false;
+				}
+				if(!nestedJSON && JSON.charAt(i)==','){
+					length++;
+				}
+				return length;
+			}
+		}
+		return -1;
+	}
 
 	private void incrementLineLowerCase() {
 		incrementLine();
