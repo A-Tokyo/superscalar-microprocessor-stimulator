@@ -33,17 +33,14 @@ public class Tomasulo {
 	 InstructionBuffer instruction_buffer;
 	int PC, endOfPC;
 	int pipelineWidth;
-<<<<<<< HEAD
+
 	int instruction_issued ;
 	int instruction_finished ;
 	int branche;
-    int mispredictions_branch;
+//    int mispredictions_branch;
    
-	
-=======
 	int howMany_instructionsFinishExecuting; // Number of instructions executed
 	int howMany_MispredictionsHappen;
->>>>>>> dev
 	
 	public static final short fetchDelay  = 1;
 	public static final short issueDelay  = 1;
@@ -301,7 +298,7 @@ public class Tomasulo {
 					       }
 				     }
 				    else {
-					this.regFile.registers[dest] = binary.convertToBinary(ROB_entry.getInstructionValue());
+					this.regFile.registers[dest] = convert_to_Decimal(""+ROB_entry.getInstructionValue());
 					this.regStatusTable.reorderBufferindex[dest] = -1; 
 					this.ROBuffer.deQueue();
 					instruction_finished++;

@@ -15,6 +15,7 @@ public class ReservationStation {
 	int dest;
 	int A;
 	int result;
+	boolean isReady;
 
 	boolean is_executionStart;
 	int toalCyclesTaken; //Number of cycles taken To execute by Functional unit
@@ -56,7 +57,13 @@ public class ReservationStation {
 		executionCycles_left = toalCyclesTaken;
 		result = 0;
 	}
-
+	
+	public boolean isReady(){
+		if(Qj ==0 && Qk==0){
+			return true;
+			
+		}else return false;
+	}
 
 
 }
