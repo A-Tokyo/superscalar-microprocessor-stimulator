@@ -130,6 +130,18 @@ public class ReOrderBuffer {
 	public boolean isFull() {
 		return (this.currentSize == this.sizeOfROB);
 	}
+	public ROBEntry getEntry(){
+		return this.buffer[this.headPosition];
+	}
+	public void cleanRS() {
+		
+		int length=this.buffer.length;
+		for(int i = 0; i < length; i++) {
+			this.buffer[i] = null;
+		}
+		this.headPosition = 0;
+		this.tailPosition = 0;
+	}
 	
 }
 

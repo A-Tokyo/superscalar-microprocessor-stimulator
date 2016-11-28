@@ -22,7 +22,30 @@ public class Tomasulo {
 	// a list of the amount of reservation stations for each class of instructions (assume 1:1 station:functional unit map; specified by user)
 	// the register status table
 	// the register file
-	
+	int instruction_issued ; 
+	int instruction_finished ;
+	int branchehit;
+	InstructionBuffer instruction_buffer;
+	int no_cycle_spanned;
+	public InstructionBuffer getInstructionBuffer() {
+		return instructionBuffer;
+	}
+
+
+	public void setInstructionBuffer(InstructionBuffer instructionBuffer) {
+		this.instructionBuffer = instructionBuffer;
+	}
+
+
+	public ArrayList<Integer> getIndicesOfRS_ToIssued() {
+		return IndicesOfRS_ToIssued;
+	}
+
+
+	public void setIndicesOfRS_ToIssued(ArrayList<Integer> indicesOfRS_ToIssued) {
+		IndicesOfRS_ToIssued = indicesOfRS_ToIssued;
+	}
+
 	MemoryHierarchy memoryHierarchy;
 	ReOrderBuffer ROBuffer;
 	InstructionBuffer instructionBuffer;
@@ -254,8 +277,322 @@ public class Tomasulo {
 	}
 	
 	public void commit() {
+		for(int i = 0; i < this.instruction_issued; i++) {
+			ROBEntry ROB_entry = this.ROBuffer.getEntry();
+			if(ROB_entry == null)
+				return;
+			
+			int dest = ROB_entry.getInstructionDestination(); //Reg or Mem Address if store
+			if(ROB_entry.isReady()) { // if ready 
+				if(ROB_entry.getInstructionType().toLowerCase().equals("store")) { 
+					this.ROBuffer.deQueue();
+					instruction_finished++;
+				}
+				else if(ROB_entry.getInstructionType().toLowerCase().equals("jmp")) {
+					this.ROBuffer.deQueue();
+					instruction_finished++;
+				}
+				else if(ROB_entry.getInstructionType().toLowerCase().equals("return")) {
+					this.ROBuffer.deQueue();
+					instruction_finished++;
+				}
+				else if(ROB_entry.getInstructionType().toLowerCase().equals("branch")) {
+					this.branchehit++;
+					instruction_finished++;
+					if(ROB_entry.getInstructionValue()  == 1) { // if Branch was predicted correctly
+						this.ROBuffer.deQueue();
+
+					} else {  // if not
+						this.PC = ROB_entry.PC__value;
+						this.ROBuffer.cleanRS();
+						this.regStatusTable.emptyRegisterStatusTable();
+						flushreservation_stations();
+						this.instruction_buffer.Flush();
+						//this.low_byte = null;
+						//this.low_byte_set = false;
+						return;
+					       }
+				     }
+				    else {
+					this.regFile.registers[dest] = convert_to_Decimal(""+ROB_entry.getInstructionValue());
+					this.regStatusTable.reorderBufferindex[dest] = -1; 
+					this.ROBuffer.deQueue();
+					instruction_finished++;
+				}
+
+			}
+		}
+	}
+	
+	
+	private void flushreservation_stations() {
+		for (int i = 0; i < this.reservationStations.length; i++) {
+			reservationStations[i].flushRS();
+		}	
+	}
+	
+
+	
+public static String convert_to_Decimal(String number){
+		
+		/* 
+		 100111
+		 (2^0)*1
+		  */
+		int factor=1;
+		int result =0;
+		int out=0;
+		String convert_out="";
+		String convert = number ;
+		for(int i=convert.length()-1 ;i >-1 ;i--){
+			result += factor * convert.charAt(i); //0101
+			factor =factor*2;//factor=2  // 1*2
+		}
+		convert_out=""+result ;
+		return convert_out;
 		
 	}
+
+public static String convert_To_Binary(int number) {
+	String temp = Integer.toBinaryString(number);
+	if (number >= 0) {
+		while(temp.length() < 16)
+			temp = "0" + temp;
+	}
+	else {
+		temp = temp.substring(16);
+	}
+	return temp;
+}
+	
+	public MemoryHierarchy getMemoryHierarchy() {
+	return memoryHierarchy;
+}
+
+
+public void setMemoryHierarchy(MemoryHierarchy memoryHierarchy) {
+	this.memoryHierarchy = memoryHierarchy;
+}
+
+
+public ReOrderBuffer getROBuffer() {
+	return ROBuffer;
+}
+
+
+public void setROBuffer(ReOrderBuffer rOBuffer) {
+	ROBuffer = rOBuffer;
+}
+
+
+public ReservationStation[] getReservationStations() {
+	return reservationStations;
+}
+
+
+public void setReservationStations(ReservationStation[] reservationStations) {
+	this.reservationStations = reservationStations;
+}
+
+
+public RegisterFile getRegFile() {
+	return regFile;
+}
+
+
+public void setRegFile(RegisterFile regFile) {
+	this.regFile = regFile;
+}
+
+
+public RegisterStatusTable getRegStatusTable() {
+	return regStatusTable;
+}
+
+
+public void setRegStatusTable(RegisterStatusTable regStatusTable) {
+	this.regStatusTable = regStatusTable;
+}
+
+
+public InstructionBuffer getInstruction_buffer() {
+	return instruction_buffer;
+}
+
+
+public void setInstruction_buffer(InstructionBuffer instruction_buffer) {
+	this.instruction_buffer = instruction_buffer;
+}
+
+
+public int getPC() {
+	return PC;
+}
+
+
+public void setPC(int pC) {
+	PC = pC;
+}
+
+
+public int getEndOfPC() {
+	return endOfPC;
+}
+
+
+public void setEndOfPC(int endOfPC) {
+	this.endOfPC = endOfPC;
+}
+
+
+public int getPipelineWidth() {
+	return pipelineWidth;
+}
+
+
+public void setPipelineWidth(int pipelineWidth) {
+	this.pipelineWidth = pipelineWidth;
+}
+
+
+public int getInstruction_issued() {
+	return instruction_issued;
+}
+
+
+public void setInstruction_issued(int instruction_issued) {
+	this.instruction_issued = instruction_issued;
+}
+
+
+public int getInstruction_finished() {
+	return instruction_finished;
+}
+
+
+public void setInstruction_finished(int instruction_finished) {
+	this.instruction_finished = instruction_finished;
+}
+
+
+public int getBranchehit() {
+	return branchehit;
+}
+
+
+public void setBranchehit(int branchehit) {
+	this.branchehit = branchehit;
+}
+
+
+public int getNo_cycle_spanned() {
+	return no_cycle_spanned;
+}
+
+
+public void setNo_cycle_spanned(int no_cycle_spanned) {
+	this.no_cycle_spanned = no_cycle_spanned;
+}
+
+
+public int getHowMany_instructionsFinishExecuting() {
+	return howMany_instructionsFinishExecuting;
+}
+
+
+public void setHowMany_instructionsFinishExecuting(int howMany_instructionsFinishExecuting) {
+	this.howMany_instructionsFinishExecuting = howMany_instructionsFinishExecuting;
+}
+
+
+public int getHowMany_MispredictionsHappen() {
+	return howMany_MispredictionsHappen;
+}
+
+
+public void setHowMany_MispredictionsHappen(int howMany_MispredictionsHappen) {
+	this.howMany_MispredictionsHappen = howMany_MispredictionsHappen;
+}
+
+
+public static short getFetchdelay() {
+	return fetchDelay;
+}
+
+
+public static short getIssuedelay() {
+	return issueDelay;
+}
+
+
+public static short getWritedelay() {
+	return writeDelay;
+}
+
+
+public static short getCommitdelay() {
+	return commitDelay;
+}
+
+
+	public double AMAT(int cache_Level){
+		if(cache_Level == 1)
+			return (double) this.memoryHierarchy.caches[1].getAccessCycles();
+		else {
+			double result = 0;
+			if(cache_Level == this.memoryHierarchy.caches.length)
+				 result = this.memoryHierarchy.memory.getAccessTime();
+			else
+			     result = this.memoryHierarchy.caches[cache_Level].getAccessCycles();
+			for(int i = 1; i < cache_Level; i++) {
+				double missRate;
+				if(i == 1) {
+				missRate = (this.memoryHierarchy.caches[0].getMissRate() + this.memoryHierarchy.caches[1].getMissRate()) / (double) 2;
+				}
+				else {
+				missRate = this.memoryHierarchy.caches[i].getMissRate();
+				}
+				result *= missRate;
+			}
+			return result + AMAT(cache_Level - 1);
+		}
+		
+		
+	}
+
+public void simulateResults(){
+//	no_cycle_spanned=0;
+	while (!this.ROBuffer.isEmpty() && !this.instruction_buffer.Empty_Instruction_Buffer() && PC!=endOfPC){
+		no_cycle_spanned++;
+	}
+	
+	System.out.println("Total Execution Time is: " + this.no_cycle_spanned + " cycles");
+	System.out.println("IPC is : " + (double)this.instruction_finished/ (double)this.no_cycle_spanned);
+	System.out.println("AMAT is : " + AMAT(this.memoryHierarchy.caches.length));
+
+	double branch_Mispredict= (double)howMany_MispredictionsHappen/(double)branchehit;
+	System.out.println("Branch Misprediction Percentage: " + branch_Mispredict* 100 +"percent");
+	
+	for(int i = 0; i < this.memoryHierarchy.caches.length; i++) {
+		String cache_Name;
+		Cache cache = this.memoryHierarchy.caches[i];
+
+		if(i == 0)
+			cache_Name = "1 (Instruction is )";
+		else if (i == 1)
+			cache_Name = "1 (Data is )";
+		else
+			cache_Name = ""+i+" -->";
+		
+		double total_access=((double)cache.getHitRate() + (double) cache.getMissRate());
+		double hitRatio = (double) cache.getHitRate() /total_access;
+		System.out.println("Cache " + cache_Name + " hit ratio: " + hitRatio);
+	}
+	
+	
+}
+	
+
 	
 	public boolean Check_ifStore(int A) {
 		//Checks that all stores have a different memory address, then the Load mem address
@@ -285,25 +622,7 @@ public class Tomasulo {
 		this.memoryHierarchy.write(address, value.substring(0,8));
 	}
 	
-public static String convert_to_Decimal(String number){
-		
-		/* 
-		 100111
-		 (2^0)*1
-		  */
-		int factor=1;
-		int result =0;
-		int out=0;
-		String convert_out="";
-		String convert = number ;
-		for(int i=convert.length()-1 ;i >-1 ;i--){
-			result += factor * convert.charAt(i); //0101
-			factor =factor*2;//factor=2  // 1*2
-		}
-		convert_out=""+result ;
-		return convert_out;
-		
-	}
+
 	
 	
 }
