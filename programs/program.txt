@@ -18,8 +18,10 @@ Hardware Organization
   pipeline width : 4
   instruction buffer size: 12
 rob size: 6
-// THIS SHOULD BE A VALID JSON, order 1:Add 2:MUL 3:LW 4: JALR
-{add: {addRS: 1,addCycles: 2}, mul: {mulRS: 3, mulCycles: 4}, lw:{lwRS: 5, lwCycles: 6}, jalr:{jalrRS: 7, jalrCycles: 8}}
+//
+// Functional Units Information goes here
+// THIS SHOULD BE A VALID JSON, order doesn't matter as long as you follow the key format
+  {add: {addRS: 1,addCycles: 2}, mul: {mulRS: 3, mulCycles: 4}, lw:{lwRS: 5, lwCycles: 6}, jalr:{jalrRS: 7, jalrCycles: 8}}
 //
 // Your assembly code goes here it must start with "Assembly" and end with "endAssembly"
 // start your code with .org "number which is the memory index"

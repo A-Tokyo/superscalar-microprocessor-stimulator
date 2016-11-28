@@ -65,28 +65,6 @@ public class StimulationRunner {
 		incrementLine();
 		//		getJSONValue
 		int RSCyclesLength = JSONlength(currLine);
-//		System.out.println(RSCyclesLength);
-		
-//		if(getJSONValue(currLine, "add")!=null){
-//			int addRS = Integer.parseInt(getJSONValue(getJSONValue(currLine, "add"), "addRS"));
-//			int addCycles = Integer.parseInt(getJSONValue(getJSONValue(currLine, "add"), "addCycles"));
-//			System.out.println(addRS +"," + addCycles);
-//		}
-//		if(getJSONValue(currLine, "mul")!=null){
-//			int mulRS = Integer.parseInt(getJSONValue(getJSONValue(currLine, "mul"), "mulRS"));
-//			int mulCycles = Integer.parseInt(getJSONValue(getJSONValue(currLine, "mul"), "mulCycles"));
-//			System.out.println(mulRS +"," + mulCycles);
-//		}
-//		if(getJSONValue(currLine, "lw")!=null){
-//			int lwRS = Integer.parseInt(getJSONValue(getJSONValue(currLine, "lw"), "lwRS"));
-//			int lwCycles = Integer.parseInt(getJSONValue(getJSONValue(currLine, "lw"), "lwCycles"));
-//			System.out.println(lwRS +"," + lwCycles);
-//		}
-//		if(getJSONValue(currLine, "jalr")!=null){
-//			int jalrRS = Integer.parseInt(getJSONValue(getJSONValue(currLine, "jalr"), "jalrRS"));
-//			int jalrCycles = Integer.parseInt(getJSONValue(getJSONValue(currLine, "jalr"), "jalrCycles"));
-//			System.out.println(jalrRS +"," + jalrCycles);
-//		}
 		
 		ArrayList<String> currLineJSONkeys = getJSONkeys(currLine);
 		ArrayList<String> fetchedInfo = new ArrayList<String>();
