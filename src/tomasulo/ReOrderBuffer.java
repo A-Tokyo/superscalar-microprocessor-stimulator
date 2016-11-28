@@ -1,16 +1,29 @@
 package tomasulo;
 
-// NOTE: Still in the works, missing some important functionality
-// Committed for visibility / integration purposes
 public class ReOrderBuffer {
 
-	// set as 6 for simplicity; should maybe be taken from user - if so, simply change this value
 	public int sizeOfROB;
 	
-	private ROBEntry[] buffer;
-	private ROBEntry head;
+	public ROBEntry[] buffer;
 	private int headPosition;
-	private ROBEntry tail;
+	public int getHeadPosition() {
+		return headPosition;
+	}
+
+	public void setHeadPosition(int headPosition) {
+		this.headPosition = headPosition;
+	}
+
+	public int getTailPosition() {
+		return tailPosition;
+	}
+
+	public void setTailPosition(int tailPosition) {
+		this.tailPosition = tailPosition;
+	}
+
+
+
 	private int tailPosition;
 	
 	public ReOrderBuffer(int sizeOfROB) {
@@ -18,8 +31,6 @@ public class ReOrderBuffer {
 		this.buffer = new ROBEntry[this.sizeOfROB];
 		this.headPosition = 0;
 		this.tailPosition = this.headPosition;
-		this.head = this.buffer[this.headPosition];
-		this.tail = this.buffer[this.tailPosition];
 	}
 
 	public void incrementHead() {
@@ -29,8 +40,6 @@ public class ReOrderBuffer {
 		} else {
 			this.headPosition += 1;
 		}
-		
-		this.head = this.buffer[this.headPosition];
 		
 	}
 	
@@ -42,15 +51,27 @@ public class ReOrderBuffer {
 			this.tailPosition += 1;
 		}
 		
-		this.tail = this.buffer[this.tailPosition];
 	}
 	
 	public void enQueue(ROBEntry entry) {
-		this.tail = entry;
+		
 		incrementTail();
 	}
 	
 	
+	
+	public void displayBufferDetails() {
+		System.out.printf("Reorder Buffer. Extending From the head at %d to the tail at %d", this.headPosition, this.tailPosition);
+		
+		for (ROBEntry someEntry : this.buffer) {
+			if (someEntry == null) {
+				continue;
+			} else {
+				System.out.printf("The instruction is of type %s, has destination %d, has value %d, and the status of ready is %b", 
+							someEntry.getInstructionType(), someEntry.getInstructionDestination(),
+							someEntry.getInstructionValue(), someEntry.isReady());
+			}
+		}
+	}
+	
 }
-
-

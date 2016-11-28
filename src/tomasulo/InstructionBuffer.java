@@ -66,6 +66,10 @@ public class InstructionBuffer {
 		
 	}
 	
+	public Instruction peakHead() {
+		return this.Buffer[this.head];
+	}
+	
 	public void Flush(){ // clean all 
 		int length = this.Buffer.length  ;
 		for(int i=0;i<length ; i++){			

@@ -5,14 +5,36 @@ public class ROBEntry {
 	
 	private String instructionType;
 	private long instructionDestination;
+	private int PC;
+
+
 	private int instructionValue;
 	private boolean Ready;
+	
 	
 	public ROBEntry(String instructionType, long instructionDestination, int instructionValue, boolean Ready) {
 		this.instructionType = instructionType;
 		this.instructionDestination = instructionDestination;
 		this.instructionValue = instructionValue;
 		this.Ready = Ready;
+	}
+	
+	public ROBEntry(String instructionType, long instructionDestination, boolean Ready) {
+		this.instructionType = instructionType;
+		this.instructionDestination = instructionDestination;
+		this.Ready = Ready;
+	}
+
+	public ROBEntry(String instructionType, long instructionDestination) {
+		this(instructionType, instructionDestination, false);
+	}
+
+	public int getPC() {
+		return PC;
+	}
+
+	public void setPC(int pC) {
+		PC = pC;
 	}
 	
 	public String getInstructionType() {
