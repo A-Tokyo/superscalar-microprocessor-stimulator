@@ -476,19 +476,19 @@ public void simulateResults(){
 	System.out.println("Branch Misprediction Percentage: " + branch_Mispredict* 100 +"percent");
 	
 	for(int i = 0; i < this.memoryHierarchy.caches.length; i++) {
-		String cacheName;
+		String cache_Name;
 		Cache cache = this.memoryHierarchy.caches[i];
 
 		if(i == 0)
-			cacheName = "1 (Instruction is )";
+			cache_Name = "1 (Instruction is )";
 		else if (i == 1)
-			cacheName = "1 (Data is )";
+			cache_Name = "1 (Data is )";
 		else
-			cacheName = ""+i+" -->";
+			cache_Name = ""+i+" -->";
 		
 		double total_access=((double)cache.getHitRate() + (double) cache.getMissRate());
 		double hitRatio = (double) cache.getHitRate() /total_access;
-		System.out.println("Cache " + cacheName + " hit ratio: " + hitRatio);
+		System.out.println("Cache " + cache_Name + " hit ratio: " + hitRatio);
 	}
 	
 	
