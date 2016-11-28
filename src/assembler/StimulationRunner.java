@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import memoryHierarchy.MemoryHierarchy;
 import tomasulo.Tomasulo;
-import utils.Utils;
 
 
 public class StimulationRunner {
@@ -38,7 +37,8 @@ public class StimulationRunner {
 			return;
 		}
 		System.out.println("\nRunning Stimulation...\n");
-		//TODO stimulate program
+//		TODO stimulate program
+//		tomasulo.stimulate();
 	}
 
 	private void initHardware() throws Exception {
