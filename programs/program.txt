@@ -31,8 +31,8 @@ Assembly
   sw  reg2, reg1,8
   @label
   add reg2,  reg1,  reg7
-  sub reg2,  reg3,  reg4
-  jmp reg5, 7
+  SUB reg2,  reg3,  reg4
+  JmP reg5, 7
   // comment
 endAssembly
 //

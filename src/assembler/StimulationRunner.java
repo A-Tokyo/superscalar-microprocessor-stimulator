@@ -179,12 +179,16 @@ public class StimulationRunner {
 		while(!currLine.toLowerCase().trim().contains("endassembly") && memIndex<65536){
 			//			System.out.println(currLine);
 			//			System.out.println(memIndex+ ","+ Assembler.assemble(currLine));
+			try{
 			String instructionBinary = assembler.assemble(currLine);
 			if(instructionBinary!=null){
 				memoryHierarchy.memory.write(memIndex, instructionBinary);	
 				memIndex++;
 			}
 			incrementLine();
+			}catch(Exception e){
+				throwException(e.getMessage());
+			}
 		}
 		System.out.println("\nProgram code was assembled and added to memory successfully...\n");
 		incrementLine();
