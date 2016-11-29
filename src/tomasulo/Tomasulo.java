@@ -135,23 +135,23 @@ public class Tomasulo {
 		if (instructionAddressInBinary.length() < 16) {
 			char[] zeroes = new char[16 -instructionAddressInBinary.length()];
 			Arrays.fill(zeroes, '0');
-			instructionAddressInBinary = new String(zeroes) + instructionAddressInBinary;
+			instructionAddressInBinary = (new String(zeroes)) + instructionAddressInBinary;
 		}
 		if (lowByteIsSet) {
 			instructionAddressInBinary = Integer.toBinaryString(instructionAddress + 1);
 			if (instructionAddressInBinary.length() < 16) {
 				char[] zeroes = new char[16 -instructionAddressInBinary.length()];
 				Arrays.fill(zeroes, '0');
-				instructionAddressInBinary = new String(zeroes) + instructionAddressInBinary;
+				instructionAddressInBinary = (new String(zeroes)) + instructionAddressInBinary;
 			}
 			highByte = this.memoryHierarchy.fetchInstruction(instructionAddressInBinary);
 			if (highByte == null) {
-				return highByte;
+				return null;
 			}
 		} else {
 			this.lowByte = this.memoryHierarchy.fetchInstruction(instructionAddressInBinary);
 			if (this.lowByte == null) {
-				return this.lowByte;
+				return null;
 			} else {
 				this.lowByteIsSet = true;
 				return null;
@@ -259,8 +259,10 @@ public class Tomasulo {
 					return;
 				} else if (fetchJump(instruction)) {
 					return;
+				} else if (fetchReturn(instruction)) {
+					return;
 				} else {
-					fetchReturn(instruction);
+					this.PC += 2;
 					return;
 				}
 			}
