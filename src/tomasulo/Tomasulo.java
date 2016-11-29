@@ -881,19 +881,19 @@ public static short getCommitdelay() {
 
 	public void simulateResults(){
 		this.no_cycle_spanned=0;
-		while (!(this.ROBuffer
-				.isEmpty() && this.instruction_buffer
-				.Empty_Instruction_Buffer()
-				&& PC==endOfPC &&
-				this.no_cycle_spanned > 1 ) ){
-			no_cycle_spanned++;
-			commit();
-			write();
-			execute();
-			issue();
-			fetch();
-			//ROBuffer.displayBufferDetails();
-		}
+//		while (!(this.ROBuffer
+//				.isEmpty() && this.instruction_buffer
+//				.Empty_Instruction_Buffer()
+//				&& PC==endOfPC &&
+//				this.no_cycle_spanned > 1 ) ){
+//			no_cycle_spanned++;
+//			commit();
+//			write();
+//			execute();
+//			issue();
+//			fetch();
+//			//ROBuffer.displayBufferDetails();
+//		}
 		System.out.println("\n  print " +memoryHierarchy+"\n");
 		System.out.println("Total Execution Time is: " + this.no_cycle_spanned + " cycles");
 		System.out.println("//---------------------//");
