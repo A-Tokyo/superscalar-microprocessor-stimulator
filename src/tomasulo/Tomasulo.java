@@ -231,35 +231,39 @@ public class Tomasulo {
 	}
 	
 	public void fetch() {
-		if (stallOfJump) {
-			if (fetchBranch(this.jumpInstruction)) {
+
+		if(stallOfJump) {
+			Instruction I = this.jumpInstruction;
+			if(fetchJump(I)) // Change PC to Jump address if instruction is Jump
 				return;
-			} else if (fetchJALR(this.jumpInstruction)) {
+			if(fetchReturn(I)) // Change PC to Jump address if instruction is Return
 				return;
-			} else if (fetchJump(this.jumpInstruction)) {
+			if(fetchJALR(I)) // Change PC to Jump address if instruction is JALR
 				return;
-			} else {
-				fetchReturn(this.jumpInstruction);
-				return;
-			}
-		} else if (!(this.instruction_buffer.Full_Instruction_Buffer()) && PC < endOfPC) {
-			String instructionInMemory = getInstructionFromMemory(this.PC);
-			if (instructionInMemory != null) {
-				Instruction instruction = new Instruction(instructionInMemory);
-				
-				this.instruction_buffer.Add_To_Instruction_Buffer(instruction);
-				if (fetchBranch(instruction)) {
-					return;
-				} else if (fetchJALR(instruction)) {
-					return;
-				} else if (fetchJump(instruction)) {
-					return;
-				} else {
-					fetchReturn(instruction);
-					return;
-				}
-			}
+			if(fetchBranch(I))  // Change PC to branch address if instruction is BREQ and offset is negative(Branch Taken)
+				return;	
 		}
+		
+		if(PC != endOfPC && !stallOfJump && !this.instruction_buffer.Full_Instruction_Buffer()) {
+			String instruction = getInstructionFromMem(PC);
+			if(instruction == null) {
+				return;
+			}
+			Instruction I = new Instruction(instruction);
+			this.instruction_buffer.Add_To_Instruction_Buffer(I);
+
+			if(fetchJump(I)) // Change PC to Jump address if instruction is Jump
+				return;
+			if(fetchReturn(I)) // Change PC to Jump address if instruction is Return
+				return;
+			if(fetchJALR(I)) // Change PC to Jump address if instruction is JALR
+				return;
+			if(fetchBranch(I))  // Change PC to branch address if instruction is BREQ and offset is negative(Branch Taken)
+				return;
+			PC +=2;
+
+		}
+		else return; // Program ended, No More instructions to fetch
 	}
 
 	public int getAvailableStation(Instruction instruction) {
